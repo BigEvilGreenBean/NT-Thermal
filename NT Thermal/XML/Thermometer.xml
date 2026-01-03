@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+  <!-- Thermometer for getting temperature of limbs -->
+  <Item name="Handeld Thermometer" description="A handheld method of measuring a patients body temperature. Requires batteries in order to function." identifier="handheld_thermometer" category="Equipment" cargocontaineridentifier="metalcrate" tags="smallitem,tool,medical" useinhealthinterface="true" impactsoundtag="impact_metal_light" scale="0.22" isshootable="true" requireaimtouse="True">
+    <PreferredContainer primary="medcab" minamount="1" maxamount="1" spawnprobability="1" />
+    <PreferredContainer primary="wreckmedcab,abandonedmedcab" minamount="0" maxamount="1" spawnprobability="0.25" />
+    <Price baseprice="250">
+      <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" minavailable="1" />
+    </Price>
+    <Deconstruct time="10">
+      <Item identifier="plastic" />
+      <Item identifier="silicon" />
+      <Item identifier="copper" />
+    </Deconstruct>
+    <Fabricate suitablefabricators="fabricator" requiredtime="20">
+      <RequiredSkill identifier="medical" level="50" />
+      <RequiredItem identifier="plastic" />
+      <RequiredItem identifier="silicon" />
+      <RequiredItem identifier="fpgacircuit" />
+    </Fabricate>
+    <InventoryIcon texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="684,13,81,112" origin="0.5029245,0.49185285" />
+    <Sprite texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="794,17,89,107" depth="0.6" origin="0.4922231,0.43069968" />
+    <Body width="25" height="25" density="40" />
+    <ItemComponent>
+      <RequiredItems items="mobilebattery" type="Contained" msg="ItemMsgBatteryCellRequired"/>
+      <StatusEffect type="OnUse" target="Limb" Voltage="1.0" setvalue="true">
+        <!-- <Sound file="%ModDir%/Sound/hypospray.ogg" /> -->
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="Contained" Condition="-1.0">
+        <RequiredItem items="mobilebattery" type="Contained" />
+      </StatusEffect>
+    </ItemComponent>
+    <ItemContainer capacity="1" maxstacksize="1" hideitems="true" containedstateindicatorstyle="battery">
+      <Containable items="mobilebattery"/>
+    </ItemContainer>
+    <Pickable msg="ItemMsgPickUpSelect" />
+  </Item>
+</Items>

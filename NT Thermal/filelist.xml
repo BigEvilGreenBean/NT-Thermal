@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<contentpackage name="NT Thermal" corepackage="false" modversion="1.0.0h0" gameversion="1.10.7.1">
+<Afflictions file="%ModDir%/XML/ThermAfflictions.xml"/>
+<Item file="%ModDir%/XML/MedicalItems.xml"/>
+<Item file="%ModDir%/XML/Thermometer.xml"/>
+</contentpackage>

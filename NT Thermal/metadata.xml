@@ -1,0 +1,15 @@
+﻿<!--  Metadata file for Barotrauma Modding Tool  -->
+<metadata>
+    <settings>
+      <setting name="IgnoreLUACheck" value="false"/>
+      <setting name="IgnoreOverrideCheck" value="false"/>
+    </settings>
+  <meta>
+    <author>BigEvilGreenBean</author>
+    <id>BigEvilGreenBean.NTTHERM</id>
+  </meta>
+    <dependencies>
+    <requiredAnyOrder name="Neurotrauma" steamID="3190189044"/>
+    <conflict name="Deprecated Neurotrauma" steamID="2776270649" message="Remove deprecated Neurotrauma" level="error"/>
+    </dependencies>
+</metadata>

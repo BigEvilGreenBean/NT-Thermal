@@ -1,0 +1,61 @@
+-- The base of this code has been lifted from NT Eyes.
+
+-- The default normal body temp is 37c, however due to the fact I can't have an affliction be at 0 (If I can let me know.), I offset all temp related values by 1. So normal body temp is now 38 and so on so forth.
+-- Another note, Added 'New' prefix since it was bugged when I didn't, I'm not too sure why that was the case.
+
+NTTHERM.ConfigData = {
+	NTTHERM_Header1 = { name = NTTHERM.Name, type = "category" },
+
+	NewHypothermiaLevel = {
+		name = "Hypotheria level",
+		default = 36,
+		range = { 0, 100 },
+		type = "float",
+		description = "Sets the value at which hypothermia will occur.",
+	},
+	NewHyperthermiaLevel = {
+		name = "Hypertheria level",
+		default = 39,
+		range = { 0, 100 },
+		type = "float",
+		description = "Sets the value at which hyperthermia will occur.",
+	},
+	NewNormalBodyTemp = {
+		name = "Normal Body Temp",
+		default = 38,
+		range = { 0, 100 },
+		type = "float",
+		description = "The normal body temperature of the body.",
+	},
+	NewHypothermiaScaling = {
+		name = "Hypothermia Scaling",
+		default = 5,
+		range = { 0, 10 },
+		type = "float",
+		description = "Multiplies hypothermia by this value.",
+	},
+	NewHyperthermiaScaling = {
+		name = "Hyperthermia Scaling",
+		default = 1,
+		range = { 0, 10 },
+		type = "float",
+		description = "Multiplies hyperthermia by this value.",
+	},
+	NewWarmingAbility = {
+		name = "Warming Ability",
+		default = .05,
+		range = { 0, 1 },
+		type = "float",
+		description = "How much the warmth affliction provides in temperature.",
+	},
+	NewDryingSpeed = {
+		name = "Drying Speed",
+		default = -.1,
+		range = { -1, 0 },
+		type = "float",
+		description = "How fast the wet affliction wears off per interval.",
+	},
+}
+
+--this adds above config options to the Neurotrauma config menu
+NTConfig.AddConfigOptions(NTTHERM)

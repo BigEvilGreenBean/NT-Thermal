@@ -1,0 +1,346 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+  <!--HeatPads-->
+  <Item name="Heatpads" identifier="heatpads" category="Medical" maxstacksize="32" maxstacksizecharacterinventory="16" cargocontaineridentifier="mediccrate" Tags="smallitem,medical" description="An easy to store patch used for heating up cold tissue." useinhealthinterface="True" scale="0.2" impactsoundtag="impact_soft" RequireAimToUse="True">
+    <PreferredContainer primary="medcab" minamount="6" maxamount="15" spawnprobability="1" />
+    <PreferredContainer primary="wreckmedcab,abandonedmedcab" minamount="2" maxamount="6" spawnprobability="0.15" />
+    <PreferredContainer primary="outpostmedcompartment" minamount="10" maxamount="16" spawnprobability="0.05" />
+    <Fabricate suitablefabricators="medicalfabricator" amount="4" requiredtime="10">
+      <RequiredSkill identifier="medical" level="10" />
+      <RequiredItem identifier="plastic" />
+      <RequiredItem identifier="iron" />
+      <RequiredItem identifier="sodium" amount="2" />
+    </Fabricate>
+    <Deconstruct />
+    <Price baseprice="60">
+      <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" minavailable="3" />
+    </Price>
+    <InventoryIcon texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="223,7,110,114" origin="0.5166917,0.44719067" />
+    <Sprite texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="223,7,110,114" depth="0.55" origin="0.5079795,0.4555972" />
+    <Body width="65" height="45" density="50" />
+    <MeleeWeapon canBeCombined="false" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="20,5" handle1="0,0" holdangle="10" reload="1.0" msg="ItemMsgPickUpSelect" HitOnlyCharacters="true">
+      <SkillRequirementHint identifier="medical" level="10" />
+      <RequiredSkill identifier="medical" level="10" />
+      <StatusEffect type="OnUse" target="This" Condition="-100.0" setvalue="true">
+        <Sound file="Content/Items/Medical/Bandage1.ogg" range="500" />
+        <Sound file="Content/Items/Medical/Bandage2.ogg" range="500" />
+      </StatusEffect>
+      <StatusEffect target="Limb" statuseffecttags="medical" type="OnSuccess">
+        <Affliction identifier="warmth" amount="15"/>
+      </StatusEffect>
+      <StatusEffect statuseffecttags="medical" type="OnFailure" target="Limb">
+        <Affliction identifier="warmth" amount="5"/>
+      </StatusEffect>
+      <!--  Remove the item when fully used  -->
+      <StatusEffect type="OnBroken" target="This">
+        <Remove />
+      </StatusEffect>
+    </MeleeWeapon>
+  </Item>
+  <!--Alteplase-->
+  <Item name="Alteplase" identifier="alteplase" category="Medical" maxstacksize="32" maxstacksizecharacterinventory="16" cargocontaineridentifier="mediccrate" Tags="smallitem,medical" description="A thrombolytic agent used to break down blood clots formed in the body. Aids with pulmonary embolism." useinhealthinterface="True" scale="0.2" impactsoundtag="impact_soft" RequireAimToUse="True">
+    <PreferredContainer primary="medcab" minamount="3" maxamount="10" spawnprobability="1" />
+    <PreferredContainer primary="wreckmedcab,abandonedmedcab" minamount="1" maxamount="7" spawnprobability="0.15" />
+    <PreferredContainer primary="outpostmedcompartment" minamount="3" maxamount="4" spawnprobability="0.05" />
+    <Fabricate suitablefabricators="medicalfabricator" amount="4" requiredtime="10">
+      <RequiredSkill identifier="medical" level="40" />
+      <RequiredItem identifier="bloodpackoplus" amount="2" />
+      <RequiredItem identifier="magnesium" amount="2" />
+    </Fabricate>
+    <Deconstruct />
+    <Price baseprice="140">
+      <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" minavailable="3" />
+    </Price>
+    <InventoryIcon texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="336,2,73,124" origin="0.49497086,0.5382631" />
+    <Sprite texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="336,2,73,124" depth="0.55" origin="0.49497086,0.5382631" />
+    <Body width="65" height="45" density="50" />
+    <SuitableTreatment identifier="frostnip" suitability="10" />
+    <SuitableTreatment identifier="bitewounds" suitability="20" />
+    <SuitableTreatment identifier="explosiondamage" suitability="20" />
+    <SuitableTreatment identifier="gunshotwound" suitability="20" />
+    <SuitableTreatment type="bleeding" suitability="40" />
+    <SuitableTreatment identifier="surgeryincision" suitability="100" />
+    <MeleeWeapon canBeCombined="false" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="20,5" handle1="0,0" holdangle="10" reload="1.0" msg="ItemMsgPickUpSelect" HitOnlyCharacters="true">
+      <SkillRequirementHint identifier="medical" level="45" />
+      <RequiredSkill identifier="medical" level="45" />
+      <StatusEffect type="OnUse" target="This" Condition="-100.0" setvalue="true">
+        <Sound file="Content/Items/Medical/Bandage1.ogg" range="500" />
+        <Sound file="Content/Items/Medical/Bandage2.ogg" range="500" />
+      </StatusEffect>
+      <StatusEffect target="Limb" statuseffecttags="medical" type="OnSuccess">
+        <affliction identifier="thrombolytics" amount="50" />
+      </StatusEffect>
+      <StatusEffect statuseffecttags="medical" type="OnFailure" target="Limb">
+        <affliction identifier="thrombolytics" amount="10" probability=".5" />
+        <affliction identifier="bleeding" amount="5" />
+      </StatusEffect>
+      <!--  Remove the item when fully used  -->
+      <StatusEffect type="OnBroken" target="This">
+        <Remove />
+      </StatusEffect>
+    </MeleeWeapon>
+  </Item>
+  <!--Furosemide-->
+  <Item name="Furosemide" identifier="fursomide" category="Medical" maxstacksize="32" maxstacksizecharacterinventory="16" cargocontaineridentifier="mediccrate" Tags="smallitem,medical" description="Used to treat pulmonary edema and lower blood pressure." useinhealthinterface="True" scale="0.2" impactsoundtag="impact_soft" RequireAimToUse="True">
+    <PreferredContainer primary="medcab" minamount="3" maxamount="10" spawnprobability="1" />
+    <PreferredContainer primary="wreckmedcab,abandonedmedcab" minamount="1" maxamount="7" spawnprobability="0.15" />
+    <PreferredContainer primary="outpostmedcompartment" minamount="3" maxamount="4" spawnprobability="0.05" />
+    <Fabricate suitablefabricators="medicalfabricator" amount="4" requiredtime="10">
+      <RequiredSkill identifier="medical" level="40" />
+      <RequiredItem identifier="silicon" amount="2" />
+      <RequiredItem identifier="magnesium" amount="1" />
+      <RequiredItem identifier="sodium" amount="1" />
+    </Fabricate>
+    <Deconstruct />
+    <Price baseprice="110">
+      <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" minavailable="3" />
+    </Price>
+    <InventoryIcon texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="416,1,68,127" origin="0.5387953,0.51596045" />
+    <Sprite texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="416,1,68,127" depth="0.55" origin="0.5371777,0.5127693" />
+    <Body width="65" height="45" density="50" />
+    <SuitableTreatment identifier="frostnip" suitability="10" />
+    <SuitableTreatment identifier="bitewounds" suitability="20" />
+    <SuitableTreatment identifier="explosiondamage" suitability="20" />
+    <SuitableTreatment identifier="gunshotwound" suitability="20" />
+    <SuitableTreatment type="bleeding" suitability="40" />
+    <SuitableTreatment identifier="surgeryincision" suitability="100" />
+    <MeleeWeapon canBeCombined="false" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="20,5" handle1="0,0" holdangle="10" reload="1.0" msg="ItemMsgPickUpSelect" HitOnlyCharacters="true">
+      <SkillRequirementHint identifier="medical" level="45" />
+      <RequiredSkill identifier="medical" level="45" />
+      <StatusEffect type="OnUse" target="This" Condition="-100.0" setvalue="true">
+        <Sound file="Content/Items/Medical/Bandage1.ogg" range="500" />
+        <Sound file="Content/Items/Medical/Bandage2.ogg" range="500" />
+      </StatusEffect>
+      <StatusEffect target="Limb" statuseffecttags="medical" type="OnSuccess">
+        <Affliction identifier="diuretics" amount="50"/>
+      </StatusEffect>
+      <StatusEffect statuseffecttags="medical" type="OnFailure" target="Limb">
+        <Affliction identifier="diuretics" amount="15"/>
+      </StatusEffect>
+      <!--  Remove the item when fully used  -->
+      <StatusEffect type="OnBroken" target="This">
+        <Remove />
+      </StatusEffect>
+    </MeleeWeapon>
+  </Item>
+  <!--A.A.F.N-->
+  <Item name="A.A.F.N" identifier="a.a.f.n" category="Medical" maxstacksize="12" maxstacksizecharacterinventory="8" cargocontaineridentifier="mediccrate" Tags="smallitem,medical,surgery,surgerytool" description="A highly experimental nanite based solution to thaw blood vessels. Highly explosive when paired with alcohol." useinhealthinterface="True" scale="0.2" impactsoundtag="impact_soft" RequireAimToUse="True">
+    <PreferredContainer primary="wreckmedcab,abandonedmedcab" minamount="0" maxamount="1" spawnprobability="0.005" />
+    <PreferredContainer primary="outpostmedcompartment" minamount="0" maxamount="2" spawnprobability="0.0005" />
+    <Fabricate suitablefabricators="medicalfabricator" amount="2" requiredtime="30">
+      <RequiredSkill identifier="medical" level="50" />
+      <RequiredSkill identifier="engineering" level="60" />
+      <RequiredItem identifier="aluminum" amount="3" />
+      <RequiredItem identifier="fulgurium" amount="1" />
+      <RequiredItem identifier="magnesium" amount="2" />
+      <RequiredItem identifier="magnesium" amount="2" />
+    </Fabricate>
+    <Deconstruct />
+    <Price baseprice="400">
+      <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" minavailable="3" />
+    </Price>
+    <InventoryIcon texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="485,0,78,129" origin="0.5584868,0.50299615" />
+    <Sprite texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="485,0,78,129" depth="0.55" origin="0.5539901,0.4921206" />
+    <Body width="65" height="45" density="50" />
+    <SuitableTreatment identifier="frostnip" suitability="10" />
+    <SuitableTreatment identifier="bitewounds" suitability="20" />
+    <SuitableTreatment identifier="explosiondamage" suitability="20" />
+    <SuitableTreatment identifier="gunshotwound" suitability="20" />
+    <SuitableTreatment type="bleeding" suitability="40" />
+    <SuitableTreatment identifier="surgeryincision" suitability="100" />
+    <MeleeWeapon canBeCombined="false" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="20,5" handle1="0,0" holdangle="10" reload="1.0" msg="ItemMsgPickUpSelect" HitOnlyCharacters="true">
+      <SkillRequirementHint identifier="medical" level="50" />
+      <RequiredSkill identifier="medical" level="50" />
+      <StatusEffect type="OnUse" target="This" Condition="-25.0" setvalue="true">
+        <Sound file="Content/Items/Medical/Bandage1.ogg" range="500" />
+        <Sound file="Content/Items/Medical/Bandage2.ogg" range="500" />
+      </StatusEffect>
+      <!--  Remove the item when fully used  -->
+      <StatusEffect type="OnBroken" target="This">
+        <Remove />
+      </StatusEffect>
+    </MeleeWeapon>
+  </Item>
+  <!--Towel-->
+  <Item name="Towel" identifier="towel" category="Medical" maxstacksize="1" maxstacksizecharacterinventory="1" cargocontaineridentifier="mediccrate" Tags="smallitem,medical,surgery,surgerytool" description="A towel used to wipe a patient dry." useinhealthinterface="True" scale="0.2" impactsoundtag="impact_soft" RequireAimToUse="True">
+    <PreferredContainer primary="wreckmedcab,abandonedmedcab" minamount="0" maxamount="1" spawnprobability="0.5" />
+    <PreferredContainer primary="outpostmedcompartment" minamount="0" maxamount="2" spawnprobability="0.1" />
+    <Fabricate suitablefabricators="medicalfabricator" amount="1" requiredtime="15">
+      <RequiredSkill identifier="medical" level="20" />
+      <RequiredItem identifier="organicfiber" amount="2" />
+    </Fabricate>
+    <Deconstruct time="5">
+      <Item identifier="organicfiber" />
+    </Deconstruct>
+    <Price baseprice="50">
+      <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" minavailable="3" />
+    </Price>
+    <InventoryIcon texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="572,1,96,131" origin="0.52625567,0.4824535" />
+    <Sprite texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="572,1,96,131" depth="0.55" origin="0.52625567,0.48083603" />
+    <Body width="65" height="45" density="50" />
+    <SuitableTreatment identifier="wet" suitability="100" />
+    <MeleeWeapon canBeCombined="false" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="20,5" handle1="0,0" holdangle="10" reload="1.0" msg="ItemMsgPickUpSelect" HitOnlyCharacters="true">
+      <SkillRequirementHint identifier="medical" level="5" />
+      <RequiredSkill identifier="medical" level="5" />
+      <StatusEffect type="OnUse" target="Limb">
+        <Sound file="Content/Items/Medical/Bandage1.ogg" range="500" />
+        <Sound file="Content/Items/Medical/Bandage2.ogg" range="500" />
+      </StatusEffect>
+          <StatusEffect target="Limb" statuseffecttags="medical" type="OnSuccess">
+        <Affliction identifier="wet" amount="-100"/>
+      </StatusEffect>
+      <StatusEffect statuseffecttags="medical" type="OnFailure" target="Limb">
+        <Affliction identifier="diuretics" amount="-75"/>
+      </StatusEffect>
+    </MeleeWeapon>
+  </Item>
+  <!--Warm Rags-->
+  <Item name="Warm Rag" identifier="warm_rag" category="Medical" maxstacksize="8" maxstacksizecharacterinventory="1" cargocontaineridentifier="heatcontainer" Tags="smallitem,chem,medical,canexpire" useinhealthinterface="true" description="A damp warm rag, can be used to heat up cold tissue. Must be stored in a heating container." scale="0.2" impactsoundtag="impact_soft" RequireAimToUse="True">
+    <Upgrade gameversion="0.10.0.0" scale="0.5" />
+    <PreferredContainer primary="medcab" minamount="2" maxamount="3" />
+    <PreferredContainer primary="wreckmedcab,abandonedmedcab" minamount="0" maxamount="2" spawnprobability="0.35" />
+    <PreferredContainer secondary="outpostmedcab" amount="1" spawnprobability="0.5" />
+    <PreferredContainer secondary="outpostmedcompartment" amount="1" spawnprobability="0.2" />
+    <Price baseprice="100">
+      <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" minavailable="3" />
+    </Price>
+    <Fabricate suitablefabricators="medicalfabricator" requiredtime="15">
+      <RequiredSkill identifier="medical" level="40" />
+      <RequiredItem identifier="organicfiber" amount="3" />
+    </Fabricate>
+    <Deconstruct time="5">
+      <Item identifier="organicfiber" amount="3" />
+    </Deconstruct>
+    <SuitableTreatment identifier="warmth" suitability="-5" />
+    <InventoryIcon texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="0,0,128,128" origin="0.54625577,0.4003891" />
+    <Sprite texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="0,0,128,128" depth="0.6" origin="0.53276724,0.4108404" />
+    <Body width="80" height="45" density="11" />
+    <MeleeWeapon canBeCombined="false" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="20,5" handle1="0,0" holdangle="10" reload="1.0" msg="ItemMsgPickUpSelect" HitOnlyCharacters="true">
+      <SkillRequirementHint identifier="medical" level="20" />
+      <RequiredSkill identifier="medical" level="20" />
+      <!-- HE compatibility -->
+      <StatusEffect type="Always" target="This" interval="5" disabledeltatime="true" condition="-4">
+        <Conditional hastag="neq heating" targetcontainer="true" />
+        <Conditional HasStatusTag="neq activateheating" targetcontainer="true" />
+      </StatusEffect>
+      <!-- HE compatibility -->
+      <StatusEffect type="OnContained" target="This" interval="5" disabledeltatime="true" condition="17.5">
+        <Conditional hastag="heating" targetcontainer="true" />
+        <Conditional HasStatusTag="eq activeheating" targetcontainer="true" />
+      </StatusEffect>
+      <StatusEffect type="OnFire" target="This" Condition="25.0" />
+      <StatusEffect target="Limb" statuseffecttags="medical" type="OnSuccess">
+        <Affliction identifier="warmth" amount="100"/>
+      </StatusEffect>
+      <StatusEffect statuseffecttags="medical" type="OnFailure" target="Limb">
+        <Affliction identifier="warmth" amount="25"/>
+      </StatusEffect>
+    </MeleeWeapon>
+    <AiTarget sightrange="1000" static="true" />
+    <SkillRequirementHint identifier="medical" level="40" />
+  </Item>
+  <!--Warm I.V Bags-->
+  <Item name="Warm I.V Bag" identifier="warm_iv_bag" category="Medical" maxstacksize="8" maxstacksizecharacterinventory="1" cargocontaineridentifier="heatcontainer" Tags="smallitem,chem,medical,canexpire" useinhealthinterface="true" description="A heatable bag of I.V fluids, perfect for raising the core temperature of a patient. Must be stored in a heating container." scale="0.275" impactsoundtag="impact_soft" RequireAimToUse="True">
+    <Upgrade gameversion="0.10.0.0" scale="0.5" />
+    <PreferredContainer primary="medcab" minamount="0" maxamount="2" />
+    <PreferredContainer primary="wreckmedcab,abandonedmedcab" minamount="0" maxamount="1" spawnprobability="0.35" />
+    <PreferredContainer secondary="outpostmedcab" amount="0" spawnprobability="0.5" />
+    <PreferredContainer secondary="outpostmedcompartment" amount="0" spawnprobability="0.2" />
+    <Price baseprice="100">
+      <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" minavailable="3" />
+    </Price>
+    <Fabricate suitablefabricators="medicalfabricator" requiredtime="5">
+      <RequiredSkill identifier="medical" level="40" />
+      <RequiredItem identifier="saline" amount="1" />
+      <RequiredItem identifier="plastic" amount="1" />
+    </Fabricate>
+    <Deconstruct time="5">
+      <Item identifier="saline" amount="1" />
+      <Item identifier="plastic" amount="1" />
+    </Deconstruct>
+    <SuitableTreatment identifier="warmth" suitability="-5" />
+    <InventoryIcon texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="133,2,87,126" origin="0.54414636,0.47636464" />
+    <Sprite texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="133,2,87,126" depth="0.6" origin="0.54414636,0.47636464" />
+    <Body width="80" height="45" density="11" />
+    <MeleeWeapon canBeCombined="false" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="20,5" handle1="0,0" holdangle="10" reload="1.0" msg="ItemMsgPickUpSelect" HitOnlyCharacters="true">
+      <!-- HE compatibility -->
+      <StatusEffect type="Always" target="This" interval="5" disabledeltatime="true" condition="-5">
+        <Conditional condition="gt 1"/>
+        <Conditional hastag="neq heating" targetcontainer="true" />
+        <Conditional HasStatusTag="neq activateheating" targetcontainer="true" />
+      </StatusEffect>
+      <!-- HE compatibility -->
+      <StatusEffect type="OnContained" target="This" interval="5" disabledeltatime="true" condition="17.5">
+        <Conditional hastag="heating" targetcontainer="true" />
+        <Conditional HasStatusTag="eq activeheating" targetcontainer="true" />
+      </StatusEffect>
+      <StatusEffect type="OnFire" target="This" Condition="25.0" />
+      <RequiredSkill identifier="medical" level="40" />
+      <StatusEffect type="OnUse" target="This" Condition="-100.0" setvalue="true">
+        <Sound file="Content/Items/Medical/Bandage1.ogg" range="500" />
+        <Sound file="Content/Items/Medical/Bandage2.ogg" range="500" />
+      </StatusEffect>
+      <StatusEffect target="Limb" statuseffecttags="medical" type="OnSuccess">
+        <Affliction identifier="elevated_core_temperature" amount="20"/>
+      </StatusEffect>
+      <StatusEffect statuseffecttags="medical" type="OnFailure" target="Limb">
+        <Affliction identifier="elevated_core_temperature" amount="5"/>
+      </StatusEffect>
+            <StatusEffect type="OnBroken" target="This">
+        <Remove />
+      </StatusEffect>
+    </MeleeWeapon>
+    <AiTarget sightrange="1000" static="true" />
+    <SkillRequirementHint identifier="medical" level="40" />
+  </Item>
+  <!--Heat Container-->
+  <Item name="Heating Container" identifier="heatcontainer" category="Equipment" maxstacksize="1" maxstacksizecharacterinventory="1" Tags="container,medical,smallitem,mobilecontainer,tool,toolbox,heating" showcontentsintooltip="true" description="A heating container used to keep items nice and warm." scale="0.5" impactsoundtag="impact_metal_heavy">
+    <PreferredContainer primary="medcab" minamount="0" maxamount="1" spawnprobability="1" />
+    <PreferredContainer primary="wreckmedcab,abandonedmedcab" minamount="0" maxamount="1" spawnprobability="0.15" />
+    <Fabricate suitablefabricators="fabricator" amount="1" requiredtime="10">
+      <RequiredSkill identifier="medical" level="20" />
+      <RequiredItem identifier="steel" />
+      <RequiredItem identifier="aluminum" />
+    </Fabricate>
+    <Deconstruct />
+    <Price baseprice="120">
+      <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" minavailable="3" />
+    </Price>
+    <InventoryIcon texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="22,151,83,67" origin="0.52512914,0.54473233" />
+    <Sprite texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="22,151,83,67" depth="0.55" origin="0.5225513,0.5474187" />
+    <Body width="65" height="45" density="50" />
+    <MeleeWeapon slots="RightHand,LeftHand" controlpose="true" aimpos="45,10" handle1="0,23" holdangle="90" reload="1" range="50" combatpriority="6" msg="ItemMsgPickUpSelect">
+      <Attack structuredamage="0" itemdamage="1" targetimpulse="2">
+        <Affliction identifier="blunttrauma" strength="1" />
+        <Affliction identifier="stun" strength="0.6" />
+        <StatusEffect type="OnUse" target="UseTarget">
+          <Conditional entitytype="eq Character" />
+          <Sound file="Content/Items/Weapons/Smack1.ogg" selectionmode="random" range="500" />
+          <Sound file="Content/Items/Weapons/Smack2.ogg" range="500" />
+        </StatusEffect>
+      </Attack>
+    </MeleeWeapon>
+    <ItemContainer capacity="6" keepopenwhenequipped="true" movableframe="true">
+      <Containable items="warm_rag,warm_iv_bag" excludeditems="toolbelt,toolbox" />
+    </ItemContainer>
+  </Item>
+  <!--Heat Crate-->
+  <Item name="Heating Crate" identifier="heatcrate" category="Equipment" maxstacksize="1" maxstacksizecharacterinventory="1" Tags="crate,medical,heating" showcontentsintooltip="true" description="A heating crate used to keep items nice and warm." scale="0.5" impactsoundtag="impact_metal_heavy">
+    <Fabricate suitablefabricators="fabricator" amount="1" requiredtime="10">
+      <RequiredSkill identifier="medical" level="20" />
+      <RequiredItem identifier="steel" amount="2" />
+      <RequiredItem identifier="aluminum" />
+    </Fabricate>
+    <Deconstruct />
+    <Price baseprice="300">
+      <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" minavailable="0" />
+    </Price>
+    <InventoryIcon texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="119,145,145,82" origin="0.51347846,0.5360419" />
+    <Sprite texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="119,145,145,82" depth="0.55" origin="0.50882435,0.5415284" />
+    <Body width="65" height="45" density="50" />
+    <Holdable slots="RightHand+LeftHand" holdpos="0,-80" handle1="-20,14" handle2="20,14" aimable="false" msg="ItemMsgPickUpSelect" />
+    <ItemContainer capacity="12" keepopenwhenequipped="true" movableframe="true">
+      <Containable items="warm_rag,warm_iv_bag" excludeditems="toolbelt,toolbox" />
+    </ItemContainer>
+  </Item>
+</Items>
