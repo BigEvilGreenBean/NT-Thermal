@@ -210,9 +210,9 @@ NTTHERM.UpdateLimbAfflictions = {
 						end
 						if type == LimbType.Head then
 							if limbaff[i].strength < HypothermiaLevel then
-								HF.SetAffliction(c.character, "overlay_ice", HF.Clamp(2/limbaff[i].strength*100,0,40))
+								HF.SetAffliction(c.character, "overlay_ice", HF.Clamp(5/limbaff[i].strength*100,0,40))
 							elseif limbaff[i].strength > HyperthermiaLevel then
-								HF.SetAffliction(c.character, "overlay_fire", HF.Clamp(limbaff[i].strength/NormalBodyTemp*40,0,80))
+								HF.SetAffliction(c.character, "overlay_fire", HF.Clamp(limbaff[i].strength/NormalBodyTemp*50,0,80))
 							else
 								HF.SetAffliction(c.character, "overlay_ice", 0)
 								HF.SetAffliction(c.character, "overlay_fire", 0)
