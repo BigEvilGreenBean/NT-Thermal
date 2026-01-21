@@ -18,8 +18,8 @@
   </Affliction>
   <!--3rd Degree Frostbite-->
   <Affliction name="3rd Degree Frostbite" identifier="d3_frostbite" description="The skin has become a putrid purple, amputation is needed to salvage what is left." limbspecific="true" showiconthreshold="0" showinhealthscannerthreshold="0" maxstrength="25" targets="human" type="gaze" isbuff="false" healableinmedicalclinic="false" iconcolors="107,198,243,255;107,198,243,255">
-    <Effect minstrength="0" maxstrength="25" strengthchange="0" />
-    <icon texture="%ModDir%/Images/NT_AZ_Afflictions.png" sheetelementsize="128,128" origin="0,0" sourcerect="391,0,126,128" />
+    <Effect minstrength="0" maxstrength="25" strengthchange="0"  minbodytint="93,75,111,0" maxbodytint="93,75,111,0"/>
+    <icon texture="%ModDir%/Images/NT_AZ_Afflictions.png" sheetelementsize="128,128" origin="0,0" sourcerect="391,0,126,128"/>
   </Affliction>
   <!--Chilblains-->
   <Affliction name="Chilblains" identifier="chilblains" description="Blisters have formed from the extreme cold, susceptible to infection. Bandage and keep out of water." limbspecific="true" showiconthreshold="10" showinhealthscannerthreshold="1" maxstrength="50" targets="human" type="gaze" isbuff="false" healableinmedicalclinic="false" iconcolors="255,90,0,255;255,90,0,255">
@@ -173,6 +173,18 @@
   <Affliction name="Arm Swelling" identifier="sym_armswelling" description="The arm is abnormally inflated." limbspecific="false" indicatorlimb="RightArm" showiconthreshold="1" showinhealthscannerthreshold="100" maxstrength="2" targets="human" type="gaze" isbuff="false" healableinmedicalclinic="false" iconcolors="255,90,0,255;255,90,0,255">
     <Effect minstrength="0" maxstrength="2" strengthchange="0" />
     <icon texture="%ModDir%/Images/NT_AZ_Afflictions.png" sheetelementsize="128,128" origin="0,0" sourcerect="261,538,125,127" />
+  </Affliction>
+    <!-- Ice Overlay -->
+  <Affliction name="" identifier="overlay_ice" description="" limbspecific="true" showiconthreshold="10000000" showinhealthscannerthreshold="1000000000" maxstrength="100" targets="human" type="gaze" isbuff="false" healableinmedicalclinic="false" iconcolors="255,90,0,255;255,90,0,255" AfflictionOverlayAlphaIsLinear="true">
+    <Effect minstrength="0" maxstrength="100" strengthchange="0" />
+    <icon texture="%ModDir%/Images/NT_AZ_Afflictions.png" sheetelementsize="128,128" origin="0,0" sourcerect="261,538,125,127" />
+    <AfflictionOverlay texture="%ModDir%\Images\Cold Overlay2.png" />
+  </Affliction>
+      <!-- Fire Overlay -->
+  <Affliction name="" identifier="overlay_fire" description="" limbspecific="true" showiconthreshold="10000000" showinhealthscannerthreshold="1000000000" maxstrength="100" targets="human" type="gaze" isbuff="false" healableinmedicalclinic="false" iconcolors="255,90,0,255;255,90,0,255" AfflictionOverlayAlphaIsLinear="true">
+    <Effect minstrength="0" maxstrength="100" strengthchange="0" />
+    <icon texture="%ModDir%/Images/NT_AZ_Afflictions.png" sheetelementsize="128,128" origin="0,0" sourcerect="261,538,125,127" />
+    <AfflictionOverlay texture="%ModDir%\Images\Fire Overlay.png" />
   </Affliction>
   <!--Buffs-->
   <!--Warmth-->
