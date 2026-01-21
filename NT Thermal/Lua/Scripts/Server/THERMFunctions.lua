@@ -1,6 +1,42 @@
 
 -- Keep dictionary of THERM functions.
 THERM = {}
+
+-- Convert limb to waterlimb value
+THERM.LimbToWaterLimbV = function (givenlimb)
+        local limb = HF.NormalizeLimbType(givenlimb)
+        local WaterLimbValues = {Head = {LimbType.Head,"HeadV"}, 
+                                Torso = {LimbType.Torso,"TorsoV"}, 
+                                RightArm = {LimbType.RightArm,"RightArmV"}, 
+                                LeftArm = {LimbType.LeftArm,"LeftArmV"}, 
+                                LeftLeg = {LimbType.LeftLeg,"LeftLegV"}, 
+                                RightLeg = {LimbType.RightLeg,"RightLegV"}}
+        for index, WaterLimb in pairs(WaterLimbValues) do
+                if WaterLimb[1] == limb then
+                        return WaterLimb[2]
+                end
+        end 
+        return "TorsoV"
+end
+
+-- Converts a limb to a the name of it's group, so LeftArm to arm and vice versa. Currently unused, however I think it's quite neat so I'll leave it.
+THERM.LimbToFamily = function (givenlimb)
+        if givenlimb ~= nil then
+                local limb = HF.NormalizeLimbType(givenlimb)
+                local Families = {Head = {LimbType.Head,"Head"}, 
+                                        Torso = {LimbType.Torso,"Torso"}, 
+                                        RightArm = {LimbType.RightArm,"Arm"}, 
+                                        LeftArm = {LimbType.LeftArm,"Arm"}, 
+                                        LeftLeg = {LimbType.LeftLeg,"Leg"}, 
+                                        RightLeg = {LimbType.RightLeg,"Leg"}}
+                for index, FamilyLimb in pairs(Families) do
+                        if FamilyLimb[1] == limb then
+                                return FamilyLimb[2]
+                        end
+                end   
+        end
+end
+
 local LimbsToCheck = {LimbType.Head,LimbType.Torso,LimbType.RightArm,LimbType.LeftArm,LimbType.LeftLeg,LimbType.RightLeg}
 -- Calculate pressure
 THERM.SetCharacterTablePressure = function (character,CharacterTable)
@@ -37,9 +73,9 @@ THERM.ClothResistance = function (limb,Character)
         end
         -- OuterClothing.
         if Character.Inventory.GetItemAt(4) then
-                WearingOuterEquip = 2
-                if Character.Inventory.GetItemAt(4).HasTag("diving") then
-                     WearingDivingSuitEquip  = 2
+                WearingOuterEquip = 1.2
+                if Character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("diving") or Character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("deepdivinglarge") then
+                     WearingDivingSuitEquip  = 1.4
                 else
                      WearingDivingSuitEquip  = 1
                 end
@@ -49,14 +85,13 @@ THERM.ClothResistance = function (limb,Character)
         end
         -- Match limb 
         if limb == LimbType.Head then
-                return (WearingHeadEquip)
+                return (WearingHeadEquip * WearingDivingSuitEquip)
         elseif limb == LimbType.Torso then
-                return (WearingTorsoEquip * WearingOuterEquip)
+                return (WearingTorsoEquip * WearingOuterEquip  * WearingDivingSuitEquip)
         else
-                return (WearingOuterEquip)
+                return (WearingOuterEquip  * WearingDivingSuitEquip)
         end
 end
-
 
 -- Used to get limb resistance against temperature changes.
 THERM.LimbTempResistance = function (limb)
@@ -160,39 +195,64 @@ THERM.CalculateLimbWaterExposure = function (target, animcontrol, limb, LimbPosY
         end
 end
 
-
 -- Key set of Water Values.
-local WaterLimbValues = {"HeadV", "TorsoV", "RightArmV", "LeftArmV", "LeftThigTHERM", "RightThigTHERM"}
-THERM.CalculateTemperature = function (target)
-        local CharacterTable = THERM.GetCharacter(target.Name).character
-        -- Unimplemented minimum temperature detection, I'm struggling getting this to be efficent and performance effective. I'll add this in a future update.
-        --OutsideValue = THERM.IsHullLeakingOutsideWater(target.AnimController.CurrentHull,target)
-        THERM.SetCharacterTablePressure(target,CharacterTable)
-        for i, limb in ipairs(LimbsToCheck) do
-                local LimbClothResistance = THERM.ClothResistance(limb,target)
-                local LimbTempResistance = THERM.LimbTempResistance(limb)
-                -- Parameters that affect temperature calculations.
-                local LimbKey = WaterLimbValues[i]
-                local TempMultipliers = CharacterTable.PressureStrength * HF.Clamp(HF.GetAfflictionStrengthLimb(target, limb, "wet", 1)/1.5, 1, 2)
-                local Water = CharacterTable.LimbWaterValues[LimbKey] * -1
-                local TempFormula = (((Water * TempMultipliers)/LimbClothResistance)/LimbTempResistance)
-                local TempStrength = HF.GetAfflictionStrengthLimb(target, limb, "temperature", 37)
-                -- Set the new temperature.
-                HF.SetAfflictionLimb(target, "temperature", limb,
-                HF.Clamp(TempStrength + TempFormula, 1, 101), target, TempStrength)
-                -- Make limb wet.
-                if Water < 0 then
-                        THERM.MakeLimbWet(target,limb,Water,false)
-                end
+THERM.CalculateTemperature = function (limbwet,target,limb)
+        local CharacterTable = THERM.GetCharacter(target.ID)
+        -- Slight error handling.
+        if CharacterTable == nil then
+                return
         end
+        if limb == LimbType.Torso then
+                CharacterTable.LastStoredTorsoTemp = HF.GetAfflictionStrengthLimb(target, LimbType.Torso, "temperature", 0)
+        end
+        THERM.SetCharacterTablePressure(target,CharacterTable)
+        local LimbClothResistance = THERM.ClothResistance(limb,target)
+        local LimbTempResistance = THERM.LimbTempResistance(limb)
+        -- Parameters that affect temperature calculations.
+        local WaterLimbKey = THERM.LimbToWaterLimbV(limb)
+        local WaterMultipliers = CharacterTable.PressureStrength 
+                * HF.Clamp(limbwet/1.5, 1, 2) 
+                        * (HF.BoolToNum(THERM.IsLimbCyber(target,limb),1) + 2)
+        local Water = CharacterTable.LimbWaterValues[WaterLimbKey] * -1
+        local RoomTemp = 0
+        local OnFire = CharacterTable.OnFire[limb]
+        CharacterTable.OnFire[limb] = 1
+        if target.CurrentHull ~= nil and THERMRoom.GetRoom(target.CurrentHull) ~= nil and THERMRoom.Rooms ~= nil and THERMRoom.Intiated then
+                RoomTemp = THERMRoom.GetRoom(target.CurrentHull).Temp/THERMRoom.DefaultRoomTemp * 2 -- Scaling
+        end
+        if Water < 0 then
+                THERM.MakeLimbWet(target,limb,Water,false)
+        end
+        -- Heat Calculation
+        local Heat = HF.Clamp(RoomTemp - 1,0,10)
+                * (HF.BoolToNum(THERM.IsLimbCyber(target,limb),1) + 1)
+                / 10 -- Scaling feature
+                * OnFire
+                /LimbClothResistance
+                /LimbTempResistance
+                * NTConfig.Get("ETempScaling", 1.5)
+                * NT.Deltatime
+        local Cold = ((((Water) 
+                * WaterMultipliers)
+                /LimbClothResistance)
+                /LimbTempResistance) 
+                * NTConfig.Get("ETempScaling", 1.5) 
+                / 1.5
+                * NT.Deltatime
+        return Heat + Cold
 end
 
 
 -- Fetches character data from THERMCharacters. This is needed since it stores water related data.
-THERM.GetCharacter = function (charactername)
-        for index, table in pairs(THERMCharacters) do
-                if table ~= nil and table.CharacterName == charactername then
-                        return {character = table,tableIndex = index}
+THERM.GetCharacter = function (characterID,character)
+        character = character or nil
+        if characterID ~= nil then
+                if THERMCharacters[characterID] ~= nil then
+                        return THERMCharacters[characterID]
+                end
+                if character ~= nil then -- failsafe incase the character is needed but not yet added.
+                        THERM.IntiateCharacterTemp(character)
+                        return THERMCharacters[characterID]
                 end
         end
         return nil
@@ -201,7 +261,12 @@ end
 
 -- Rat jacuzzi overlord added this function to make a limb wet if conditions are met.
 THERM.MakeLimbWet = function (character, limb, watervalue, alreadychecked)
-        if not alreadychecked and (not character.Inventory.GetItemAt(4) or (character.Inventory.GetItemAt(4) and not character.Inventory.GetItemAt(4).HasTag("diving"))) then
+        if not alreadychecked 
+                and (not character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes) 
+                or (character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes) 
+                and not (character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("diving") 
+                or character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("deepdivinglarge"))))
+                and not THERM.ImmersiveDivingGearEquipped(character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes),character.Inventory.GetItemInLimbSlot(InvSlotType.InnerClothes)) then
                 -- Clamp wet to the limbs water value.
                 if not ((watervalue * -2) < HF.GetAfflictionStrengthLimb(character, limb, "wet", 0)) then
                         HF.SetAfflictionLimb(character, "wet", limb,
@@ -218,7 +283,11 @@ end
 
 -- Used to make an entire player wet. 
 THERM.MakeWet = function (character, watervalue)
-        if not character.Inventory.GetItemAt(4) or (character.Inventory.GetItemAt(4) and not character.Inventory.GetItemAt(4).HasTag("diving")) then
+        if not character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes) 
+                or (character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes) 
+                and not (character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("diving") 
+                or character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("deepdivinglarge"))) 
+                and not THERM.ImmersiveDivingGearEquipped(character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes),character.Inventory.GetItemInLimbSlot(InvSlotType.InnerClothes)) then
                 for i, limb in pairs(LimbsToCheck) do
                         THERM.MakeLimbWet(character,limb,watervalue, true)
                 end
@@ -234,8 +303,64 @@ THERM.RemoveWet = function (character)
 end
 
 
--- Used to set an affliction and clamp it.
-THERM.ApplyAfflictionClamp = function (character,identifier,limb,value,default)
-        HF.SetAfflictionLimb(character, identifier, limb,
-        value, character, HF.GetAfflictionStrengthLimb(character, limb, identifier, default))
+-- Is Cyber?
+THERM.IsLimbCyber = function (character,limb)
+        local newlimb = HF.NormalizeLimbType(limb)
+        if      HF.GetAfflictionStrengthLimb(character, newlimb, "ntc_cyberleg", 0) > .1
+                or HF.GetAfflictionStrengthLimb(character, newlimb, "ntc_cyberarm", 0) > .1
+                or HF.GetAfflictionStrengthLimb(character, newlimb, "ntc_cyberlimb", 0) > .1
+                then
+                        return true
+                end 
+                return false
+end
+
+-- Yes this does nothing new, I just like the look of it.
+THERM.PlaySound = function (sound,targetCharacter)
+        if targetCharacter ~= nil then
+                HF.GiveItem(targetCharacter, sound)
+        end
+end
+
+-- Sets up the thermal stats.
+THERM.IntiateCharacterTemp = function(createdCharacter)
+    -- Register character in thermal table.
+    local new_character =  {CharacterID = createdCharacter.ID, 
+                            LimbWaterValues = {HeadV = 0, TorsoV = 0, RightArmV = 0, LeftArmV = 0, LeftLegV = 0, RightLegV = 0}, 
+                            PressureStrength = 1, 
+                            InCustomWater = false,
+                            OnFire = {  [LimbType.Head] = 1, 
+                                        [LimbType.Torso] = 1, 
+                                        [LimbType.LeftArm] = 1, 
+                                        [LimbType.RightArm] = 1, 
+                                        [LimbType.LeftLeg] = 1, 
+                                        [LimbType.RightLeg] = 1
+                                     },
+                            LastHullWaterVolume = 0,
+                            LastStoredPlayerY = 0,
+                            LastStoredTorsoTemp = 0,
+			    Character = createdCharacter}
+	THERMCharacters[createdCharacter.ID] = new_character
+end
+
+-- Used to make sure ThermCharacters isn't holding data of nil characters.
+THERM.ValidateThermalCharacterData = function()
+	for index, entry in pairs(THERMCharacters) do
+		if (entry.Character.IdFreed or entry.Character.IsDead) and entry == THERMCharacters[index] then
+			THERMCharacters[index] = nil
+		end
+	end
+end
+
+-- Used for compatibility with immersive diving gear.
+THERM.ImmersiveDivingGearEquipped = function (outerclothes,innerclothes)
+        -- if staircase to glory.
+        if outerclothes ~= nil and innerclothes ~= nil then
+                if outerclothes.HasTag("divinghelmet") or outerclothes.HasTag("bothelmet") then
+                        if innerclothes.HasTag("diving") or innerclothes.HasTag("deepdivinglarge") then
+                                return true
+                        end
+                end
+        end
+        return false
 end

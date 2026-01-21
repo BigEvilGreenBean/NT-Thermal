@@ -22,7 +22,7 @@
     <Sprite texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="794,17,89,107" depth="0.6" origin="0.4922231,0.43069968" />
     <Body width="25" height="25" density="40" />
     <ItemComponent>
-      <RequiredItems items="mobilebattery" type="Contained" msg="ItemMsgBatteryCellRequired"/>
+      <RequiredItems items="mobilebattery" type="Contained" msg="ItemMsgBatteryCellRequired" />
       <StatusEffect type="OnUse" target="Limb" Voltage="1.0" setvalue="true">
         <!-- <Sound file="%ModDir%/Sound/hypospray.ogg" /> -->
       </StatusEffect>
@@ -31,7 +31,7 @@
       </StatusEffect>
     </ItemComponent>
     <ItemContainer capacity="1" maxstacksize="1" hideitems="true" containedstateindicatorstyle="battery">
-      <Containable items="mobilebattery"/>
+      <Containable items="mobilebattery" />
     </ItemContainer>
     <Pickable msg="ItemMsgPickUpSelect" />
   </Item>

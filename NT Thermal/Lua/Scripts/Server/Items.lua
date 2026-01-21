@@ -11,27 +11,44 @@ local function ConvertCharacter(usingCharacter,targetCharacter)
 end
 
 
--- These aren't used but I'm too lazy to get rid of them.
--- Warm I.V Bag
+-- Warm I.V Bag Low key stole all of this from Neuro's ice pack code.
 NT.ItemMethods.warm_iv_bag = function(item, usingCharacter, targetCharacter, limb)
-        
+        if item.Condition <= 25 then
+		return
+	end
+	local limbtype = limb.type
+	local success = HF.BoolToNum(HF.GetSkillRequirementMet(usingCharacter, "medical", 40), 1)
+	HF.AddAfflictionLimb(targetCharacter, "elevated_core_temperature", limbtype, 5 + success * 25, usingCharacter)
+        THERM.PlaySound("thermalsfx_liquidiv",targetCharacter)
+	item.Condition = 0
 end
 
 -- Warm rag
 NT.ItemMethods.warm_rag = function (item, usingCharacter, targetCharacter, limb)
+        if item.Condition <= 25 then
+		return
+	end
+	local limbtype = limb.type
+	local success = HF.BoolToNum(HF.GetSkillRequirementMet(usingCharacter, "medical", 20), 1)
+	HF.AddAfflictionLimb(targetCharacter, "warmth", limbtype, 75 + success * 25, usingCharacter)
 
+	item.Condition = item.Condition - 25
 end
 
--- Heat pads
-NT.ItemMethods.heatpads = function (item, usingCharacter, targetCharacter, limb)
-        
+-- A.A.F.N
+NT.ItemMethods.aafn = function (item, usingCharacter, targetCharacter, limb)
+        local success = HF.BoolToNum(HF.GetSkillRequirementMet(usingCharacter, "medical", 60), 1)
+        local limbtype = limb.type
+        if HF.GetAfflictionStrengthLimb(targetCharacter, limbtype, "clampedbleeders", 0) == 100 then
+                HF.AddAffliction(targetCharacter, "aafn", 10 + success * 15, usingCharacter)
+                item.Condition = item.Condition - 25
+                return
+        end
+	HF.AddAffliction(targetCharacter, "aafn", 5 + success * 5, usingCharacter)
+        HF.AddAfflictionLimb(targetCharacter, "bleeding", limbtype, 5, usingCharacter)
+        HF.AddAfflictionLimb(targetCharacter, "lacerations", limbtype, 10, usingCharacter)
+	item.Condition = item.Condition - 25
 end
-
--- towel
-NT.ItemMethods.towel = function (item, usingCharacter, targetCharacter, limb)
-        
-end
-
 
 -- Limbs to check key.
 local LimbsToCheck = {}
@@ -53,13 +70,14 @@ NT.ItemMethods.handheld_thermometer = function(item, usingCharacter, targetChara
         end
         local hasVoltage = containedItem.Condition > 0
         -- Make sure the thermometer has a battery.
-        if hasVoltage then
+        if hasVoltage and THERM.GetCharacter(targetCharacter.ID)  ~= nil then
+        THERM.PlaySound("thermalsfx_thermometer",targetCharacter)
            local actuallimb = limb.type
-                local HypothermiaLevel = NTConfig.Get("NewHypothermiaLevel", 36)
-                local HyperthermiaLevel = NTConfig.Get("NewHyperthermiaLevel", 39)
+                local HypothermiaLevel = NTConfig.Get("NewHypothermiaLevel", 36) - 1
+                local HyperthermiaLevel = NTConfig.Get("NewHyperthermiaLevel", 39) - 1
                 local character = ConvertCharacter(usingCharacter,targetCharacter)
                 local LimbTemp = HF.Round(HF.GetAfflictionStrengthLimb(character, actuallimb, "temperature", NTConfig.Get("NormalBodyTemp", 38)) - 1, 1)
-                local CharacterClient = HF.CharacterToClient(character)
+                local CharacterClient = HF.CharacterToClient(usingCharacter)
                 local BaseColor = "100,100,200"
                 local NameColor = "125,125,225"
                 -- Temp Colors
@@ -81,7 +99,6 @@ NT.ItemMethods.handheld_thermometer = function(item, usingCharacter, targetChara
                         elseif TempStrength < HypothermiaLevel/NTTHERM.LowHypothermiaScaling then
                                 return ColdColor
                         elseif TempStrength > HypothermiaLevel and TempStrength < HyperthermiaLevel then
-                                print("Average ", TempStrength)
                                 return AverageColor
                         elseif TempStrength >  HyperthermiaLevel * NTTHERM.ExtremeHyperthermiaScaling then
                                 return BoilingColor
@@ -90,7 +107,6 @@ NT.ItemMethods.handheld_thermometer = function(item, usingCharacter, targetChara
                         elseif TempStrength > HyperthermiaLevel * NTTHERM.LowHyperthermiaScaling then 
                                 return WarmColor
                         else 
-                                print("Else", TempStrength)
                                 return AverageColor
                         end
                 end
@@ -106,9 +122,9 @@ NT.ItemMethods.handheld_thermometer = function(item, usingCharacter, targetChara
 
                 -- Determine if a patient has hypothermia or hyperthermia.
                 local function ThermiaValue(Temp)
-                        if Temp < HypothermiaLevel - 1 then
+                        if Temp < HypothermiaLevel then
                                 return "Hypothermic"
-                        elseif Temp > HyperthermiaLevel - 1 then
+                        elseif Temp > HyperthermiaLevel then
                                 return "Hyperthermic"
                         else
                                 return "Normal temperature range"
@@ -146,7 +162,9 @@ NT.ItemMethods.handheld_thermometer = function(item, usingCharacter, targetChara
                                         .. CurrentTempColor
                                         .. "‖" 
                                         .. tostring(LimbTemp)
-                                        .. " Celsius"
+                                        .. "°C/"
+                                        .. tostring(HF.Round(((LimbTemp * 9/5)+32),1))
+                                        .. "°F"
                                         .. "\n"
                                         .. CurrentTempThermia
                                         .."‖color:end‖"
@@ -164,7 +182,9 @@ NT.ItemMethods.handheld_thermometer = function(item, usingCharacter, targetChara
                                         .. BodyTempColor
                                         .. "‖" 
                                         .. tostring(BodyTemp)
-                                        .. " Celsius"
+                                        .. " °C/"
+                                        .. tostring(HF.Round(((BodyTemp * 9/5)+32),1))
+                                        .. "°F"
                                         .. "\n"
                                         .. BodyTempThermia
                                         .. "‖color:end‖"
@@ -172,6 +192,6 @@ NT.ItemMethods.handheld_thermometer = function(item, usingCharacter, targetChara
                 -- Send the temperature to chat via the rat jacuzzi overlord commands.
                 Timer.Wait(function ()
                         HF.DMClient(CharacterClient, Report)  
-                end, 500)     
+                end, 1000)     
         end
 end

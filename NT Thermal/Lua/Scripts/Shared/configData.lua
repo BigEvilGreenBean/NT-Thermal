@@ -7,14 +7,14 @@ NTTHERM.ConfigData = {
 	NTTHERM_Header1 = { name = NTTHERM.Name, type = "category" },
 
 	NewHypothermiaLevel = {
-		name = "Hypotheria level",
+		name = "Hypothermia level",
 		default = 36,
 		range = { 0, 100 },
 		type = "float",
 		description = "Sets the value at which hypothermia will occur.",
 	},
 	NewHyperthermiaLevel = {
-		name = "Hypertheria level",
+		name = "Hyperthermia level",
 		default = 39,
 		range = { 0, 100 },
 		type = "float",
@@ -25,7 +25,7 @@ NTTHERM.ConfigData = {
 		default = 38,
 		range = { 0, 100 },
 		type = "float",
-		description = "The normal body temperature of the body.",
+		description = "The normal temperature of the body.\nWARNING: Setting this value to a substantially higher or lower value will cause all characters to remain at their current temperature whilst they advance to this.\nProceed with caution.",
 	},
 	NewHypothermiaScaling = {
 		name = "Hypothermia Scaling",
@@ -53,8 +53,16 @@ NTTHERM.ConfigData = {
 		default = -.1,
 		range = { -1, 0 },
 		type = "float",
-		description = "How fast the wet affliction wears off per interval.",
+		description = "How fast the wet affliction wears off per Thermal interval.",
 	},
+	ETempScaling = {
+		name = "External Temperature Scaling",
+		default = 1.5,
+		range = { 1, 10 },
+		type = "float",
+		description = "Multiplies incoming external temperature changes by this value. Water, Fire etc.",
+	},
+	SuitCompatiblityMode = { name = "Suit Compatibility Mode", default = false, type = "bool", description = "This makes all suits heated by default, rather than using batteries or external heaters. This should be used only when needed and a patch isn't out." }
 }
 
 --this adds above config options to the Neurotrauma config menu
