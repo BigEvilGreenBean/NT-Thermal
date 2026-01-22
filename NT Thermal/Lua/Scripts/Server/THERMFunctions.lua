@@ -237,7 +237,7 @@ THERM.CalculateTemperature = function (limbwet,target,limb)
                 /LimbClothResistance)
                 /LimbTempResistance) 
                 * NTConfig.Get("ETempScaling", 1.5) 
-                / 1.5
+                / 2 -- Scaling feature
                 * NT.Deltatime
         return Heat + Cold
 end

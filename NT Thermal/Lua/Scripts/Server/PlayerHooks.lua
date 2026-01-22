@@ -134,3 +134,20 @@ Hook.Add("character.death", "Newcharacter", function (createdCharacter)
         THERM.ValidateThermalCharacterData()
     end
 end)
+
+-- Lukako my absolute value goat. Thank you so much.
+Hook.Add("characterCreated", "NTTHERM.ForceUpdates", function(createdCharacter)
+        -- run once on spawn then cope
+    Timer.Wait(function()
+        if createdCharacter.IsHuman and
+                   createdCharacter.TeamID == 1 or 
+                   createdCharacter.TeamID == 2 and not 
+                   createdCharacter.IsDead then
+
+        local temperaturecheck = createdCharacter.CharacterHealth.GetAffliction("temperature")
+            if temperaturecheck == nil then
+                HF.AddAffliction(createdCharacter, "luabotomy", 0.1)
+            end
+        end
+    end, 5000)
+end)

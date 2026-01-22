@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<infotexts language="English" nowhitespace="false" translatedname="English">
+<Override>
+
+<!-- /// Gear /// -->
+<entityname.heatpads>Heatpads</entityname.heatpads>
+<entitydescription.heatpads>An easy to store patch used for heating up cold tissue.</entitydescription.heatpads>
+
+<entityname.alteplase>Alteplase</entityname.alteplase>
+<entitydescription.alteplase>A thrombolytic agent used to break down blood clots formed in the body. Aids with pulmonary embolism.</entitydescription.alteplase>
+
+<entityname.furosemide>Furosemide</entityname.furosemide>
+<entitydescription.furosemide>Used to treat pulmonary edema and lower blood pressure.</entitydescription.furosemide>
+
+<entityname.aafn>A.A.F.N</entityname.aafn>
+<entitydescription.aafn>A highly experimental nanite based solution to thaw blood vessels. Highly explosive when paired with alcohol.</entitydescription.aafn>
+
+<entityname.towel>Towel</entityname.towel>
+<entitydescription.towel>A towel used to wipe a patient dry.</entitydescription.towel>
+
+<entityname.warm_rag>Warm Rag</entityname.warm_rag>
+<entitydescription.warm_rag>A damp warm rag, can be used to heat up cold tissue. Must be stored in a heating container.</entitydescription.warm_rag>
+
+<entityname.warm_iv_bag>Warm I.V Bag</entityname.warm_iv_bag>
+<entitydescription.warm_iv_bag>A heatable bag of I.V fluids, perfect for raising the core temperature of a patient. Must be stored in a heating container.</entitydescription.warm_iv_bag>
+
+<entityname.heatcontainer>Heating Container</entityname.heatcontainer>
+<entitydescription.heatcontainer>A heating container used to keep items nice and warm.</entitydescription.heatcontainer>
+
+<entityname.heatcrate>Heating Crate</entityname.heatcrate>
+<entitydescription.heatcrate>A heating crate used to keep items nice and warm.</entitydescription.heatcrate>
+
+<entityname.esh>E.S.H</entityname.esh>
+<entitydescription.esh>An external heater for diving suits, used when an internal option isn't avaliable. Made with a repurposed tool belt from a poor mechanic, requires a battery.</entitydescription.esh>
+
+<!-- /// Afflictions /// -->
+<afflictionname.frostnip>Frostnip</afflictionname.frostnip>
+<afflictiondescription.frostnip>The skin is slightly red and cold.</afflictiondescription.frostnip>
+
+<afflictionname.d1_frostbite>1st Degree Frostbite</afflictionname.d1_frostbite>
+<afflictiondescription.d1_frostbite>The skin is a white and waxy numbness.</afflictiondescription.d1_frostbite>
+
+<afflictionname.d2_frostbite>2nd Degree Frostbite</afflictionname.d2_frostbite>
+<afflictiondescription.d2_frostbite>The skin is a white and waxy numbness. Painful blisters emerge from the skin.</afflictiondescription.d2_frostbite>
+
+<afflictionname.d3_frostbite>3rd Degree Frostbite</afflictionname.d3_frostbite>
+<afflictiondescription.d3_frostbite>The skin has become a putrid purple, amputation is needed to salvage what is left.</afflictiondescription.d3_frostbite>
+
+<afflictionname.chilblains>Chilblains</afflictionname.chilblains>
+<afflictiondescription.chilblains>Blisters have formed from the extreme cold, susceptible to infection. Bandage and keep out of water.</afflictiondescription.chilblains>
+
+<afflictionname.hypothermia>Hypothermia</afflictionname.hypothermia>
+<afflictiondescription.hypothermia>The body is way too cold.</afflictiondescription.hypothermia>
+
+<afflictionname.hyperthermia>Hypothermia</afflictionname.hyperthermia>
+<afflictiondescription.hyperthermia>The body is way too hot.</afflictiondescription.hyperthermia>
+
+<afflictionname.aafn_overdose>A.A.F.N Overdose</afflictionname.aafn_overdose>
+<afflictiondescription.aafn_overdose>The body is rapidly decomposing from excess nanites.</afflictiondescription.aafn_overdose>
+
+<afflictionname.reperfusion_injury>Reperfusion Injury</afflictionname.reperfusion_injury>
+<afflictiondescription.reperfusion_injury>The tissue has been damaged from being heat up too quickly.</afflictiondescription.reperfusion_injury>
+
+<afflictionname.cell_death>Cell Death</afflictionname.cell_death>
+<afflictiondescription.cell_death>The cells have died from being un-thawed.</afflictiondescription.cell_death>
+
+<afflictionname.pulmonary_edema>Pulmonary Edema</afflictionname.pulmonary_edema>
+<afflictiondescription.pulmonary_edema>Fluid is caught in the lungs making it difficult to breath.</afflictiondescription.pulmonary_edema>
+
+<afflictionname.pulmonary_embolism>Pulmonary Embolism</afflictionname.pulmonary_embolism>
+<afflictiondescription.pulmonary_embolism>Blood clots from the limbs have stopped blood flow to the lungs.</afflictiondescription.pulmonary_embolism>
+
+<afflictionname.frozen_vessels>Frozen Blood Vessels</afflictionname.frozen_vessels>
+<afflictiondescription.frozen_vessels>The vessels have crystalized, a fatal condition if not dealt with properly.</afflictiondescription.frozen_vessels>
+
+<afflictionname.bloodclot>Blood Clot</afflictionname.bloodclot>
+<afflictiondescription.bloodclot>The blood has lumped together.</afflictiondescription.bloodclot>
+
+<afflictionname.elevated_core_temperature>Elevated Core Temperature</afflictionname.elevated_core_temperature>
+<afflictiondescription.elevated_core_temperature>The body's temperature has been increased.</afflictiondescription.elevated_core_temperature>
+
+<afflictionname.thrombolytics>Thrombolytics</afflictionname.thrombolytics>
+<afflictiondescription.thrombolytics>Thrombolytics have been inserted, helps to treat blood clots.</afflictiondescription.thrombolytics>
+
+<afflictionname.diuretics>Diuretics</afflictionname.diuretics>
+<afflictiondescription.diuretics>Diuretics have been inserted. Helps to treat Pulmonary Edema.</afflictiondescription.diuretics>
+
+<afflictionname.heated_diving_suit>Heated Diving Suit</afflictionname.heated_diving_suit>
+<afflictiondescription.heated_diving_suit>The suit has been heated, the freezing temperature is neglible.</afflictiondescription.heated_diving_suit>
+
+<afflictionname.heat_cramp>Heat Cramp</afflictionname.heat_cramp>
+<afflictiondescription.heat_cramp>The heat is causing the muscles to cramp up.</afflictiondescription.heat_cramp>
+
+<afflictionname.thermal_shock>Thermal Shock</afflictionname.thermal_shock>
+<afflictiondescription.thermal_shock>The sudden temperature change has caused the patient to enter thermal shock.</afflictiondescription.thermal_shock>
+
+<afflictionname.wet>Wet</afflictionname.wet>
+<afflictiondescription.wet>Water drips from the skin.</afflictiondescription.wet>
+
+<afflictionname.heat_stroke>Heat Stroke</afflictionname.heat_stroke>
+<afflictiondescription.heat_stroke>The patient has passed out due to the heat.</afflictiondescription.heat_stroke>
+
+<afflictionname.sym_cold>Cold</afflictionname.sym_cold>
+<afflictiondescription.sym_cold>The patients skin is cold to the touch.</afflictiondescription.sym_cold>
+
+<afflictionname.sym_shivers>Shivers</afflictionname.sym_shivers>
+<afflictiondescription.sym_shivers>The patients body trembles to generate heat.</afflictiondescription.sym_shivers>
+
+<afflictionname.sym_numb>Numb</afflictionname.sym_numb>
+<afflictiondescription.sym_numb>The patient is numb to sensations.</afflictiondescription.sym_numb>
+
+<afflictionname.sym_runny_nose>Runny Nose</afflictionname.sym_runny_nose>
+<afflictiondescription.sym_runny_nose>Mucus drips from the nose.</afflictiondescription.sym_runny_nose>
+
+<afflictionname.sym_pins_needles>Pins and Needles</afflictionname.sym_pins_needles>
+<afflictiondescription.sym_pins_needles>The patient is experiencing pins and needles.</afflictiondescription.sym_pins_needles>
+
+<afflictionname.sym_hot>Hot</afflictionname.sym_hot>
+<afflictiondescription.sym_hot>The patient's skin is hot to the touch.</afflictiondescription.sym_hot>
+
+<afflictionname.sym_armswelling>Arm Swelling</afflictionname.sym_armswelling>
+<afflictiondescription.sym_armswelling>The arm is abnormally inflated.</afflictiondescription.sym_armswelling>
+
+<afflictionname.warmth>Warmth</afflictionname.warmth>
+<afflictiondescription.warmth>Warmth has been applied.</afflictiondescription.warmth>
+
+<afflictionname.aafn>A.A.F.N</afflictionname.aafn>
+<afflictiondescription.aafn>Nanites that specalize in removing ice crystals have been inserted.</afflictiondescription.aafn>
+
+</Override>
+</infotexts>

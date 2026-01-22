@@ -241,6 +241,9 @@ NTTHERM.UpdateLimbAfflictions = {
 						-- Give hypothermia
 						if limbaff[i].strength < HypothermiaLevel then
 							c.afflictions.hypothermia.strength = 100
+							if limbaff[i].strength < HypothermiaLevel * NTTHERM.ExtremeHypothermiaScaling then
+							NTC.SetSymptomTrue(c.character, "dyspnea", 2)
+							end
 						end
 						-- Give hyperthermia
 						if limbaff[i].strength > HyperthermiaLevel then
@@ -895,7 +898,7 @@ NTTHERM.UpdateAfflictions = {
 					c.afflictions[i].strength = 0
 					return
 				-- External Heater Check
-				elseif Bag ~= nil and Bag.Prefab.Identifier == "e.s.h" and Bag.OwnInventory.GetItemAt(0) ~= nil and Bag.OwnInventory.GetItemAt(0).Condition > 1 then
+				elseif Bag ~= nil and Bag.Prefab.Identifier == "esh" and Bag.OwnInventory.GetItemAt(0) ~= nil and Bag.OwnInventory.GetItemAt(0).Condition > 1 then
 					local BatteryCell = Bag.OwnInventory.GetItemAt(0)
 					if BatteryCell ~= nil and BatteryCell.Condition > 1 then
 						BatteryCell.Condition = BatteryCell.Condition - .2 * NT.Deltatime
@@ -932,7 +935,7 @@ NTTHERM.UpdateAfflictions = {
 					BatteryCell.Condition = BatteryCell.Condition - .2 * NT.Deltatime
 					c.afflictions[i].strength = c.afflictions[i].strength + (5 * NT.Deltatime)
 					return
-				elseif Bag ~= nil and Bag.Prefab.Identifier == "e.s.h" and Bag.OwnInventory.GetItemAt(0) ~= nil and Bag.OwnInventory.GetItemAt(0).Condition > 1 then
+				elseif Bag ~= nil and Bag.Prefab.Identifier == "esh" and Bag.OwnInventory.GetItemAt(0) ~= nil and Bag.OwnInventory.GetItemAt(0).Condition > 1 then
 					local BatteryCell = Bag.OwnInventory.GetItemAt(0)
 					if BatteryCell ~= nil and BatteryCell.Condition > 1 then
 						BatteryCell.Condition = BatteryCell.Condition - .2 * NT.Deltatime

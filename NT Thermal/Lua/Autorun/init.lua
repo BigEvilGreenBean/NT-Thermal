@@ -2,7 +2,7 @@
 -- Set up dictonary
 NTTHERM = {}
 NTTHERM.Name = "Thermal"
-NTTHERM.Version = "1.1.1h16"
+NTTHERM.Version = "1.1.2h18"
 NTTHERM.VersionNum = 000000001
 NTTHERM.MinNTVersion = "A1.12.1"
 NTTHERM.MinNTVersionNum = 01120100
@@ -18,6 +18,7 @@ Timer.Wait(function ()
         NTC.RegisterExpansion(NTTHERM)
 		NTTHERM.UsingRoboTrauma = NTRT -- Used to determine if Robotrauma remake is on and balling.
 		if NTTHERM.UsingRoboTrauma ~= nil then
+			NTRT.Afflictions["temperature"] = {}
 		end
     end
 end, 1)
@@ -35,7 +36,12 @@ Timer.Wait(function()
 		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/THERMFunctions.lua") --Setup THERM functions.
 		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/PlayerHooks.lua") --Main Hooks used for a large portion of the mod.
 		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/RoomTempCalc.lua") --Script used for a calculating temperature of rooms.
-		dofile(NTTHERM.Path .. "/Lua/Scripts/Shared/configData.lua") --Config.
 		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/Items.lua") -- Item methods.
 	end
+
+end, 1)
+
+-- By Lukako!
+Timer.Wait(function()
+    dofile(NTTHERM.Path .. "/Lua/Scripts/Shared/configData.lua") --Config.
 end, 1)

@@ -114,11 +114,11 @@
     <PreferredContainer primary="wreckmedcab,abandonedmedcab" minamount="0" maxamount="1" spawnprobability="0.005" />
     <PreferredContainer primary="outpostmedcompartment" minamount="0" maxamount="2" spawnprobability="0.0005" />
     <Fabricate suitablefabricators="medicalfabricator" amount="2" requiredtime="30">
+      <SkillRequirementHint identifier="medical" level="50" />
       <RequiredSkill identifier="medical" level="50" />
       <RequiredSkill identifier="engineering" level="60" />
       <RequiredItem identifier="aluminum" amount="3" />
       <RequiredItem identifier="fulgurium" amount="1" />
-      <RequiredItem identifier="magnesium" amount="2" />
       <RequiredItem identifier="magnesium" amount="2" />
     </Fabricate>
     <Deconstruct />
@@ -313,7 +313,7 @@
     </ItemContainer>
   </Item>
   <!-- E.S.H -->
-  <Item name="E.S.H" identifier="e.s.h" category="Equipment" maxstacksize="1" maxstacksizecharacterinventory="1" Tags="human,mediumitem,tool" showcontentsintooltip="true" description="An external heater for diving suits, used when an internal option isn't avaliable. Made with a repurposed tool belt from a poor mechanic, requires a battery." scale="0.25" impactsoundtag="impact_metal_heavy">
+  <Item name="E.S.H" identifier="esh" category="Equipment" maxstacksize="1" maxstacksizecharacterinventory="1" Tags="human,mediumitem,tool" showcontentsintooltip="true" description="An external heater for diving suits, used when an internal option isn't avaliable. Made with a repurposed tool belt from a poor mechanic, requires a battery." scale="0.25" impactsoundtag="impact_metal_heavy">
     <PreferredContainer primary="engcab"/>
   <PreferredContainer primary="wreckstoragecab,abandonedstoragecab,piratestoragecab" amount="1" spawnprobability="0.05"/>
   <PreferredContainer primary="outpostcrewcabinet" amount="1" spawnprobability="0.1"/>
