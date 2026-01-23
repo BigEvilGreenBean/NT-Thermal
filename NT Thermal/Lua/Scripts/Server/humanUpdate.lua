@@ -854,11 +854,13 @@ NTTHERM.UpdateAfflictions = {
 	heated_diving_suit = {
 		max = 100,
 		update = function(c, i)
-			-- Used for suits that have automatic heating or prebuilt power.
+			-- Used for suits that have automatic heating or prebuilt power. I'm too scared to refactor this.
 			local ExceptedSuits = {["respawndivingsuit"] = {valid = true,index = 0},["exosuit"] = {valid = true, index =1},["clownexosuit"] = {valid = true, index = 1}, --Vanilla Ice Cream
 			["SAFS"] = {valid = true, index = 1},["SAFS_V7"] = {valid = true, index = 1},["SAFS_nāga"] = {valid = true, index = 1},["SAFS_snow"] = {valid = true, index = 1},["SAFS_yellow"] = {valid = true, index = 1},  -- Safs compatibility
 			["SAFS_manual"] = {valid = true, index = 1},["SAFS_seaweed"] = {valid = true, index = 1},["SAFS_clown"] = {valid = true, index = 1},["SAFS_camo"] = {valid = true, index = 1},["SAFS_moon"] = {valid = true, index = 1},  -- Safs compatibility
-			["SAFS_onyx"] = {valid = true, index = 1},["SAFS_camo2"] = {valid = true, index = 1}}  -- Safs compatibility
+			["SAFS_onyx"] = {valid = true, index = 1},["SAFS_camo2"] = {valid = true, index = 1},  -- Safs compatibility
+			["ek_armored_hardsuit"] = {valid = true, index = 1},["ek_armored_hardsuit_paintbandit"] = {valid = true, index = 1},["ek_armored_hardsuit_paintmercenary"] = {valid = true, index = 1},["ek_armored_hardsuit2"] = {valid = true, index = 1} -- EK
+			,["ek_armored_hardsuit2_paintbandit"] = {valid = true, index = 1},["ek_armored_hardsuit2_paintmercenary"] = {valid = true, index = 1}} -- EK
 			local IndexedSuits = {["pucs"] = 2} -- Used for suits that have extra storage. I.E pucs.
 			local HypothermiaLevel = FetchConfigStats().HypothermiaLevel
 			if c.afflictions[i].strength > 0 then
@@ -1054,6 +1056,7 @@ NTTHERM.UpdateBloodAfflictions = {
 
 	-- Elevated Core Temp
 	elevated_core_temperature = {
+		max = 50,
 		update = function (c, i)
 			local NormalBodyTemp = FetchConfigStats().NormalBodyTemp
 			local MaxWarmingTemp = FetchOtherStats().MaxWarmingTemp

@@ -195,6 +195,30 @@ THERM.CalculateLimbWaterExposure = function (target, animcontrol, limb, LimbPosY
         end
 end
 
+-- Made by Antinous (Thank you)
+THERM.BurnReductionFactor = function(item)
+        if not item or not item.Prefab then return nil end
+                if not item.Prefab.ConfigElement then return nil end
+                        for element in item.Prefab.ConfigElement.Elements() do
+                                if element.Name.ToString() == "Wearable" then
+                                for child in element.Elements() do
+                                        if child.Name.ToString() == "damagemodifier" then
+                                        local afflictions = string.lower(child.GetAttributeString("afflictiontypes") or "")
+                                        if afflictions:find("burn") then
+                                                local multiplierString = child.GetAttributeString("damagemultiplier")
+                                                local multiplier = math.abs(multiplierString - 1) + 1
+                                                if multiplier > 1 then
+                                                        multiplier = multiplier * 1.5 -- Scaling feature
+                                                end
+                                                return multiplier
+                                        end
+                                        end
+                                end
+                                end
+                        end
+                return 1
+        end
+
 -- Key set of Water Values.
 THERM.CalculateTemperature = function (limbwet,target,limb)
         local CharacterTable = THERM.GetCharacter(target.ID)
@@ -204,6 +228,13 @@ THERM.CalculateTemperature = function (limbwet,target,limb)
         end
         if limb == LimbType.Torso then
                 CharacterTable.LastStoredTorsoTemp = HF.GetAfflictionStrengthLimb(target, LimbType.Torso, "temperature", 0)
+                if target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes) ~= CharacterTable.LastStoredSuit and target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes) ~= nil then
+                        CharacterTable.LastStoredSuit = target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes)
+                        CharacterTable.DivingSuitBurnRes = THERM.BurnReductionFactor(target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes))
+                elseif  target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes) == nil then
+                        CharacterTable.LastStoredSuit = nil
+                        CharacterTable.DivingSuitBurnRes = 1
+                end
         end
         THERM.SetCharacterTablePressure(target,CharacterTable)
         HypothermiaLevel = NTConfig.Get("NewHypothermiaLevel", 36)
@@ -226,7 +257,7 @@ THERM.CalculateTemperature = function (limbwet,target,limb)
         end
         local Sepsis = function ()
                 if HF.GetAfflictionStrengthLimb(target, limb, "temperature", 0) < HyperthermiaLevel then
-                        return HF.GetAfflictionStrength(target, "sepsis", 0)/200
+                        return HF.GetAfflictionStrength(target, "sepsis", 0)/50
                 end
                 return 0 
         end
@@ -253,7 +284,7 @@ THERM.CalculateTemperature = function (limbwet,target,limb)
                 * NTConfig.Get("ETempScaling", 1.5) 
                 / 2 -- Scaling feature
                 * NT.Deltatime
-        return Heat + Cold
+        return (Heat/CharacterTable.DivingSuitBurnRes) + Cold
 end
 
 
@@ -353,7 +384,9 @@ THERM.IntiateCharacterTemp = function(createdCharacter)
                             LastHullWaterVolume = 0,
                             LastStoredPlayerY = 0,
                             LastStoredTorsoTemp = 0,
-			    Character = createdCharacter}
+			    Character = createdCharacter,
+                            LastStoredSuit = nil,
+                            DivingSuitBurnRes = 1}
 	THERMCharacters[createdCharacter.ID] = new_character
 end
 

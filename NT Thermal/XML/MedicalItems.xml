@@ -115,8 +115,11 @@
     <PreferredContainer primary="outpostmedcompartment" minamount="0" maxamount="2" spawnprobability="0.0005" />
     <Fabricate suitablefabricators="medicalfabricator" amount="2" requiredtime="30">
       <SkillRequirementHint identifier="medical" level="50" />
+      <SkillRequirementHint identifier="eletrical" level="60" />
+      <SkillRequirementHint identifier="mechanical" level="20" />
       <RequiredSkill identifier="medical" level="50" />
-      <RequiredSkill identifier="engineering" level="60" />
+      <RequiredSkill identifier="eletrical" level="60" />
+      <RequiredSkill identifier="mechanical" level="20" />
       <RequiredItem identifier="aluminium" amount="3" />
       <RequiredItem identifier="fulgurium" amount="1" />
       <RequiredItem identifier="magnesium" amount="2" />
@@ -168,7 +171,7 @@
         <Affliction identifier="wet" amount="-100" />
       </StatusEffect>
       <StatusEffect statuseffecttags="medical" type="OnFailure" target="Limb">
-        <Affliction identifier="diuretics" amount="-75" />
+        <Affliction identifier="wet" amount="-75" />
       </StatusEffect>
     </MeleeWeapon>
   </Item>
@@ -318,7 +321,8 @@
   <PreferredContainer primary="wreckstoragecab,abandonedstoragecab,piratestoragecab" amount="1" spawnprobability="0.05"/>
   <PreferredContainer primary="outpostcrewcabinet" amount="1" spawnprobability="0.1"/>
     <Fabricate suitablefabricators="fabricator" amount="1" requiredtime="10">
-      <RequiredSkill identifier="engineering" level="40" />
+    <SkillRequirementHint identifier="eletrical" level="40" />
+      <RequiredSkill identifier="eletrical" level="40" />
       <RequiredItem identifier="steel" />
       <RequiredItem identifier="toolbelt" />
     </Fabricate>
@@ -334,7 +338,7 @@
     </Wearable>
     <Holdable slots="RightHand+LeftHand" holdpos="0,-70" handle1="-5,0" handle2="10,-20" holdangle="0" msg="ItemMsgPickUpUse" canbeselected="false" canbepicked="true" pickkey="Use" allowswappingwhenpicked="false"/>
     <ItemContainer capacity="1" maxstacksize="1" hideitems="true" containedstateindicatorstyle="battery">
-    <SlotIcon slotindex="0" texture="Content/UI/StatusMonitorUI.png" sourcerect="64,448,64,64" origin="0.5,0.5"/>
+    <SlotIcon slotindex="0" texture="Content/UI/StatusMonitorUI.png" sourcerect="128,448,64,64" origin="0.5,0.5"/>
     <Containable items="mobilebattery"/>
     </ItemContainer>
   </Item>

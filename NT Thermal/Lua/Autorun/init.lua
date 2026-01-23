@@ -2,7 +2,7 @@
 -- Set up dictonary
 NTTHERM = {}
 NTTHERM.Name = "Thermal"
-NTTHERM.Version = "1.1.2h21"
+NTTHERM.Version = "1.1.3h23"
 NTTHERM.VersionNum = 000000001
 NTTHERM.MinNTVersion = "A1.12.1"
 NTTHERM.MinNTVersionNum = 01120100
@@ -18,7 +18,9 @@ Timer.Wait(function ()
         NTC.RegisterExpansion(NTTHERM)
 		NTTHERM.UsingRoboTrauma = NTRT -- Used to determine if Robotrauma remake is on and balling.
 		if NTTHERM.UsingRoboTrauma ~= nil then
+			NTRT.Afflictions["wet"] = {}
 			NTRT.Afflictions["temperature"] = {}
+			NTRT.Afflictions["givetemp"] = {}
 		end
     end
 end, 1)
