@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <infotexts language="Russian" nowhitespace="false" translatedname="Русский">
-  <Override>
+
     <!-- /// Gear /// -->
     <entityname.heatpads>Грелки</entityname.heatpads>
     <entitydescription.heatpads>Простая в хранении накладка, используемая для согревания холодных тканей.</entitydescription.heatpads>
@@ -125,5 +125,5 @@
     
     <afflictionname.aafn>А.А.Ф.Н.</afflictionname.aafn>
     <afflictiondescription.aafn>Введены нанороботы, специализирующиеся на удалении ледяных кристаллов.</afflictiondescription.aafn>
-  </Override>
+ 
 </infotexts>
