@@ -115,10 +115,10 @@
     <PreferredContainer primary="outpostmedcompartment" minamount="0" maxamount="2" spawnprobability="0.0005" />
     <Fabricate suitablefabricators="medicalfabricator" amount="2" requiredtime="30">
       <SkillRequirementHint identifier="medical" level="50" />
-      <SkillRequirementHint identifier="eletrical" level="60" />
+      <SkillRequirementHint identifier="electrical" level="60" />
       <SkillRequirementHint identifier="mechanical" level="20" />
       <RequiredSkill identifier="medical" level="50" />
-      <RequiredSkill identifier="eletrical" level="60" />
+      <RequiredSkill identifier="electrical" level="60"/>
       <RequiredSkill identifier="mechanical" level="20" />
       <RequiredItem identifier="aluminium" amount="3" />
       <RequiredItem identifier="fulgurium" amount="1" />
@@ -270,7 +270,8 @@
     <PreferredContainer primary="medcab" minamount="0" maxamount="1" spawnprobability="1" />
     <PreferredContainer primary="wreckmedcab,abandonedmedcab" minamount="0" maxamount="1" spawnprobability="0.15" />
     <Fabricate suitablefabricators="fabricator" amount="1" requiredtime="10">
-      <RequiredSkill identifier="medical" level="20" />
+      <SkillRequirementHint identifier="mechanical" level="20" />
+      <RequiredSkill identifier="mechanical" level="20" />
       <RequiredItem identifier="steel" />
       <RequiredItem identifier="aluminium" />
     </Fabricate>
@@ -299,7 +300,8 @@
   <!--Heat Crate-->
   <Item name="Heating Crate" identifier="heatcrate" category="Equipment" maxstacksize="1" maxstacksizecharacterinventory="1" Tags="crate,medical,heating" showcontentsintooltip="true" description="A heating crate used to keep items nice and warm." scale="0.5" impactsoundtag="impact_metal_heavy">
     <Fabricate suitablefabricators="fabricator" amount="1" requiredtime="10">
-      <RequiredSkill identifier="medical" level="20" />
+      <SkillRequirementHint identifier="mechanical" level="20" />
+      <RequiredSkill identifier="mechanical" level="20" />
       <RequiredItem identifier="steel" amount="2" />
       <RequiredItem identifier="aluminium" />
     </Fabricate>
@@ -321,8 +323,8 @@
   <PreferredContainer primary="wreckstoragecab,abandonedstoragecab,piratestoragecab" amount="1" spawnprobability="0.05"/>
   <PreferredContainer primary="outpostcrewcabinet" amount="1" spawnprobability="0.1"/>
     <Fabricate suitablefabricators="fabricator" amount="1" requiredtime="10">
-    <SkillRequirementHint identifier="eletrical" level="40" />
-      <RequiredSkill identifier="eletrical" level="40" />
+    <SkillRequirementHint identifier="electrical" level="40" />
+      <RequiredSkill identifier="electrical" level="40"/>
       <RequiredItem identifier="steel" />
       <RequiredItem identifier="toolbelt" />
     </Fabricate>

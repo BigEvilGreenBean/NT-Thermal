@@ -629,7 +629,7 @@ NTTHERM.UpdateAfflictions = {
 								NTC.SetSymptomTrue(c.character, "triggersym_respiratoryarrest", 2)
 							end
 						end
-				elseif c.afflictions.heartdamage.strength > 50 then
+				elseif c.afflictions.heartdamage.strength > 50 and c.afflictions.heartremoved.strength == 0 then
 					c.afflictions[i].strength = 1
 				end
 			end,

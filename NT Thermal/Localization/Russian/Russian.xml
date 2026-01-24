@@ -1,129 +1,88 @@
-<?xml version="1.0" encoding="utf-8"?>
 <infotexts language="Russian" nowhitespace="false" translatedname="Русский">
-
-    <!-- /// Gear /// -->
-    <entityname.heatpads>Грелки</entityname.heatpads>
-    <entitydescription.heatpads>Простая в хранении накладка, используемая для согревания холодных тканей.</entitydescription.heatpads>
-    
-    <entityname.alteplase>Альтеплаза</entityname.alteplase>
-    <entitydescription.alteplase>Тромболитический препарат, разрушающий тромбы в организме. Помогает при тромбоэмболии лёгочной артерии.</entitydescription.alteplase>
-    
-    <entityname.furosemide>Фуросемид</entityname.furosemide>
-    <entitydescription.furosemide>Используется для лечения отёка лёгких и снижения артериального давления.</entitydescription.furosemide>
-    
-    <entityname.aafn>А.А.Ф.Н.</entityname.aafn>
-    <entitydescription.aafn>Высокоэкспериментальный нанораствор для размораживания сосудов. Крайне взрывоопасен при контакте с алкоголем.</entitydescription.aafn>
-    
-    <entityname.towel>Полотенце</entityname.towel>
-    <entitydescription.towel>Полотенце для вытирания пациента насухо.</entitydescription.towel>
-    
-    <entityname.warm_rag>Тёплая мочалка</entityname.warm_rag>
-    <entitydescription.warm_rag>Влажная тёплая тряпка, используется для согревания холодных тканей. Хранить только в нагревательном контейнере.</entitydescription.warm_rag>
-    
-    <entityname.warm_iv_bag>Тёплый пакет для в/в вливаний</entityname.warm_iv_bag>
-    <entitydescription.warm_iv_bag>Нагреваемый пакет с инфузионным раствором, идеален для повышения температуры тела. Хранить только в нагревательном контейнере.</entitydescription.warm_iv_bag>
-    
-    <entityname.heatcontainer>Нагревательный контейнер</entityname.heatcontainer>
-    <entitydescription.heatcontainer>Контейнер для поддержания тепла предметов.</entitydescription.heatcontainer>
-    
-    <entityname.heatcrate>Нагревательный ящик</entityname.heatcrate>
-    <entitydescription.heatcrate>Ящик с подогревом для хранения тёплых предметов.</entitydescription.heatcrate>
-    
-    <entityname.esh>В.Н.К.</entityname.esh>
-    <entitydescription.esh>Внешний подогреватель гидрокостюма, используется когда внутренний подогрев недоступен. Сделан из переделанного инструментального пояса неудачливого механика, требует батарею.</entitydescription.esh>
-
-    <!-- /// Afflictions /// -->
-    <afflictionname.frostnip>Обморожение 0 степени</afflictionname.frostnip>
-    <afflictiondescription.frostnip>Кожа слегка покраснела и холодная на ощупь.</afflictiondescription.frostnip>
-    
-    <afflictionname.d1_frostbite>Обморожение 1 степени</afflictionname.d1_frostbite>
-    <afflictiondescription.d1_frostbite>Кожа белая, восковая, потеря чувствительности.</afflictiondescription.d1_frostbite>
-    
-    <afflictionname.d2_frostbite>Обморожение 2 степени</afflictionname.d2_frostbite>
-    <afflictiondescription.d2_frostbite>Кожа белая, восковая, онемение. Появляются болезненные волдыри.</afflictiondescription.d2_frostbite>
-    
-    <afflictionname.d3_frostbite>Обморожение 3 степени</afflictionname.d3_frostbite>
-    <afflictiondescription.d3_frostbite>Кожа приобрела гнилостно-фиолетовый цвет, требуется ампутация для спасения оставшихся тканей.</afflictiondescription.d3_frostbite>
-    
-    <afflictionname.chilblains>Ознобление (озноблённые язвы)</afflictionname.chilblains>
-    <afflictiondescription.chilblains>От сильного холода образовались волдыри, высок риск инфицирования. Бинтовать и не мочить.</afflictiondescription.chilblains>
-    
-    <afflictionname.hypothermia>Переохлаждение</afflictionname.hypothermia>
-    <afflictiondescription.hypothermia>Организм слишком сильно переохлаждён.</afflictiondescription.hypothermia>
-    
-    <afflictionname.hyperthermia>Перегрев</afflictionname.hyperthermia>
-    <afflictiondescription.hyperthermia>Организм слишком сильно перегрет.</afflictiondescription.hyperthermia>
-    
-    <afflictionname.aafn_overdose>Передозировка А.А.Ф.Н.</afflictionname.aafn_overdose>
-    <afflictiondescription.aafn_overdose>Ткани организма быстро разрушаются из-за избытка нанороботов.</afflictiondescription.aafn_overdose>
-    
-    <afflictionname.reperfusion_injury>Реперфузионное повреждение</afflictionname.reperfusion_injury>
-    <afflictiondescription.reperfusion_injury>Ткани повреждены из-за слишком быстрого согревания.</afflictiondescription.reperfusion_injury>
-    
-    <afflictionname.cell_death>Гибель клеток</afflictionname.cell_death>
-    <afflictiondescription.cell_death>Клетки погибли из-за неправильного оттаивания.</afflictiondescription.cell_death>
-    
-    <afflictionname.pulmonary_edema>Отёк лёгких</afflictionname.pulmonary_edema>
-    <afflictiondescription.pulmonary_edema>В лёгких скопилась жидкость, затруднено дыхание.</afflictiondescription.pulmonary_edema>
-    
-    <afflictionname.pulmonary_embolism>Тромбоэмболия лёгочной артерии</afflictionname.pulmonary_embolism>
-    <afflictiondescription.pulmonary_embolism>Тромбы из конечностей перекрыли кровоток в лёгких.</afflictiondescription.pulmonary_embolism>
-    
-    <afflictionname.frozen_vessels>Замёрзшие сосуды</afflictionname.frozen_vessels>
-    <afflictiondescription.frozen_vessels>Сосуды кристаллизовались — смертельное состояние при неправильном лечении.</afflictiondescription.frozen_vessels>
-    
-    <afflictionname.bloodclot>Тромб</afflictionname.bloodclot>
-    <afflictiondescription.bloodclot>Кровь свернулась в сгусток.</afflictiondescription.bloodclot>
-    
-    <afflictionname.elevated_core_temperature>Повышенная температура ядра</afflictionname.elevated_core_temperature>
-    <afflictiondescription.elevated_core_temperature>Температура тела повышена.</afflictiondescription.elevated_core_temperature>
-    
-    <afflictionname.thrombolytics>Тромболитики</afflictionname.thrombolytics>
-    <afflictiondescription.thrombolytics>Введены тромболитики — помогает растворять тромбы.</afflictiondescription.thrombolytics>
-    
-    <afflictionname.diuretics>Диуретики</afflictionname.diuretics>
-    <afflictiondescription.diuretics>Введены диуретики — помогает при отёке лёгких.</afflictiondescription.diuretics>
-    
-    <afflictionname.heated_diving_suit>Подогретый гидрокостюм</afflictionname.heated_diving_suit>
-    <afflictiondescription.heated_diving_suit>Костюм подогрет, температура окружающей среды практически не ощущается.</afflictiondescription.heated_diving_suit>
-    
-    <afflictionname.heat_cramp>Тепловые судороги</afflictionname.heat_cramp>
-    <afflictiondescription.heat_cramp>От жары мышцы сводит судорогой.</afflictiondescription.heat_cramp>
-    
-    <afflictionname.thermal_shock>Термический шок</afflictionname.thermal_shock>
-    <afflictiondescription.thermal_shock>Резкое изменение температуры вызвало термический шок.</afflictiondescription.thermal_shock>
-    
-    <afflictionname.wet>Мокрый</afflictionname.wet>
-    <afflictiondescription.wet>С кожи капает вода.</afflictiondescription.wet>
-    
-    <afflictionname.heat_stroke>Тепловой удар</afflictionname.heat_stroke>
-    <afflictiondescription.heat_stroke>Пациент потерял сознание из-за перегрева.</afflictiondescription.heat_stroke>
-    
-    <afflictionname.sym_cold>Холодная кожа</afflictionname.sym_cold>
-    <afflictiondescription.sym_cold>Кожа пациента холодная на ощупь.</afflictiondescription.sym_cold>
-    
-    <afflictionname.sym_shivers>Дрожь</afflictionname.sym_shivers>
-    <afflictiondescription.sym_shivers>Тело дрожит, пытаясь выработать тепло.</afflictiondescription.sym_shivers>
-    
-    <afflictionname.sym_numb>Онемение</afflictionname.sym_numb>
-    <afflictiondescription.sym_numb>Пациент почти ничего не чувствует.</afflictiondescription.sym_numb>
-    
-    <afflictionname.sym_runny_nose>Насморк</afflictionname.sym_runny_nose>
-    <afflictiondescription.sym_runny_nose>Из носа течёт слизь.</afflictiondescription.sym_runny_nose>
-    
-    <afflictionname.sym_pins_needles>Мурашки / иголки</afflictionname.sym_pins_needles>
-    <afflictiondescription.sym_pins_needles>Пациент ощущает покалывание и «мурашки».</afflictiondescription.sym_pins_needles>
-    
-    <afflictionname.sym_hot>Горячая кожа</afflictionname.sym_hot>
-    <afflictiondescription.sym_hot>Кожа пациента горячая на ощупь.</afflictiondescription.sym_hot>
-    
-    <afflictionname.sym_armswelling>Отёк руки</afflictionname.sym_armswelling>
-    <afflictiondescription.sym_armswelling>Рука неестественно опухшая.</afflictiondescription.sym_armswelling>
-    
-    <afflictionname.warmth>Согрето</afflictionname.warmth>
-    <afflictiondescription.warmth>Применено согревание.</afflictiondescription.warmth>
-    
-    <afflictionname.aafn>А.А.Ф.Н.</afflictionname.aafn>
-    <afflictiondescription.aafn>Введены нанороботы, специализирующиеся на удалении ледяных кристаллов.</afflictiondescription.aafn>
- 
+<Override>
+<!--  /// Gear ///  -->
+<entityname.heatpads>Грелки</entityname.heatpads>
+<entitydescription.heatpads>Простые в хранении грелки, используемые для согревания холодных тканей.</entitydescription.heatpads>
+<entityname.alteplase>Альтеплаза</entityname.alteplase>
+<entitydescription.alteplase>Тромболитический препарат, разрушающий тромбы в организме. Помогает при тромбоэмболии лёгочной артерии.</entitydescription.alteplase>
+<entityname.furosemide>Фуросемид</entityname.furosemide>
+<entitydescription.furosemide>Используется для лечения отёка лёгких и снижения артериального давления.</entitydescription.furosemide>
+<entityname.aafn>А.А.Ф.Н.</entityname.aafn>
+<entitydescription.aafn>Высокоэкспериментальный раствор на основе нанороботов для размораживания кровеносных сосудов. Крайне взрывоопасен при взаимодействии с алкоголем.</entitydescription.aafn>
+<entityname.towel>Полотенце</entityname.towel>
+<entitydescription.towel>Полотенце для вытирания пациента насухо.</entitydescription.towel>
+<entityname.warm_rag>Тёплая мочалка</entityname.warm_rag>
+<entitydescription.warm_rag>Влажная тёплая тряпка, используется для согревания холодных тканей. Хранить только в нагревательном контейнере.</entitydescription.warm_rag>
+<entityname.warm_iv_bag>Тёплый пакет для в/в вливаний</entityname.warm_iv_bag>
+<entitydescription.warm_iv_bag>Нагреваемый пакет с инфузионным раствором, идеален для повышения температуры тела. Хранить только в нагревательном контейнере.</entitydescription.warm_iv_bag>
+<entityname.heatcontainer>Нагревательный контейнер</entityname.heatcontainer>
+<entitydescription.heatcontainer>Контейнер используемый для поддержания предметов в тёплом состоянии.</entitydescription.heatcontainer>
+<entityname.heatcrate>Нагревательный ящик</entityname.heatcrate>
+<entitydescription.heatcrate>Ящик с подогревом используемый для поддержания предметов в тёплом состоянии.</entitydescription.heatcrate>
+<entityname.esh>В.Н.К.</entityname.esh>
+<entitydescription.esh>Внешний Нагреватель Костюма, используемый при отсутствии встроенного обогрева. Собран из переделанного пояса инструментов неудачливого механика, требует батарею.</entitydescription.esh>
+<!-- /// Afflictions ///  -->
+<afflictionname.frostnip>Начальное обморожение</afflictionname.frostnip>
+<afflictiondescription.frostnip>Кожа слегка покраснела и холодная на ощупь.</afflictiondescription.frostnip>
+<afflictionname.d1_frostbite>Обморожение 1 степени</afflictionname.d1_frostbite>
+<afflictiondescription.d1_frostbite>Кожа побелевшая, восковидная, с потерей чувствительности.</afflictiondescription.d1_frostbite>
+<afflictionname.d2_frostbite>Обморожение 2 степени</afflictionname.d2_frostbite>
+<afflictiondescription.d2_frostbite>Кожа побелевшая и онемевшая. Появляются болезненные волдыри.</afflictiondescription.d2_frostbite>
+<afflictionname.d3_frostbite>Обморожение 3 степени</afflictionname.d3_frostbite>
+<afflictiondescription.d3_frostbite>Кожа приобрела гнилостно-фиолетовый цвет, для спасения оставшихся тканей требуется ампутация.</afflictiondescription.d3_frostbite>
+<afflictionname.chilblains>Ознобление</afflictionname.chilblains>
+<afflictiondescription.chilblains>Из-за сильного холода образовались волдыри, подверженные инфекции. Наложите повязку и держите поражённое место сухим.</afflictiondescription.chilblains>
+<afflictionname.hypothermia>Гипотермия</afflictionname.hypothermia>
+<afflictiondescription.hypothermia>Температура тела опасно понижена.</afflictiondescription.hypothermia>
+<afflictionname.hyperthermia>Гипертермия</afflictionname.hyperthermia>
+<afflictiondescription.hyperthermia>Температура тела опасно повышена.</afflictiondescription.hyperthermia>
+<afflictionname.aafn_overdose>Передозировка А.А.Ф.Н.</afflictionname.aafn_overdose>
+<afflictiondescription.aafn_overdose>Организм стремительно разрушается из-за избытка нанороботов.</afflictiondescription.aafn_overdose>
+<afflictionname.reperfusion_injury>Реперфузионное повреждение</afflictionname.reperfusion_injury>
+<afflictiondescription.reperfusion_injury>Ткани повреждены из-за слишком быстрого нагрева.</afflictiondescription.reperfusion_injury>
+<afflictionname.cell_death>Гибель клеток</afflictionname.cell_death>
+<afflictiondescription.cell_death>Клетки погибли из-за неправильного размораживания.</afflictiondescription.cell_death>
+<afflictionname.pulmonary_edema>Отёк лёгких</afflictionname.pulmonary_edema>
+<afflictiondescription.pulmonary_edema>Жидкость скапливается в лёгких, затрудняя дыхание.</afflictiondescription.pulmonary_edema>
+<afflictionname.pulmonary_embolism>Тромбоэмболия лёгочной артерии</afflictionname.pulmonary_embolism>
+<afflictiondescription.pulmonary_embolism>Тромбы из конечностей перекрыли кровоток в лёгких.</afflictiondescription.pulmonary_embolism>
+<afflictionname.frozen_vessels>Замёрзшие сосуды</afflictionname.frozen_vessels>
+<afflictiondescription.frozen_vessels>Сосуды кристаллизовались - смертельное состояние без правильного лечения.</afflictiondescription.frozen_vessels>
+<afflictionname.bloodclot>Тромб</afflictionname.bloodclot>
+<afflictiondescription.bloodclot>Кровь свернулась в сгусток и образовала тромб.</afflictiondescription.bloodclot>
+<afflictionname.elevated_core_temperature>Повышенная температура тела</afflictionname.elevated_core_temperature>
+<afflictiondescription.elevated_core_temperature>Температура тела повышена.</afflictiondescription.elevated_core_temperature>
+<afflictionname.thrombolytics>Тромболитики</afflictionname.thrombolytics>
+<afflictiondescription.thrombolytics>Введены тромболитики. Помогают в растворении тромбов.</afflictiondescription.thrombolytics>
+<afflictionname.diuretics>Диуретики</afflictionname.diuretics>
+<afflictiondescription.diuretics>Введены диуретики. Помогают в лечении отёка лёгких.</afflictiondescription.diuretics>
+<afflictionname.heated_diving_suit>Подогретый гидрокостюм</afflictionname.heated_diving_suit>
+<afflictiondescription.heated_diving_suit>Костюм подогрет, температура окружающей среды практически не ощущается.</afflictiondescription.heated_diving_suit>
+<afflictionname.heat_cramp>Тепловые судороги</afflictionname.heat_cramp>
+<afflictiondescription.heat_cramp>Из-за жары мышцы начинают судорожно сокращаться.</afflictiondescription.heat_cramp>
+<afflictionname.thermal_shock>Термический шок</afflictionname.thermal_shock>
+<afflictiondescription.thermal_shock>Резкое изменение температуры вызвало термический шок.</afflictiondescription.thermal_shock>
+<afflictionname.wet>Мокрый</afflictionname.wet>
+<afflictiondescription.wet>С кожи стекает вода.</afflictiondescription.wet>
+<afflictionname.heat_stroke>Тепловой удар</afflictionname.heat_stroke>
+<afflictiondescription.heat_stroke>Пациент потерял сознание из-за перегрева.</afflictiondescription.heat_stroke>
+<afflictionname.sym_cold>Холодная кожа</afflictionname.sym_cold>
+<afflictiondescription.sym_cold>Кожа пациента холодная на ощупь.</afflictiondescription.sym_cold>
+<afflictionname.sym_shivers>Озноб</afflictionname.sym_shivers>
+<afflictiondescription.sym_shivers>Тело дрожит, пытаясь выработать тепло.</afflictiondescription.sym_shivers>
+<afflictionname.sym_numb>Онемение</afflictionname.sym_numb>
+<afflictiondescription.sym_numb>Пациент теряет чувствительность.</afflictiondescription.sym_numb>
+<afflictionname.sym_runny_nose>Насморк</afflictionname.sym_runny_nose>
+<afflictiondescription.sym_runny_nose>Слизь вытекает из носа.</afflictiondescription.sym_runny_nose>
+<afflictionname.sym_pins_needles>Покалывание</afflictionname.sym_pins_needles>
+<afflictiondescription.sym_pins_needles>Пациент ощущает покалывание.</afflictiondescription.sym_pins_needles>
+<afflictionname.sym_hot>Горячая кожа</afflictionname.sym_hot>
+<afflictiondescription.sym_hot>Кожа пациента горячая на ощупь.</afflictiondescription.sym_hot>
+<afflictionname.sym_armswelling>Отёк руки</afflictionname.sym_armswelling>
+<afflictiondescription.sym_armswelling>Рука неестественно опухла.</afflictiondescription.sym_armswelling>
+<afflictionname.warmth>Согревание</afflictionname.warmth>
+<afflictiondescription.warmth>Было применено согревание.</afflictiondescription.warmth>
+<afflictionname.aafn>А.А.Ф.Н.</afflictionname.aafn>
+<afflictiondescription.aafn>Введены нанороботы, специализирующиеся на удалении ледяных кристаллов.</afflictiondescription.aafn>
+</Override>
 </infotexts>
