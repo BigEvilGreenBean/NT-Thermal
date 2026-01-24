@@ -2,7 +2,7 @@
 -- Set up dictonary
 NTTHERM = {}
 NTTHERM.Name = "Thermal"
-NTTHERM.Version = "1.1.3h26"
+NTTHERM.Version = "1.2.3h26"
 NTTHERM.VersionNum = 000000001
 NTTHERM.MinNTVersion = "A1.12.1"
 NTTHERM.MinNTVersionNum = 01120100
@@ -12,15 +12,20 @@ NTTHERM.UpdateAfflictions = {}
 NTTHERM.UpdateLimbAfflictions = {}
 NTTHERM.UpdateBloodAfflictions = {}
 NTTHERM.UsingRoboTrauma = false
+NTTHERM.UsingEnhancedReactors = false
 
 Timer.Wait(function ()
     if NTC ~= nil then
         NTC.RegisterExpansion(NTTHERM)
 		NTTHERM.UsingRoboTrauma = NTRT -- Used to determine if Robotrauma remake is on and balling.
+		NTTHERM.UsingEnhancedReactors = EnhancedReactors -- Used to determine if enhanced reactors is on.
 		if NTTHERM.UsingRoboTrauma ~= nil then
-			NTRT.Afflictions["wet"] = {}
-			NTRT.Afflictions["temperature"] = {}
-			NTRT.Afflictions["givetemp"] = {}
+			THERMCompat.SetUpRoboCompat()
+		end
+		if NTTHERM.UsingEnhancedReactors ~= nil then
+			Timer.Wait(function()
+    			THERMCompat.SetUpEnhancedReactors()
+			end, 1)
 		end
     end
 end, 1)
@@ -39,6 +44,7 @@ Timer.Wait(function()
 		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/PlayerHooks.lua") --Main Hooks used for a large portion of the mod.
 		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/RoomTempCalc.lua") --Script used for a calculating temperature of rooms.
 		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/Items.lua") -- Item methods.
+		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/Compat.lua") -- Compat.
 	end
 
 end, 1)
