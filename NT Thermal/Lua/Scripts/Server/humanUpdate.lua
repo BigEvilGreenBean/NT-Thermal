@@ -660,6 +660,7 @@ NTTHERM.UpdateAfflictions = {
 						* NT.Deltatime)
 					NTC.SetSymptomTrue(c.character, "sym_paleskin", 5)
 					NTC.SetSymptomTrue(c.character, "sym_unconsciousness", 2)
+
 				end
 				if TorsoTemp < HypothermiaLevel/NTTHERM.ExtremeHypothermiaScaling then
 					c.afflictions.bloodpressure.strength = c.afflictions.bloodpressure.strength + (.05 * NT.Deltatime)
@@ -694,6 +695,7 @@ NTTHERM.UpdateAfflictions = {
 				end
 				if TorsoTemp > HyperthermiaLevel * NTTHERM.ExtremeHyperthermiaScaling * 1.05 then
 					c.afflictions.heat_stroke.strength = c.afflictions.heat_stroke.strength + (1 * NT.Deltatime)
+					HF.AddAffliction(c.character, "huskinfection", -2.5 * NT.Deltatime, c.character) -- EXTERMINATE THE BITCH ASS HUSK. JUSTICE FOR ARTIE DOOLITTLE. THOSE BASTARDS SLIMED HIM OUT. God speed artie, love you.
 				end
 				if TorsoTemp > HyperthermiaLevel * NTTHERM.ExtremeHyperthermiaScaling * 1.2 then
 					c.afflictions.cerebralhypoxia.strength = c.afflictions.cerebralhypoxia.strength + Death

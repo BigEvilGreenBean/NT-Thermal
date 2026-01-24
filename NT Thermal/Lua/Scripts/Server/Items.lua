@@ -10,6 +10,36 @@ local function ConvertCharacter(usingCharacter,targetCharacter)
     end
 end
 
+-- Overrides so pulmonary edema can now get hit with a system 32 clip.
+NT.ItemMethods.drainage = function(item, usingCharacter, targetCharacter, limb)
+	local limbtype = limb.type
+
+	-- don't work on stasis
+	if HF.HasAffliction(targetCharacter, "stasis", 0.1) then
+		return
+	end
+
+	if
+		limbtype == LimbType.Torso
+		and HF.HasAfflictionLimb(targetCharacter, "retractedskin", limbtype)
+		and (HF.HasAffliction(targetCharacter, "pneumothorax")
+                or HF.HasAffliction(targetCharacter, "pulmonary_edema"))
+	then
+		HF.SetAffliction(targetCharacter, "pneumothorax", 0, usingCharacter)
+                HF.SetAffliction(targetCharacter, "pulmonary_edema", 0, usingCharacter)
+		HF.SetAffliction(targetCharacter, "needlec", 0, usingCharacter)
+
+		if HF.Chance(NTC.GetMultiplier(usingCharacter, "drainageconsumechance")) then
+			HF.RemoveItem(item)
+		end
+
+		if NTSP ~= nil and NTConfig.Get("NTSP_enableSurgerySkill", true) then
+			HF.GiveSkillScaled(usingCharacter, "surgery", 12000)
+		else
+			HF.GiveSkillScaled(usingCharacter, "medical", 6000)
+		end
+	end
+end
 
 -- Warm I.V Bag Low key stole all of this from Neuro's ice pack code.
 NT.ItemMethods.warm_iv_bag = function(item, usingCharacter, targetCharacter, limb)
