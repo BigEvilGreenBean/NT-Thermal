@@ -67,21 +67,25 @@ THERMCompat.SetUpEnhancedReactors = function ()
     }
 
     EnhancedReactors.ApplyTemperatureRadius = function (item, character, maxDistance, wallPenetration, armorPenetration, afflictions)
-    if Vector2.Distance(character.WorldPosition, item.WorldPosition) > maxDistance then
-        return
-    end
+    if HF.GetAfflictionStrength(character, "givetemp", 0) > 0 then -- Make sure the temperature is actually set up.
+        if Vector2.Distance(character.WorldPosition, item.WorldPosition) > maxDistance then
+            return
+        end
 
-    local position = item.Position
+        local position = item.Position
 
-    local factor = math.min(Explosion.GetObstacleDamageMultiplier(ConvertUnits.ToSimUnits(position), position, character.SimPosition) * wallPenetration, 1)
-    factor = factor * (1 - Vector2.Distance(character.WorldPosition, item.WorldPosition) / maxDistance)
+        local factor = math.min(Explosion.GetObstacleDamageMultiplier(ConvertUnits.ToSimUnits(position), position, character.SimPosition) * wallPenetration, 1)
+        factor = factor * (1 - Vector2.Distance(character.WorldPosition, item.WorldPosition) / maxDistance)
 
-    local limbsToCheck = {LimbType.Head,LimbType.Torso,LimbType.LeftArm,LimbType.RightArm,LimbType.LeftLeg,LimbType.RightLeg}
-    for index, limb in pairs(limbsToCheck) do
-        local animLimb = character.AnimController.GetLimb(limb,true,false,false)
-        local AttackResult = animLimb.AddDamage(animLimb.SimPosition, afflictions, false, factor, armorPenetration, nil)
-        character.CharacterHealth.ApplyDamage(animLimb, AttackResult, true)
-    end
+        local limbsToCheck = {LimbType.Head,LimbType.Torso,LimbType.LeftArm,LimbType.RightArm,LimbType.LeftLeg,LimbType.RightLeg}
+        for index, limb in pairs(limbsToCheck) do
+            local animLimb = character.AnimController.GetLimb(limb,true,false,false)
+            if animLimb ~= nil then -- I have no clue why this is needed but it stops the debugger from throwing a metric shit load of errors at me. Ydrec if you can hear me ydrec save me ydrec.
+                local AttackResult = animLimb.AddDamage(animLimb.SimPosition, afflictions, false, factor, armorPenetration, nil)
+                character.CharacterHealth.ApplyDamage(animLimb, AttackResult, true)
+            end
+        end
+        end
     end
 
     local temperature = AfflictionPrefab.Prefabs["temperature"]

@@ -2,7 +2,7 @@
 -- Set up dictonary
 NTTHERM = {}
 NTTHERM.Name = "Thermal"
-NTTHERM.Version = "1.2.3h28"
+NTTHERM.Version = "1.2.3h30"
 NTTHERM.VersionNum = 000000001
 NTTHERM.MinNTVersion = "A1.12.1"
 NTTHERM.MinNTVersionNum = 01120100
@@ -17,6 +17,14 @@ NTTHERM.UsingEnhancedReactors = false
 Timer.Wait(function ()
     if NTC ~= nil then
         NTC.RegisterExpansion(NTTHERM)
+		NTC.AddPreHumanUpdateHook(function (character) -- Used to freeze patients in stasis. Since limbs dont update when stasis is on.
+			if HF.GetAfflictionStrength(character, "stasis", 0) > 0 and HF.GetAfflictionStrength(character, "givetemp", 0) > 0 then
+				for index, limb in pairs({LimbType.Head,LimbType.Torso,LimbType.RightArm,LimbType.LeftArm,LimbType.LeftLeg,LimbType.RightLeg}) do
+					local LimbTemp = HF.GetAfflictionStrengthLimb(character, limb, "temperature", 0)
+					HF.AddAfflictionLimb(character, "temperature", limb,((-.05 * ((LimbTemp/2)/(NTConfig.Get("NewHypothermiaLevel", 36)))) * NT.Deltatime), character)
+				end
+			end
+		end)
 		NTTHERM.UsingRoboTrauma = NTRT -- Used to determine if Robotrauma remake is on and balling.
 		NTTHERM.UsingEnhancedReactors = EnhancedReactors -- Used to determine if enhanced reactors is on.
 		if NTTHERM.UsingRoboTrauma ~= nil then

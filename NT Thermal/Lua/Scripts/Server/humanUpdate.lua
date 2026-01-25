@@ -889,7 +889,7 @@ NTTHERM.UpdateAfflictions = {
 			local DivingSuit = c.character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes)
 			local Bag = c.character.Inventory.GetItemInLimbSlot(InvSlotType.Bag)
 			local BatteryConsumption = .3 * NT.Deltatime
-			if c.character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes) ~= nil and (c.character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("diving") or c.character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("deepdivinglarge")) then
+			if c.character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes) ~= nil and (c.character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("diving") or c.character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("deepdivinglarge") or c.character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("deepdiving")) then
 				-- Internal Heater Check
 				local Index = IndexedSuits[tostring(DivingSuit.Prefab.Identifier)] or IndexedSuits[tostring(DivingSuit.Prefab.VariantOf)] or 1
 				-- Suit Compatibility Mode is on

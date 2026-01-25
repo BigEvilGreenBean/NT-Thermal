@@ -74,7 +74,7 @@ THERM.ClothResistance = function (limb,Character)
         -- OuterClothing.
         if Character.Inventory.GetItemAt(4) then
                 WearingOuterEquip = 1.2
-                if Character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("diving") or Character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("deepdivinglarge") then
+                if Character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("diving") or Character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("deepdivinglarge") or Character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("deepdiving")then
                      WearingDivingSuitEquip  = 1.4
                 else
                      WearingDivingSuitEquip  = 1
@@ -310,7 +310,8 @@ THERM.MakeLimbWet = function (character, limb, watervalue, alreadychecked)
                 and (not character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes) 
                 or (character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes) 
                 and not (character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("diving") 
-                or character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("deepdivinglarge"))))
+                or character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("deepdivinglarge")
+                or character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("deepdiving"))))
                 and not THERM.ImmersiveDivingGearEquipped(character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes),character.Inventory.GetItemInLimbSlot(InvSlotType.InnerClothes)) then
                 -- Clamp wet to the limbs water value.
                 if not ((watervalue * -2) < HF.GetAfflictionStrengthLimb(character, limb, "wet", 0)) then
@@ -331,7 +332,8 @@ THERM.MakeWet = function (character, watervalue)
         if not character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes) 
                 or (character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes) 
                 and not (character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("diving") 
-                or character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("deepdivinglarge"))) 
+                or character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("deepdivinglarge")
+                or character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("deepdiving"))) 
                 and not THERM.ImmersiveDivingGearEquipped(character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes),character.Inventory.GetItemInLimbSlot(InvSlotType.InnerClothes)) then
                 for i, limb in pairs(LimbsToCheck) do
                         THERM.MakeLimbWet(character,limb,watervalue, true)
