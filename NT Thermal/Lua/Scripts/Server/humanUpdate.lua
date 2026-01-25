@@ -897,7 +897,7 @@ NTTHERM.UpdateAfflictions = {
 					c.afflictions[i].strength = c.afflictions[i].strength + (5 * NT.Deltatime)
 					return
 				end
-				if (DivingSuit.HasTag("thermal") or (Index ~= 1 and DivingSuit.Prefab.VariantOf.HasTag("thermal"))) and DivingSuit.OwnInventory.GetItemAt(Index) ~= nil and DivingSuit.OwnInventory.GetItemAt(Index).Condition > 1 then
+				if (DivingSuit.HasTag("thermal") or (Index ~= 1 and DivingSuit.Prefab.VariantOf ~= "" and DivingSuit.Prefab.VariantOf.HasTag("thermal"))) and DivingSuit.OwnInventory.GetItemAt(Index) ~= nil and DivingSuit.OwnInventory.GetItemAt(Index).Condition > 1 then
 					local BatteryCell = c.character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).OwnInventory.GetItemAt(Index)
 					if BatteryCell.Condition > 1 then
 						BatteryCell.Condition = BatteryCell.Condition - BatteryConsumption

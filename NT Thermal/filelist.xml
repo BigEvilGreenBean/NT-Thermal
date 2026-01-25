@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<contentpackage name="NT Thermal" modversion="1.2.3h26" corepackage="False" steamworkshopid="3648890424" gameversion="1.11.5.0">
+<contentpackage name="NT Thermal" modversion="1.2.3h28" corepackage="False" steamworkshopid="3648890424" gameversion="1.11.5.0">
   <Afflictions file="%ModDir%/XML/ThermAfflictions.xml" />
   <Item file="%ModDir%/XML/MedicalItems.xml" />
   <Item file="%ModDir%/XML/Thermometer.xml" />
