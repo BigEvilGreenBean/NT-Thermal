@@ -186,7 +186,7 @@
       <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" minavailable="3" />
     </Price>
     <Fabricate suitablefabricators="medicalfabricator" requiredtime="15">
-      <RequiredSkill identifier="medical" level="40" />
+      <RequiredSkill identifier="medical" level="20" />
       <RequiredItem identifier="organicfiber" amount="3" />
     </Fabricate>
     <Deconstruct time="5">

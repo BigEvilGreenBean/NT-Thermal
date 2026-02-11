@@ -208,7 +208,7 @@ THERM.BurnReductionFactor = function(item)
                                                 local multiplierString = child.GetAttributeString("damagemultiplier")
                                                 local multiplier = math.abs(multiplierString - 1) + 1
                                                 if multiplier > 1 then
-                                                        multiplier = multiplier * 1.5 -- Scaling feature
+                                                        multiplier = HF.Clamp(multiplier * 1.2,1,100)
                                                 end
                                                 return multiplier
                                         end
@@ -271,10 +271,11 @@ THERM.CalculateTemperature = function (limbwet,target,limb)
         -- Heat Calculation
         local Heat = HF.Clamp(RoomTemp - 1,0,10) + Sepsis()
                 * (HF.BoolToNum(THERM.IsLimbCyber(target,limb),1) + 1)
-                / 10 -- Scaling feature
                 * OnFire
                 /LimbClothResistance
                 /LimbTempResistance
+                * HF.Clamp((HF.GetAfflictionStrengthLimb(target, LimbType.Torso, "husksymbiosis", 0)/40),1,10)
+                / 20 -- Scaling feature
                 * NTConfig.Get("ETempScaling", 1.5)
                 * NT.Deltatime
         local Cold = ((((Water - BloodLoss()) 
@@ -284,7 +285,7 @@ THERM.CalculateTemperature = function (limbwet,target,limb)
                 * NTConfig.Get("ETempScaling", 1.5) 
                 / 2 -- Scaling feature
                 * NT.Deltatime
-        return (Heat/CharacterTable.DivingSuitBurnRes) + Cold
+        return (Heat/CharacterTable.DivingSuitBurnRes/2) + Cold
 end
 
 
@@ -412,4 +413,10 @@ THERM.ImmersiveDivingGearEquipped = function (outerclothes,innerclothes)
                 end
         end
         return false
+end
+
+-- I Stole this code from the robotrauma script.
+THERM.IsRobot = function(character)
+    -- return true
+    return not character.IsFemale and not character.IsMale
 end

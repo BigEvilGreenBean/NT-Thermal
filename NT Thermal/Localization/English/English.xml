@@ -6,6 +6,9 @@
 <entityname.heatpads>Heatpads</entityname.heatpads>
 <entitydescription.heatpads>An easy to store patch used for heating up cold tissue.</entitydescription.heatpads>
 
+<entityname.handheld_thermometer>Handheld Thermometer</entityname.handheld_thermometer>
+<entitydescription.handheld_thermometer>A handheld method of measuring a patients body temperature. Requires batteries in order to function.</entitydescription.handheld_thermometer>
+
 <entityname.alteplase>Alteplase</entityname.alteplase>
 <entitydescription.alteplase>A thrombolytic agent used to break down blood clots formed in the body. Aids with pulmonary embolism.</entitydescription.alteplase>
 

@@ -5,10 +5,7 @@
 THERMCompat = {}
 
 
-THERMCompat.SetUpRoboCompat = function ()
-    NTRT.Afflictions["wet"] = {}
-	NTRT.Afflictions["temperature"] = {}
-	NTRT.Afflictions["givetemp"] = {}
+THERMCompat.SetUpRoboCompat = function () -- Add my afflictions to robotrauma.
 end
 
 
@@ -97,9 +94,9 @@ THERMCompat.SetUpEnhancedReactors = function ()
                     local CharacterTable = THERM.GetCharacter(character.ID)
                     local BurnResistance = 1
                     if CharacterTable ~= nil then
-                        BurnResistance = CharacterTable.DivingSuitBurnRes
+                        BurnResistance = CharacterTable.DivingSuitBurnRes * 2
                     end
-                    EnhancedReactors.ApplyTemperatureRadius(item, character, 750, 1, 0, { temperature.Instantiate(.02 * (reactor.Temperature/100 + 1)/BurnResistance) }) -- :crying emoji: why does this mod have like a 1/100000 of a second tick rate.
+                    EnhancedReactors.ApplyTemperatureRadius(item, character, 750, 1, 0, { temperature.Instantiate(.05 * ((reactor.Temperature/100 + 1))/BurnResistance) }) -- :crying emoji: why does this mod have like a 1/100000 of a second tick rate.
                 end
             end
         end

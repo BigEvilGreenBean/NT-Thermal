@@ -209,7 +209,7 @@ NTTHERM.UpdateLimbAfflictions = {
 							limbaff[i].strength = limbaff[i].strength + TempDiffs.FromLimbDiff
 						end
 						if type == LimbType.Head then
-							if limbaff[i].strength < HypothermiaLevel then
+							if limbaff[i].strength < HypothermiaLevel and HF.GetAfflictionStrength(c.character, "husksymbiosis", 0) == 0 then
 								HF.SetAffliction(c.character, "overlay_ice", HF.Clamp(5/limbaff[i].strength*150,0,60))
 							elseif limbaff[i].strength > HyperthermiaLevel then
 								HF.SetAffliction(c.character, "overlay_fire", HF.Clamp(limbaff[i].strength/NormalBodyTemp*50,0,100))
@@ -217,9 +217,9 @@ NTTHERM.UpdateLimbAfflictions = {
 								HF.SetAffliction(c.character, "overlay_ice", 0)
 								HF.SetAffliction(c.character, "overlay_fire", 0)
 							end
-							if limbaff[i].strength < 2 then
+							if limbaff[i].strength < 2 and HF.GetAfflictionStrength(c.character, "husksymbiosis", 0) == 0 then
 								c.afflictions.cerebralhypoxia.strength = c.afflictions.cerebralhypoxia.strength + (.05 * NT.Deltatime)
-							elseif limbaff[i].strength < HypothermiaLevel/NTTHERM.ExtremeHypothermiaScaling/1.5 then
+							elseif limbaff[i].strength < HypothermiaLevel/NTTHERM.ExtremeHypothermiaScaling/1.5 and HF.GetAfflictionStrength(c.character, "husksymbiosis", 0) == 0 then
 								NTC.SetSymptomTrue(c.character, "sym_lightheadedness", 5)
 							elseif limbaff[i].strength > HyperthermiaLevel * NTTHERM.MediumHyperthermiaScaling then
 								NTC.SetSymptomTrue(c.character, "sym_fever", 5)
@@ -231,7 +231,8 @@ NTTHERM.UpdateLimbAfflictions = {
 								and limbaff.d1_frostbite.strength == 0 
 								and limbaff.d2_frostbite.strength == 0 
 								and limbaff.d3_frostbite.strength == 0 
-								and not THERM.IsLimbCyber(c.character,type) then
+								and not THERM.IsLimbCyber(c.character,type) 
+								and HF.GetAfflictionStrength(c.character, "husksymbiosis", 0) == 0 then
 								limbaff.frostnip.strength = 1
 							elseif  limbaff[i].strength > HyperthermiaLevel * NTTHERM.MediumHyperthermiaScaling then
 								limbaff.heat_cramp.strength = limbaff.heat_cramp.strength + CalculateHeatCramp(type,c.character)
@@ -239,7 +240,7 @@ NTTHERM.UpdateLimbAfflictions = {
 						end
 					else
 						-- Give hypothermia
-						if limbaff[i].strength < HypothermiaLevel then
+						if limbaff[i].strength < HypothermiaLevel and HF.GetAfflictionStrength(c.character, "husksymbiosis", 0) == 0 then
 							c.afflictions.hypothermia.strength = 100
 							if limbaff[i].strength < HypothermiaLevel * NTTHERM.ExtremeHypothermiaScaling then
 							NTC.SetSymptomTrue(c.character, "dyspnea", 2)
@@ -359,7 +360,7 @@ NTTHERM.UpdateLimbAfflictions = {
 	--frostnip
 	frostnip = {
 		update = function(c, limbaff, i, type)
-			if limbaff[i].strength > 0 and limbaff.d1_frostbite.strength == 0 and not THERM.IsLimbCyber(c.character,type) then
+			if limbaff[i].strength > 0 and limbaff.d1_frostbite.strength == 0 and not THERM.IsLimbCyber(c.character,type) and HF.GetAfflictionStrength(c.character, "husksymbiosis", 0) == 0 then
 				local LimbTemp = limbaff.temperature.strength
 				local HypothermiaLevel = FetchConfigStats().HypothermiaLevel
 				if LimbTemp < HypothermiaLevel/NTTHERM.MediumHypothermiaScaling then
@@ -379,7 +380,7 @@ NTTHERM.UpdateLimbAfflictions = {
 	--1st degree frostbite
 	d1_frostbite = {
 		update = function(c, limbaff, i, type)
-			if limbaff[i].strength > 0 and not THERM.IsLimbCyber(c.character,type) then
+			if limbaff[i].strength > 0 and not THERM.IsLimbCyber(c.character,type) and HF.GetAfflictionStrength(c.character, "husksymbiosis", 0) == 0 then
 				c.stats.speedmultiplier = c.stats.speedmultiplier * 0.90 -- 10% slow per limb
 				NTC.SetSymptomTrue(c.character, "sym_pins_needles", 5)
 				limbaff.frostnip.strength = 0
@@ -406,7 +407,7 @@ NTTHERM.UpdateLimbAfflictions = {
 	--2nd degree frostbite
 	d2_frostbite = {
 		update = function(c, limbaff, i, type)
-			if limbaff[i].strength > 0 and not THERM.IsLimbCyber(c.character,type) then
+			if limbaff[i].strength > 0 and not THERM.IsLimbCyber(c.character,type) and HF.GetAfflictionStrength(c.character, "husksymbiosis", 0) == 0 then
 				c.stats.speedmultiplier = c.stats.speedmultiplier * 0.80 -- 20% slow per limb
 				NTC.SetSymptomTrue(c.character, "sym_pins_needles", 5)
 				limbaff.d1_frostbite.strength = 0
@@ -437,7 +438,7 @@ NTTHERM.UpdateLimbAfflictions = {
 	--3rd degree frostbite
 	d3_frostbite = {
 		update = function(c, limbaff, i, type)
-			if limbaff[i].strength > 0 and not THERM.IsLimbCyber(c.character,type) then
+			if limbaff[i].strength > 0 and not THERM.IsLimbCyber(c.character,type) and HF.GetAfflictionStrength(c.character, "husksymbiosis", 0) == 0 then
 				c.stats.speedmultiplier = c.stats.speedmultiplier * 0.70 -- 30% slow per limb
 				limbaff.d2_frostbite.strength = 0
 				limbaff.bloodclot.strength = limbaff.bloodclot.strength + (CalculateBloodClots(c.character,type,.1) * NT.Deltatime)
@@ -615,7 +616,7 @@ NTTHERM.UpdateAfflictions = {
 						c.afflictions[i].strength = 0
 					end
 					c.afflictions[i].strength = c.afflictions[i].strength 
-						+ (c.afflictions.heartdamage.strength/50 -- Heart Damage aids Edema
+						+ (c.afflictions.heartdamage.strength/80 -- Heart Damage aids Edema
 						+ c.afflictions.bloodpressure.strength/50 -- High blood pressure aids in edema
 						+ c.afflictions.sepsis.strength/50 -- Sepsis still isn't chill
 						+ THERM.GetCharacter(c.character.ID).LimbWaterValues.TorsoV/50 -- Swimming induced pulmonary edema.
@@ -629,7 +630,7 @@ NTTHERM.UpdateAfflictions = {
 								NTC.SetSymptomTrue(c.character, "triggersym_respiratoryarrest", 2)
 							end
 						end
-				elseif c.afflictions.heartdamage.strength > 50 and c.afflictions.heartremoved.strength == 0 then
+				elseif c.afflictions.heartdamage.strength > 80 and c.afflictions.heartremoved.strength == 0 then
 					c.afflictions[i].strength = 1
 				end
 			end,
@@ -639,7 +640,7 @@ NTTHERM.UpdateAfflictions = {
 	hypothermia = {
 		max = 100,
 		update = function(c, i)
-			if c.afflictions[i].strength > 0 then
+			if c.afflictions[i].strength > 0 and HF.GetAfflictionStrength(c.character, "husksymbiosis", 0) == 0 then
 				local HypothermiaLevel = FetchConfigStats().HypothermiaLevel
 				local NormalBodyTemp = FetchConfigStats().NormalBodyTemp
 				local TorsoTemp = HF.GetAfflictionStrength(c.character, "temperature", 0)
@@ -669,6 +670,8 @@ NTTHERM.UpdateAfflictions = {
 				if  HF.GetAfflictionStrength(c.character, "temperature", 0) > HypothermiaLevel then
 					c.afflictions.hypothermia.strength = 0
 				end
+			else
+				c.afflictions.hypothermia.strength = 0
 			end
 		end,
 	},
@@ -695,7 +698,7 @@ NTTHERM.UpdateAfflictions = {
 				end
 				if TorsoTemp > HyperthermiaLevel * NTTHERM.ExtremeHyperthermiaScaling * 1.05 then
 					c.afflictions.heat_stroke.strength = c.afflictions.heat_stroke.strength + (1 * NT.Deltatime)
-					HF.AddAffliction(c.character, "huskinfection", -2.5 * NT.Deltatime, c.character) -- EXTERMINATE THE BITCH ASS HUSK. JUSTICE FOR ARTIE DOOLITTLE. THOSE BASTARDS SLIMED HIM OUT. God speed artie, love you.
+					HF.AddAffliction(c.character, "huskinfection", -5 * NT.Deltatime, c.character) -- EXTERMINATE THE BITCH ASS HUSK. JUSTICE FOR ARTIE DOOLITTLE. THOSE BASTARDS SLIMED HIM OUT. God speed artie, love you.
 				end
 				if TorsoTemp > HyperthermiaLevel * NTTHERM.ExtremeHyperthermiaScaling * 1.2 then
 					c.afflictions.cerebralhypoxia.strength = c.afflictions.cerebralhypoxia.strength + Death
@@ -862,7 +865,9 @@ NTTHERM.UpdateAfflictions = {
 			["SAFS_manual"] = {valid = true, index = 1},["SAFS_seaweed"] = {valid = true, index = 1},["SAFS_clown"] = {valid = true, index = 1},["SAFS_camo"] = {valid = true, index = 1},["SAFS_moon"] = {valid = true, index = 1},  -- Safs compatibility
 			["SAFS_onyx"] = {valid = true, index = 1},["SAFS_camo2"] = {valid = true, index = 1},  -- Safs compatibility
 			["ek_armored_hardsuit"] = {valid = true, index = 1},["ek_armored_hardsuit_paintbandit"] = {valid = true, index = 1},["ek_armored_hardsuit_paintmercenary"] = {valid = true, index = 1},["ek_armored_hardsuit2"] = {valid = true, index = 1} -- EK
-			,["ek_armored_hardsuit2_paintbandit"] = {valid = true, index = 1},["ek_armored_hardsuit2_paintmercenary"] = {valid = true, index = 1}} -- EK
+			,["ek_armored_hardsuit2_paintbandit"] = {valid = true, index = 1},["ek_armored_hardsuit2_paintmercenary"] = {valid = true, index = 1}, -- EK
+			['exosuitplayerPA'] = {valid = true, index = 1},['exosuitPA'] = {valid = true, index = 1},["piratedivingsuitmakeshift"] = {valid = true,index = 0}, -- Dynamic Europa
+			['scp_combathardsuit'] = {valid = true, index = 1}} -- EA
 			local IndexedSuits = {["pucs"] = 2} -- Used for suits that have extra storage. I.E pucs.
 			local HypothermiaLevel = FetchConfigStats().HypothermiaLevel
 			if c.afflictions[i].strength > 0 then
@@ -967,7 +972,8 @@ NTTHERM.UpdateAfflictions = {
 			c.afflictions[i].strength = HF.BoolToNum(
 					not NTC.GetSymptomFalse(c.character, i)
 					and (NTC.GetSymptom(c.character, i)
-					or HF.GetAfflictionStrength(c.character, "hypothermia", 0) > 0),
+					or HF.GetAfflictionStrength(c.character, "hypothermia", 0) > 0)
+					and HF.GetAfflictionStrength(c.character, "husksymbiosis", 0) == 0,
 				2
 			)
 		end,
@@ -981,7 +987,8 @@ NTTHERM.UpdateAfflictions = {
 				not NTC.GetSymptomFalse(c.character, i)
 					and (NTC.GetSymptom(c.character, i)
 					or (HF.GetAfflictionStrength(c.character, "temperature", 0) < HypothermiaLevel/NTTHERM.MediumHypothermiaScaling 
-					and HF.GetAfflictionStrength(c.character, "temperature", 0) > HypothermiaLevel/NTTHERM.ExtremeHypothermiaScaling)),
+					and HF.GetAfflictionStrength(c.character, "temperature", 0) > HypothermiaLevel/NTTHERM.ExtremeHypothermiaScaling))
+					and HF.GetAfflictionStrength(c.character, "husksymbiosis", 0) == 0,
 				2
 			)
 		end,
@@ -995,7 +1002,8 @@ NTTHERM.UpdateAfflictions = {
 				not NTC.GetSymptomFalse(c.character, i)
 					and (NTC.GetSymptom(c.character, i)
 					or HF.GetAfflictionStrength(c.character, "temperature", 0) < HypothermiaLevel/NTTHERM.ExtremeHypothermiaScaling
-					and HF.GetAfflictionStrength(c.character, "temperature", 0) > 0),
+					and HF.GetAfflictionStrength(c.character, "temperature", 0) > 0)
+					and HF.GetAfflictionStrength(c.character, "husksymbiosis", 0) == 0,
 				2
 			)
 		end,
@@ -1009,7 +1017,8 @@ NTTHERM.UpdateAfflictions = {
 				not NTC.GetSymptomFalse(c.character, i)
 					and (NTC.GetSymptom(c.character, i)
 					or (HF.GetAfflictionStrengthLimb(c.character, LimbType.Head, "temperature", NTConfig.Get("NormalBodyTemp", 38)) < HypothermiaLevel 
-					and HF.GetAfflictionStrengthLimb(c.character, LimbType.Head, "temperature", NTConfig.Get("NormalBodyTemp", 38)) > HypothermiaLevel/NTTHERM.ExtremeHypothermiaScaling/1.5)),
+					and HF.GetAfflictionStrengthLimb(c.character, LimbType.Head, "temperature", NTConfig.Get("NormalBodyTemp", 38)) > HypothermiaLevel/NTTHERM.ExtremeHypothermiaScaling/1.5))
+					and HF.GetAfflictionStrength(c.character, "husksymbiosis", 0) == 0,
 				2
 			)
 		end,

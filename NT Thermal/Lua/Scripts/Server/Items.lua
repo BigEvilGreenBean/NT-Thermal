@@ -80,14 +80,7 @@ NT.ItemMethods.aafn = function (item, usingCharacter, targetCharacter, limb)
 	item.Condition = item.Condition - 25
 end
 
--- Limbs to check key.
-local LimbsToCheck = {}
-LimbsToCheck[LimbType.Torso]      = "Torso"
-LimbsToCheck[LimbType.Head]       = "Head"
-LimbsToCheck[LimbType.LeftArm]    = "Left Arm"
-LimbsToCheck[LimbType.RightArm]   = "Right Arm"
-LimbsToCheck[LimbType.LeftThigh]  = "Left Leg"
-LimbsToCheck[LimbType.RightThigh] = "Right Leg"
+
 local LimbsToCheck2 = {LimbType.Head,LimbType.Torso,LimbType.RightArm,LimbType.LeftArm,LimbType.RightThigh,LimbType.LeftThigh}
 
 -- Thermometer
@@ -101,13 +94,50 @@ NT.ItemMethods.handheld_thermometer = function(item, usingCharacter, targetChara
         local hasVoltage = containedItem.Condition > 0
         -- Make sure the thermometer has a battery.
         if hasVoltage and THERM.GetCharacter(targetCharacter.ID)  ~= nil then
-        THERM.PlaySound("thermalsfx_thermometer",targetCharacter)
-           local actuallimb = limb.type
+                -- Translations!
+                local EnglishTranslation = {
+                                                Readout = "Temperature readout of ", Hypothermic = "Hypothermic", Hyperthermic = "Hyperthermic", NormalTemp = "Normal temperature range", LimbsToCheck = {
+                                                [LimbType.Torso]      = "Torso",
+                                                [LimbType.Head]       = "Head",
+                                                [LimbType.LeftArm]    = "Left Arm",
+                                                [LimbType.RightArm]   = "Right Arm",
+                                                [LimbType.LeftThigh]  = "Left Leg",
+                                                [LimbType.RightThigh] = "Right Leg"},
+                                                Body = "Body"
+                }
+                local RussianTranslation = {
+                                                Readout = "Температура тела ", Hypothermic = "Гипотермия", Hyperthermic = "Гипертермия", NormalTemp = "Температура в пределах нормы", LimbsToCheck = {
+                                                [LimbType.Torso]      = "Торс",
+                                                [LimbType.Head]       = "Голова",
+                                                [LimbType.LeftArm]    = "Левая рука",
+                                                [LimbType.RightArm]   = "Правая рука",
+                                                [LimbType.LeftThigh]  = "Левая нога",
+                                                [LimbType.RightThigh] = "Правая нога"},
+                                                Body = "Тело"
+                }
+                local Translation = {
+                                        ["English"] = EnglishTranslation,
+                                        ["Russian"] = RussianTranslation
+                }
+                THERM.PlaySound("thermalsfx_thermometer",targetCharacter)
+                local actuallimb = limb.type
                 local HypothermiaLevel = NTConfig.Get("NewHypothermiaLevel", 36) - 1
                 local HyperthermiaLevel = NTConfig.Get("NewHyperthermiaLevel", 39) - 1
                 local character = ConvertCharacter(usingCharacter,targetCharacter)
                 local LimbTemp = HF.Round(HF.GetAfflictionStrengthLimb(character, actuallimb, "temperature", NTConfig.Get("NormalBodyTemp", 38)) - 1, 1)
                 local CharacterClient = HF.CharacterToClient(usingCharacter)
+                local Language = function ()
+                        if CharacterClient ~= nil then
+                                if Translation[tostring(CharacterClient.Language)] ~= nil then
+                                        return tostring(CharacterClient.Language)
+                                end
+                                return "English" -- Default to english since language is implemented.
+                        end
+                        if Translation[tostring(GameSettings.CurrentConfig.Language)] ~= nil then
+                                return tostring(GameSettings.CurrentConfig.Language)
+                        end
+                        return "English"
+                end
                 local BaseColor = "100,100,200"
                 local NameColor = "125,125,225"
                 -- Temp Colors
@@ -132,7 +162,7 @@ NT.ItemMethods.handheld_thermometer = function(item, usingCharacter, targetChara
                                 return AverageColor
                         elseif TempStrength >  HyperthermiaLevel * NTTHERM.ExtremeHyperthermiaScaling then
                                 return BoilingColor
-                        elseif TempStrength > HyperthermiaLevel * NTTHERM.MediumHypothermiaScaling then
+                        elseif TempStrength > HyperthermiaLevel * NTTHERM.MediumHyperthermiaScaling then
                                 return HotColor
                         elseif TempStrength > HyperthermiaLevel * NTTHERM.LowHyperthermiaScaling then 
                                 return WarmColor
@@ -153,11 +183,11 @@ NT.ItemMethods.handheld_thermometer = function(item, usingCharacter, targetChara
                 -- Determine if a patient has hypothermia or hyperthermia.
                 local function ThermiaValue(Temp)
                         if Temp < HypothermiaLevel then
-                                return "Hypothermic"
+                                return Translation[Language()].Hypothermic
                         elseif Temp > HyperthermiaLevel then
-                                return "Hyperthermic"
+                                return Translation[Language()].Hyperthermic
                         else
-                                return "Normal temperature range"
+                                return Translation[Language()].NormalTemp
                         end
                 end
 
@@ -171,7 +201,7 @@ NT.ItemMethods.handheld_thermometer = function(item, usingCharacter, targetChara
                                         "‖color:" 
                                         .. BaseColor 
                                         .. "‖" 
-                                        .. "Temperature readout of "
+                                        .. Translation[Language()].Readout
                                         .. "‖color:end‖"
                                         .. "‖color:" 
                                         .. NameColor 
@@ -185,7 +215,7 @@ NT.ItemMethods.handheld_thermometer = function(item, usingCharacter, targetChara
                                         .. "‖color:" 
                                         .. NameColor 
                                         .. "‖" 
-                                        .. LimbsToCheck[actuallimb]
+                                        .. Translation[Language()].LimbsToCheck[actuallimb]
                                         .. "‖color:end‖"
                                         .. ":\n"
                                         .. "‖color:" 
@@ -205,7 +235,7 @@ NT.ItemMethods.handheld_thermometer = function(item, usingCharacter, targetChara
                                         .. "‖color:" 
                                         .. NameColor
                                         .. "‖" 
-                                        .. "Body" 
+                                        .. Translation[Language()].Body
                                         .. "‖color:end‖"
                                         .. ":\n"
                                         .. "‖color:" 

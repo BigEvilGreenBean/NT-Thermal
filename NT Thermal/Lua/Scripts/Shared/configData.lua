@@ -62,7 +62,8 @@ NTTHERM.ConfigData = {
 		type = "float",
 		description = "Multiplies incoming external temperature changes by this value. Water, Fire etc.",
 	},
-	SuitCompatiblityMode = { name = "Suit Compatibility Mode", default = false, type = "bool", description = "This makes all suits heated by default, rather than using batteries or external heaters. This should be used only when needed and a patch isn't out." }
+	SuitCompatiblityMode = { name = "Suit Compatibility Mode", default = false, type = "bool", description = "This makes all suits heated by default, rather than using batteries or external heaters. This should be used only when needed and a patch isn't out." },
+	HeatTransferToggle = { name = "Fire Transfers Heat", default = true, type = "bool", description = "This setting allows heat to transfer between hulls in a submarine. This should be left on for the intended experience." }
 }
 
 --this adds above config options to the Neurotrauma config menu

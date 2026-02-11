@@ -3,6 +3,8 @@
 <!--  /// Gear ///  -->
 <entityname.heatpads>Грелки</entityname.heatpads>
 <entitydescription.heatpads>Простые в хранении грелки, используемые для согревания холодных тканей.</entitydescription.heatpads>
+<entityname.handheld_thermometer>Ручной термометр</entityname.handheld_thermometer>
+<entitydescription.handheld_thermometer>Ручной прибор для измерения температуры тела пациента. Требуется аккумулятор для работы.</entitydescription.handheld_thermometer>
 <entityname.alteplase>Альтеплаза</entityname.alteplase>
 <entitydescription.alteplase>Тромболитический препарат, разрушающий тромбы в организме. Помогает при тромбоэмболии лёгочной артерии.</entitydescription.alteplase>
 <entityname.furosemide>Фуросемид</entityname.furosemide>
@@ -11,7 +13,7 @@
 <entitydescription.aafn>Высокоэкспериментальный раствор на основе нанороботов для размораживания кровеносных сосудов. Крайне взрывоопасен при взаимодействии с алкоголем.</entitydescription.aafn>
 <entityname.towel>Полотенце</entityname.towel>
 <entitydescription.towel>Полотенце для вытирания пациента насухо.</entitydescription.towel>
-<entityname.warm_rag>Тёплая мочалка</entityname.warm_rag>
+<entityname.warm_rag>Тёплая тряпка</entityname.warm_rag>
 <entitydescription.warm_rag>Влажная тёплая тряпка, используется для согревания холодных тканей. Хранить только в нагревательном контейнере.</entitydescription.warm_rag>
 <entityname.warm_iv_bag>Тёплый пакет для в/в вливаний</entityname.warm_iv_bag>
 <entitydescription.warm_iv_bag>Нагреваемый пакет с инфузионным раствором, идеален для повышения температуры тела. Хранить только в нагревательном контейнере.</entitydescription.warm_iv_bag>

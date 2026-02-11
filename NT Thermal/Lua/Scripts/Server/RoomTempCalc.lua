@@ -31,7 +31,7 @@ Hook.Add("think", "THERMRoom.update", function()
 	end
 
 	THERMRoom.Tick = THERMRoom.Tick - 1
-	if THERMRoom.Tick <= 0 then
+	if THERMRoom.Tick <= 0 and NTConfig.Get("HeatTransferToggle", true) then
                 if THERMRoom.Rooms ~= nil and THERMRoom.Intiated then
                         THERMRoom.CalculateRoomTemp()
                 end
@@ -49,7 +49,7 @@ end, Hook.HookMethodType.After)
 
 -- Used to increase the temp of a adjacent room if parameters match.
 Hook.Add("gapOxygenUpdate", "NTTHERM.OxygenHullUpdate", function (gap, hull1, hull2)
-        if THERMRoom.Intiated and THERMRoom.QueuedOxygenUpdates[gap] == nil and (hull1.FireCount > 0 or hull2.FireCount > 0) then
+        if THERMRoom.Intiated and THERMRoom.QueuedOxygenUpdates[gap] == nil and (hull1.FireCount > 0 or hull2.FireCount > 0) and NTConfig.Get("HeatTransferToggle", true) then
                 THERMRoom.QueueOxygenUpdate(gap,hull1,hull2)
         end
 end)
@@ -98,7 +98,7 @@ THERMRoom.CalculateRoomTemp = function ()
                                 if Hull.FireCount > 0 then
                                         for index2, fire in pairs(Hull.FireSources) do
                                                 local FireArea = fire.Size.X * fire.Size.Y
-                                                TempGain = FireArea/HullArea * 2000 / Hull.FireCount * THERMRoom.DeltaTime
+                                                TempGain = FireArea/HullArea * 1000 / Hull.FireCount * THERMRoom.DeltaTime
                                                 room.Temp = HF.Clamp(room.Temp + TempGain,THERMRoom.DefaultRoomTemp,100)
                                         end
                                 -- If no fireSources then check if temp is stablizied.
