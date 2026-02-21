@@ -85,7 +85,7 @@ THERMCompat.SetUpEnhancedReactors = function ()
         end
     end
 
-    local temperature = AfflictionPrefab.Prefabs["temperature"]
+    local temperature = AfflictionPrefab.Prefabs["ntt_temperature"]
     EnhancedReactors.ProcessItemUpdate = function (item) -- I override this to make thermal temp stuff apply.
     local reactor = item.GetComponentString("Reactor")
         if reactor then
@@ -94,7 +94,7 @@ THERMCompat.SetUpEnhancedReactors = function ()
                     local CharacterTable = THERM.GetCharacter(character.ID)
                     local BurnResistance = 1
                     if CharacterTable ~= nil then
-                        BurnResistance = CharacterTable.DivingSuitBurnRes * 2
+                        BurnResistance = (CharacterTable.DivingSuitBurnRes * 2) + CharacterTable.InnerClothingBurnRes
                     end
                     EnhancedReactors.ApplyTemperatureRadius(item, character, 750, 1, 0, { temperature.Instantiate(.05 * ((reactor.Temperature/100 + 1))/BurnResistance) }) -- :crying emoji: why does this mod have like a 1/100000 of a second tick rate.
                 end
@@ -129,7 +129,7 @@ THERMCompat.SetUpEnhancedReactors = function ()
                     local CharacterTable = THERM.GetCharacter(character.ID)
                     local BurnResistance = 1
                     if CharacterTable ~= nil then
-                        BurnResistance = CharacterTable.DivingSuitBurnRes
+                        BurnResistance = CharacterTable.DivingSuitBurnRes + CharacterTable.InnerClothingBurnRes
                     end
                     EnhancedReactors.ApplyAfflictionRadius(item, character, 750, 1, 0, {
                         radiationSickness.Instantiate(1 * data.radiationSickness),
@@ -165,18 +165,11 @@ THERMCompat.SetUpEnhancedReactors = function ()
                 if parentItem.ConditionPercentage < 75 and not parentItem.HasTag("extrashielding") then
                     local data = fuelRods[item.Prefab.Identifier.Value]
                     for character in Character.CharacterList do
-                        local CharacterTable = THERM.GetCharacter(character.ID)
-                        local BurnResistance = 1
-                        if CharacterTable ~= nil then
-                            BurnResistance = CharacterTable.DivingSuitBurnRes
-                        end
                         EnhancedReactors.ApplyAfflictionRadius(item, character, 750, 0.6, 0, {
                             radiationSickness.Instantiate((0.45 - parentItem.ConditionPercentage * 0.006) * data.radiationSickness),
                             contaminated.Instantiate((0.45 - parentItem.ConditionPercentage * 0.006) * data.contaminated),
                             radiationSounds.Instantiate((2.9 - parentItem.ConditionPercentage * 0.038) * data.radiationSounds)
                         })
-                        EnhancedReactors.ApplyTemperatureRadius(item, character, 750, .6, 0, {
-                        temperature.Instantiate(((0.18 - parentItem.ConditionPercentage * 0.0024) * data.overheating)/BurnResistance)})
                     end
                 end
             end

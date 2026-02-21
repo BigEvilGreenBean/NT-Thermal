@@ -130,5 +130,20 @@
 <afflictionname.aafn>A.A.F.N</afflictionname.aafn>
 <afflictiondescription.aafn>Nanites that specalize in removing ice crystals have been inserted.</afflictiondescription.aafn>
 
+<!-- /// Tips /// -->
+<loadingscreentip>‖color:gui.blue‖NT Thermal:‖end‖ Temperature is only fatal in extreme amounts.</loadingscreentip>
+
+<loadingscreentip>‖color:gui.blue‖NT Thermal:‖end‖ Thermal Shock is a rare condition caused by the patient's temperature rapidly changing.</loadingscreentip>
+
+<loadingscreentip>‖color:gui.blue‖NT Thermal:‖end‖ Whilst hyperthermia is unsafe for prolonged periods, it can kill Husk infection above 43.8°C.</loadingscreentip>
+
+<loadingscreentip>‖color:gui.blue‖NT Thermal:‖end‖ Alteplase and Furosemide can be repurposed as a Sodium Nitroprusside alternative.</loadingscreentip>
+
+<loadingscreentip>‖color:gui.blue‖NT Thermal:‖end‖ Heat from fires will transfer from room to room. So make sure to keep doors closed.</loadingscreentip>
+
+<loadingscreentip>‖color:gui.blue‖NT Thermal:‖end‖ Cyberlimbs are susceptible to temperature shifts.</loadingscreentip>
+
+<loadingscreentip>‖color:gui.blue‖NT Thermal:‖end‖ Hypothermia can be used as an Analgesia alternative, however the health of your patient might be of concern.</loadingscreentip>
+
 </Override>
 </infotexts>

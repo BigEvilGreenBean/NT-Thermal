@@ -227,13 +227,21 @@ THERM.CalculateTemperature = function (limbwet,target,limb)
                 return
         end
         if limb == LimbType.Torso then
-                CharacterTable.LastStoredTorsoTemp = HF.GetAfflictionStrengthLimb(target, LimbType.Torso, "temperature", 0)
+                CharacterTable.LastStoredTorsoTemp = HF.GetAfflictionStrengthLimb(target, LimbType.Torso, "ntt_temperature", 0)
                 if target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes) ~= CharacterTable.LastStoredSuit and target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes) ~= nil then
                         CharacterTable.LastStoredSuit = target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes)
                         CharacterTable.DivingSuitBurnRes = THERM.BurnReductionFactor(target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes))
                 elseif  target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes) == nil then
                         CharacterTable.LastStoredSuit = nil
                         CharacterTable.DivingSuitBurnRes = 1
+                else
+                end
+                if target.Inventory.GetItemInLimbSlot(InvSlotType.InnerClothes) ~= CharacterTable.LastStoredInnerSuit and target.Inventory.GetItemInLimbSlot(InvSlotType.InnerClothes) ~= nil then
+                        CharacterTable.LastStoredInnerSuit = target.Inventory.GetItemInLimbSlot(InvSlotType.InnerClothes)
+                        CharacterTable.InnerClothingBurnRes = THERM.BurnReductionFactor(target.Inventory.GetItemInLimbSlot(InvSlotType.InnerClothes))
+                elseif  target.Inventory.GetItemInLimbSlot(InvSlotType.InnerClothes) == nil then
+                        CharacterTable.LastStoredInnerSuit = nil
+                        CharacterTable.InnerClothingBurnRes = 1
                 end
         end
         THERM.SetCharacterTablePressure(target,CharacterTable)
@@ -250,13 +258,13 @@ THERM.CalculateTemperature = function (limbwet,target,limb)
         local RoomTemp = 0
         local OnFire = CharacterTable.OnFire[limb]
         local BloodLoss = function ()
-                if HF.GetAfflictionStrengthLimb(target, limb, "temperature", 0) > HypothermiaLevel then
+                if HF.GetAfflictionStrengthLimb(target, limb, "ntt_temperature", 0) > HypothermiaLevel then
                         return HF.GetAfflictionStrength(target, "bloodloss", 0)/400
                 end
                 return 0 
         end
         local Sepsis = function ()
-                if HF.GetAfflictionStrengthLimb(target, limb, "temperature", 0) < HyperthermiaLevel then
+                if HF.GetAfflictionStrengthLimb(target, limb, "ntt_temperature", 0) < HyperthermiaLevel then
                         return HF.GetAfflictionStrength(target, "sepsis", 0)/50
                 end
                 return 0 
@@ -285,7 +293,7 @@ THERM.CalculateTemperature = function (limbwet,target,limb)
                 * NTConfig.Get("ETempScaling", 1.5) 
                 / 2 -- Scaling feature
                 * NT.Deltatime
-        return (Heat/CharacterTable.DivingSuitBurnRes/2) + Cold
+        return (Heat/CharacterTable.DivingSuitBurnRes/CharacterTable.InnerClothingBurnRes/2) + Cold
 end
 
 
@@ -389,7 +397,9 @@ THERM.IntiateCharacterTemp = function(createdCharacter)
                             LastStoredTorsoTemp = 0,
 			    Character = createdCharacter,
                             LastStoredSuit = nil,
-                            DivingSuitBurnRes = 1}
+                            LastStoredInnerSuit = nil,
+                            DivingSuitBurnRes = 1,
+                            InnerClothingBurnRes = 1}
 	THERMCharacters[createdCharacter.ID] = new_character
 end
 

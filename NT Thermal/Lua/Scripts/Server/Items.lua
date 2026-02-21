@@ -124,7 +124,7 @@ NT.ItemMethods.handheld_thermometer = function(item, usingCharacter, targetChara
                 local HypothermiaLevel = NTConfig.Get("NewHypothermiaLevel", 36) - 1
                 local HyperthermiaLevel = NTConfig.Get("NewHyperthermiaLevel", 39) - 1
                 local character = ConvertCharacter(usingCharacter,targetCharacter)
-                local LimbTemp = HF.Round(HF.GetAfflictionStrengthLimb(character, actuallimb, "temperature", NTConfig.Get("NormalBodyTemp", 38)) - 1, 1)
+                local LimbTemp = HF.Round(HF.GetAfflictionStrengthLimb(character, actuallimb, "ntt_temperature", NTConfig.Get("NormalBodyTemp", 38)) - 1, 1)
                 local CharacterClient = HF.CharacterToClient(usingCharacter)
                 local Language = function ()
                         if CharacterClient ~= nil then
@@ -175,7 +175,7 @@ NT.ItemMethods.handheld_thermometer = function(item, usingCharacter, targetChara
                 local function AverageBodyTemp()
                         AverageTemp = 0
                         for index, limb in pairs(LimbsToCheck2) do
-                                AverageTemp = AverageTemp + HF.Round(HF.GetAfflictionStrengthLimb(character, limb, "temperature", NTConfig.Get("NormalBodyTemp", 38)) - 1, 1)
+                                AverageTemp = AverageTemp + HF.Round(HF.GetAfflictionStrengthLimb(character, limb, "ntt_temperature", NTConfig.Get("NormalBodyTemp", 38)) - 1, 1)
                         end
                         return HF.Round(AverageTemp/6,1)
                 end

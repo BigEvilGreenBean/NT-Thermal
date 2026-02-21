@@ -86,5 +86,21 @@
 <afflictiondescription.warmth>Было применено согревание.</afflictiondescription.warmth>
 <afflictionname.aafn>А.А.Ф.Н.</afflictionname.aafn>
 <afflictiondescription.aafn>Введены нанороботы, специализирующиеся на удалении ледяных кристаллов.</afflictiondescription.aafn>
+
+<!-- /// Tips /// -->
+<loadingscreentip>‖color:gui.blue‖NT Thermal:‖end‖ Температура становится смертельно опасной только при экстремальных значениях.</loadingscreentip>
+
+<loadingscreentip>‖color:gui.blue‖NT Thermal:‖end‖ Термический шок - редкое состояние, вызванное резким изменением температуры тела.</loadingscreentip>
+
+<loadingscreentip>‖color:gui.blue‖NT Thermal:‖end‖ Хотя гипертермия опасна при длительном воздействии, температура выше 43,8°C может уничтожить хаск-инфекцию.</loadingscreentip>
+
+<loadingscreentip>‖color:gui.blue‖NT Thermal:‖end‖ Альтеплаза и Фуросемид могут служить альтернативой нитропруссиду натрия..</loadingscreentip>
+
+<loadingscreentip>‖color:gui.blue‖NT Thermal:‖end‖ Тепло от пожара распространяется между помещениями. Держите двери закрытыми.</loadingscreentip>
+
+<loadingscreentip>‖color:gui.blue‖NT Thermal:‖end‖ Киберконечности плохо переносят перепады температуры.</loadingscreentip>
+
+<loadingscreentip>‖color:gui.blue‖NT Thermal:‖end‖ Гипотермия может служить альтернативой анальгезии, однако это может негативно сказаться на состоянии пациента.</loadingscreentip>
+
 </Override>
 </infotexts>

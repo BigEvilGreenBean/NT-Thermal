@@ -144,7 +144,7 @@ Hook.Add("characterCreated", "NTTHERM.ForceUpdates", function(createdCharacter)
                    createdCharacter.TeamID == 2 and not 
                    createdCharacter.IsDead then
 
-        local temperaturecheck = createdCharacter.CharacterHealth.GetAffliction("temperature")
+        local temperaturecheck = createdCharacter.CharacterHealth.GetAffliction("ntt_temperature")
             if temperaturecheck == nil then
                 HF.AddAffliction(createdCharacter, "luabotomy", 0.1)
             end

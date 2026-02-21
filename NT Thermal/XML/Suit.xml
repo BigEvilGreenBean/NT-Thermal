@@ -76,7 +76,7 @@
 <Holdable slots="RightHand+LeftHand" controlpose="true" holdpos="0,-50" handle1="-10,-20" handle2="10,-20" holdangle="45" msg="ItemMsgPickUpUse" canbeselected="false" canbepicked="true" pickkey="Use">
 <Upgrade gameversion="0.1401.0.0" msg="ItemMsgPickUpUse"/>
 </Holdable>
-<ItemContainer capacity="1" maxstacksize="1" hideitems="true" containedstateindicatorstyle="tank">
+<ItemContainer capacity="1" maxstacksize="1" hideitems="true" containedstateindicatorstyle="tank" ContainedStateIndicatorSlot="0">
 <SlotIcon slotindex="0" texture="Content/UI/StatusMonitorUI.png" sourcerect="64,448,64,64" origin="0.5,0.5"/>
 <SlotIcon slotindex="1" texture="Content/UI/StatusMonitorUI.png" sourcerect="128,448,64,64" origin="0.5,0.5"/>
 <Containable items="oxygensource,weldingtoolfuel" excludeditems="oxygenitetank"/>
@@ -214,7 +214,7 @@
 <StatValue stattype="WalkingSpeed" value="-0.2"/>
 </Wearable>
 <Holdable slots="RightHand+LeftHand" controlpose="true" holdpos="0,-50" handle1="-10,-20" handle2="10,-20" holdangle="45" msg="ItemMsgPickUpUse" canbeselected="false" canbepicked="true" pickkey="Use"/>
-<ItemContainer capacity="1" maxstacksize="1" hideitems="true" containedstateindicatorstyle="tank">
+<ItemContainer capacity="1" maxstacksize="1" hideitems="true" containedstateindicatorstyle="tank" ContainedStateIndicatorSlot="0">
 <SlotIcon slotindex="0" texture="Content/UI/StatusMonitorUI.png" sourcerect="64,448,64,64" origin="0.5,0.5"/>
 <SlotIcon slotindex="1" texture="Content/UI/StatusMonitorUI.png" sourcerect="128,448,64,64" origin="0.5,0.5"/>
 <Containable items="oxygensource,weldingtoolfuel" excludeditems="oxygenitetank"/>
@@ -356,7 +356,7 @@
 <StatValue stattype="PropulsionSpeed" value="0.2"/>
 </Wearable>
 <Holdable slots="RightHand+LeftHand" controlpose="true" holdpos="0,-50" handle1="-10,-20" handle2="10,-20" holdangle="45" msg="ItemMsgPickUpUse" canbeselected="false" canbepicked="true" pickkey="Use"/>
-<ItemContainer capacity="1" maxstacksize="1" hideitems="true" containedstateindicatorstyle="tank">
+<ItemContainer capacity="1" maxstacksize="1" hideitems="true" containedstateindicatorstyle="tank" ContainedStateIndicatorSlot="0">
 <SlotIcon slotindex="0" texture="Content/UI/StatusMonitorUI.png" sourcerect="64,448,64,64" origin="0.5,0.5"/>
 <SlotIcon slotindex="1" texture="Content/UI/StatusMonitorUI.png" sourcerect="128,448,64,64" origin="0.5,0.5"/>
 <Containable items="oxygensource,weldingtoolfuel" excludeditems="oxygenitetank"/>
