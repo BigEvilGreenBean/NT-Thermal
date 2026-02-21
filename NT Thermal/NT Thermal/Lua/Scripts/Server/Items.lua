@@ -1,0 +1,257 @@
+
+-- Thank you mannatu and Heelge, your work is goated. I also stole most of this from your mod. I mean lifted.
+
+-- Function to determine which character is the affliction being applied to.
+local function ConvertCharacter(usingCharacter,targetCharacter)
+    if targetCharacter == nil then
+        return usingCharacter
+    else
+        return targetCharacter
+    end
+end
+
+-- Overrides so pulmonary edema can now get hit with a system 32 clip.
+NT.ItemMethods.drainage = function(item, usingCharacter, targetCharacter, limb)
+	local limbtype = limb.type
+
+	-- don't work on stasis
+	if HF.HasAffliction(targetCharacter, "stasis", 0.1) then
+		return
+	end
+
+	if
+		limbtype == LimbType.Torso
+		and HF.HasAfflictionLimb(targetCharacter, "retractedskin", limbtype)
+		and (HF.HasAffliction(targetCharacter, "pneumothorax")
+                or HF.HasAffliction(targetCharacter, "pulmonary_edema"))
+	then
+		HF.SetAffliction(targetCharacter, "pneumothorax", 0, usingCharacter)
+                HF.SetAffliction(targetCharacter, "pulmonary_edema", 0, usingCharacter)
+		HF.SetAffliction(targetCharacter, "needlec", 0, usingCharacter)
+
+		if HF.Chance(NTC.GetMultiplier(usingCharacter, "drainageconsumechance")) then
+			HF.RemoveItem(item)
+		end
+
+		if NTSP ~= nil and NTConfig.Get("NTSP_enableSurgerySkill", true) then
+			HF.GiveSkillScaled(usingCharacter, "surgery", 12000)
+		else
+			HF.GiveSkillScaled(usingCharacter, "medical", 6000)
+		end
+	end
+end
+
+-- Warm I.V Bag Low key stole all of this from Neuro's ice pack code.
+NT.ItemMethods.warm_iv_bag = function(item, usingCharacter, targetCharacter, limb)
+        if item.Condition <= 25 then
+		return
+	end
+	local limbtype = limb.type
+	local success = HF.BoolToNum(HF.GetSkillRequirementMet(usingCharacter, "medical", 40), 1)
+	HF.AddAfflictionLimb(targetCharacter, "elevated_core_temperature", limbtype, 5 + success * 25, usingCharacter)
+        THERM.PlaySound("thermalsfx_liquidiv",targetCharacter)
+	item.Condition = 0
+end
+
+-- Warm rag
+NT.ItemMethods.warm_rag = function (item, usingCharacter, targetCharacter, limb)
+        if item.Condition <= 25 then
+		return
+	end
+	local limbtype = limb.type
+	local success = HF.BoolToNum(HF.GetSkillRequirementMet(usingCharacter, "medical", 20), 1)
+	HF.AddAfflictionLimb(targetCharacter, "warmth", limbtype, 75 + success * 25, usingCharacter)
+
+	item.Condition = item.Condition - 25
+end
+
+-- A.A.F.N
+NT.ItemMethods.aafn = function (item, usingCharacter, targetCharacter, limb)
+        local success = HF.BoolToNum(HF.GetSkillRequirementMet(usingCharacter, "medical", 60), 1)
+        local limbtype = limb.type
+        if HF.GetAfflictionStrengthLimb(targetCharacter, limbtype, "clampedbleeders", 0) == 100 then
+                HF.AddAffliction(targetCharacter, "aafn", 10 + success * 15, usingCharacter)
+                item.Condition = item.Condition - 25
+                return
+        end
+	HF.AddAffliction(targetCharacter, "aafn", 5 + success * 5, usingCharacter)
+        HF.AddAfflictionLimb(targetCharacter, "bleeding", limbtype, 5, usingCharacter)
+        HF.AddAfflictionLimb(targetCharacter, "lacerations", limbtype, 10, usingCharacter)
+	item.Condition = item.Condition - 25
+end
+
+
+local LimbsToCheck2 = {LimbType.Head,LimbType.Torso,LimbType.RightArm,LimbType.LeftArm,LimbType.RightThigh,LimbType.LeftThigh}
+
+-- Thermometer
+NT.ItemMethods.handheld_thermometer = function(item, usingCharacter, targetCharacter, limb)
+
+        -- Get Contained item.
+        local containedItem = item.OwnInventory.GetItemAt(0)
+        if containedItem == nil then
+                return
+        end
+        local hasVoltage = containedItem.Condition > 0
+        -- Make sure the thermometer has a battery.
+        if hasVoltage and THERM.GetCharacter(targetCharacter.ID)  ~= nil then
+                -- Translations!
+                local EnglishTranslation = {
+                                                Readout = "Temperature readout of ", Hypothermic = "Hypothermic", Hyperthermic = "Hyperthermic", NormalTemp = "Normal temperature range", LimbsToCheck = {
+                                                [LimbType.Torso]      = "Torso",
+                                                [LimbType.Head]       = "Head",
+                                                [LimbType.LeftArm]    = "Left Arm",
+                                                [LimbType.RightArm]   = "Right Arm",
+                                                [LimbType.LeftThigh]  = "Left Leg",
+                                                [LimbType.RightThigh] = "Right Leg"},
+                                                Body = "Body"
+                }
+                local RussianTranslation = {
+                                                Readout = "Температура тела ", Hypothermic = "Гипотермия", Hyperthermic = "Гипертермия", NormalTemp = "Температура в пределах нормы", LimbsToCheck = {
+                                                [LimbType.Torso]      = "Торс",
+                                                [LimbType.Head]       = "Голова",
+                                                [LimbType.LeftArm]    = "Левая рука",
+                                                [LimbType.RightArm]   = "Правая рука",
+                                                [LimbType.LeftThigh]  = "Левая нога",
+                                                [LimbType.RightThigh] = "Правая нога"},
+                                                Body = "Тело"
+                }
+                local Translation = {
+                                        ["English"] = EnglishTranslation,
+                                        ["Russian"] = RussianTranslation
+                }
+                THERM.PlaySound("thermalsfx_thermometer",targetCharacter)
+                local actuallimb = limb.type
+                local HypothermiaLevel = NTConfig.Get("NewHypothermiaLevel", 36) - 1
+                local HyperthermiaLevel = NTConfig.Get("NewHyperthermiaLevel", 39) - 1
+                local character = ConvertCharacter(usingCharacter,targetCharacter)
+                local LimbTemp = HF.Round(HF.GetAfflictionStrengthLimb(character, actuallimb, "ntt_temperature", NTConfig.Get("NormalBodyTemp", 38)) - 1, 1)
+                local CharacterClient = HF.CharacterToClient(usingCharacter)
+                local Language = function ()
+                        if CharacterClient ~= nil then
+                                if Translation[tostring(CharacterClient.Language)] ~= nil then
+                                        return tostring(CharacterClient.Language)
+                                end
+                                return "English" -- Default to english since language is implemented.
+                        end
+                        if Translation[tostring(GameSettings.CurrentConfig.Language)] ~= nil then
+                                return tostring(GameSettings.CurrentConfig.Language)
+                        end
+                        return "English"
+                end
+                local BaseColor = "100,100,200"
+                local NameColor = "125,125,225"
+                -- Temp Colors
+                local BoilingColor     = "255,40,0"
+                local HotColor         = "240,110,40"
+                local WarmColor        = "240,200,150"
+                local AverageColor     = "100,200,100"
+                local ColdColor        = "170,230,200"
+                local ChillyColor      = "40,140,230"
+                local FreezingColor    = "0,60,255"
+                local CurrentTempColor = AverageColor
+
+                -- Determine Temp Color
+                local function TempColor(TempStrength)
+                        if TempStrength < 1 then
+                                return FreezingColor
+                        elseif TempStrength < HypothermiaLevel/NTTHERM.MediumHypothermiaScaling then
+                                return ChillyColor
+                        elseif TempStrength < HypothermiaLevel/NTTHERM.LowHypothermiaScaling then
+                                return ColdColor
+                        elseif TempStrength > HypothermiaLevel and TempStrength < HyperthermiaLevel then
+                                return AverageColor
+                        elseif TempStrength >  HyperthermiaLevel * NTTHERM.ExtremeHyperthermiaScaling then
+                                return BoilingColor
+                        elseif TempStrength > HyperthermiaLevel * NTTHERM.MediumHyperthermiaScaling then
+                                return HotColor
+                        elseif TempStrength > HyperthermiaLevel * NTTHERM.LowHyperthermiaScaling then 
+                                return WarmColor
+                        else 
+                                return AverageColor
+                        end
+                end
+
+                -- Get average temperature.
+                local function AverageBodyTemp()
+                        AverageTemp = 0
+                        for index, limb in pairs(LimbsToCheck2) do
+                                AverageTemp = AverageTemp + HF.Round(HF.GetAfflictionStrengthLimb(character, limb, "ntt_temperature", NTConfig.Get("NormalBodyTemp", 38)) - 1, 1)
+                        end
+                        return HF.Round(AverageTemp/6,1)
+                end
+
+                -- Determine if a patient has hypothermia or hyperthermia.
+                local function ThermiaValue(Temp)
+                        if Temp < HypothermiaLevel then
+                                return Translation[Language()].Hypothermic
+                        elseif Temp > HyperthermiaLevel then
+                                return Translation[Language()].Hyperthermic
+                        else
+                                return Translation[Language()].NormalTemp
+                        end
+                end
+
+                local BodyTemp = AverageBodyTemp()
+                local BodyTempColor = TempColor(BodyTemp)
+                local BodyTempThermia = ThermiaValue(BodyTemp)
+                CurrentTempColor = TempColor(LimbTemp)
+                local CurrentTempThermia = ThermiaValue(LimbTemp)
+                local Report = 
+                                        -- Intial Readout -------------------
+                                        "‖color:" 
+                                        .. BaseColor 
+                                        .. "‖" 
+                                        .. Translation[Language()].Readout
+                                        .. "‖color:end‖"
+                                        .. "‖color:" 
+                                        .. NameColor 
+                                        .. "‖" 
+                                        .. character.Name
+                                        .. "‖color:end‖"
+                                        .. ":\n"
+                                        .. "\n"
+
+                                        -- Limb Checked --------------------
+                                        .. "‖color:" 
+                                        .. NameColor 
+                                        .. "‖" 
+                                        .. Translation[Language()].LimbsToCheck[actuallimb]
+                                        .. "‖color:end‖"
+                                        .. ":\n"
+                                        .. "‖color:" 
+                                        .. CurrentTempColor
+                                        .. "‖" 
+                                        .. tostring(LimbTemp)
+                                        .. "°C/"
+                                        .. tostring(HF.Round(((LimbTemp * 9/5)+32),1))
+                                        .. "°F"
+                                        .. "\n"
+                                        .. CurrentTempThermia
+                                        .."‖color:end‖"
+                                        .. "\n"
+                                        .. "\n"
+
+                                        -- Body ----------------------------
+                                        .. "‖color:" 
+                                        .. NameColor
+                                        .. "‖" 
+                                        .. Translation[Language()].Body
+                                        .. "‖color:end‖"
+                                        .. ":\n"
+                                        .. "‖color:" 
+                                        .. BodyTempColor
+                                        .. "‖" 
+                                        .. tostring(BodyTemp)
+                                        .. " °C/"
+                                        .. tostring(HF.Round(((BodyTemp * 9/5)+32),1))
+                                        .. "°F"
+                                        .. "\n"
+                                        .. BodyTempThermia
+                                        .. "‖color:end‖"
+
+                -- Send the temperature to chat via the rat jacuzzi overlord commands.
+                Timer.Wait(function ()
+                        HF.DMClient(CharacterClient, Report)  
+                end, 1000)     
+        end
+end

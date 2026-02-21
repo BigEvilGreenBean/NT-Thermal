@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Conversations identifier="sonarconversations" Language="English">
+  <!-- Hypothermia -->
+  <Conversation line="It's a little cold over here!" speaker="0" flags="HypoLow" />
+  <Conversation line="Can we afford a Heater?" speaker="0" flags="HypoLow" speakertags="crazy,joker"/>
+  <Conversation line="My face is numb!" speaker="0" flags="HypoLow" />
+  <Conversation line="Feels good to bask in the abscence of heat!" speaker="0" flags="HypoLow" speakertags="professional,tough"/>
+
+  <Conversation line="I can't feel . . ." speaker="0" flags="HypoMed" />
+  <Conversation line="My legs . . . ar- free-zing." speaker="0" flags="HypoLow" />
+  <Conversation line="It feels great, this temperature ain't nothing!" speaker="0" flags="HypoLow" speakertags="professional,tough"/>
+  <Conversation line="Help me . . . I'm cold." speaker="0" flags="HypoLow" />
+  <Conversation line="It's . . . over." speaker="0" flags="HypoLow" />
+
+  <Conversation line=" . . . hel- . . . p" speaker="0" flags="HypoHigh" />
+  <Conversation line="Hypothermia? Never heard of 'em." speaker="0" flags="HypoHigh" speakertags="professional,tough"/>
+
+  <!-- Frostbite -->
+  <Conversation line="My arm's a bit off today." speaker="0" flags="FBD1" />
+  <Conversation line="Wow, got some tingles." speaker="0" flags="FBD1" speakertags="crazy,joker"/>
+
+  <Conversation line="I can't feel my hand." speaker="0" flags="FBD2" />
+  <Conversation line="My legs . . ." speaker="0" flags="FBD2" />
+
+  <Conversation line=". . ." speaker="0" flags="FBD3" />
+
+  <!-- Hyperthermia -->
+  <Conversation line="Sweating over here!" speaker="0" flags="HyperLow" />
+  <Conversation line="Got some heat to it!" speaker="0" flags="HyperLow" />
+  <Conversation line="Could use some water!" speaker="0" flags="HyperLow" />
+  
+  <Conversation line="Mh- my, chest is hurting a bit." speaker="0" flags="HyperMed" />
+  <Conversation line="Just, give me ... a second." speaker="0" flags="HyperMed" />
+
+  <Conversation line="I- just ... need to- sleep." speaker="0" flags="HyperHigh" />
+  <Conversation line="Heat ain't nothing but a mentality." speaker="0" flags="HyperHigh" speakertags="professional,tough"/>
+  
+<Conversations/>
