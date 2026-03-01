@@ -2,7 +2,7 @@
 -- Set up dictonary
 NTTHERM = {}
 NTTHERM.Name = "Thermal"
-NTTHERM.Version = "1.3.6h43"
+NTTHERM.Version = "1.3.6h48"
 NTTHERM.VersionNum = 000000001
 NTTHERM.MinNTVersion = "A1.12.1"
 NTTHERM.MinNTVersionNum = 01120100
@@ -25,11 +25,7 @@ Timer.Wait(function ()
 				end
 			end
 		end)
-		NTTHERM.UsingRoboTrauma = NTRT -- Used to determine if Robotrauma remake is on and balling.
 		NTTHERM.UsingEnhancedReactors = EnhancedReactors -- Used to determine if enhanced reactors is on.
-		if NTTHERM.UsingRoboTrauma ~= nil then
-			THERMCompat.SetUpRoboCompat()
-		end
 		if NTTHERM.UsingEnhancedReactors ~= nil then
 			Timer.Wait(function()
     			THERMCompat.SetUpEnhancedReactors()

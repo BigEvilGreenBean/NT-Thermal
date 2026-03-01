@@ -698,7 +698,11 @@ NTTHERM.UpdateAfflictions = {
 				end
 				if TorsoTemp > HyperthermiaLevel * NTTHERM.ExtremeHyperthermiaScaling * 1.05 then
 					c.afflictions.heat_stroke.strength = c.afflictions.heat_stroke.strength + (1 * NT.Deltatime)
-					HF.AddAffliction(c.character, "huskinfection", -5 * NT.Deltatime, c.character) -- EXTERMINATE THE BITCH ASS HUSK. JUSTICE FOR ARTIE DOOLITTLE. THOSE BASTARDS SLIMED HIM OUT. God speed artie, love you.
+					HF.AddAffliction(c.character, "huskinfection", -10 * NT.Deltatime, c.character) -- EXTERMINATE THE BITCH ASS HUSK. JUSTICE FOR ARTIE DOOLITTLE. THOSE BASTARDS SLIMED HIM OUT. God speed artie, love you.
+					-- NT Symbiote compat:
+					if HF.HasAffliction(c.character, "surgery_huskhealth", 1) then
+						HF.AddAffliction(c.character, "surgery_huskhealth", -10 * NT.Deltatime, c.character)
+					end
 				end
 				if TorsoTemp > HyperthermiaLevel * NTTHERM.ExtremeHyperthermiaScaling * 1.2 then
 					c.afflictions.cerebralhypoxia.strength = c.afflictions.cerebralhypoxia.strength + Death
@@ -898,11 +902,11 @@ NTTHERM.UpdateAfflictions = {
 				-- Internal Heater Check
 				local Index = IndexedSuits[tostring(DivingSuit.Prefab.Identifier)] or IndexedSuits[tostring(DivingSuit.Prefab.VariantOf)] or 1
 				-- Suit Compatibility Mode is on
-				if NTConfig.Get("SuitCompatiblityMode", false) then
+				if NTConfig.Get("SuitCompatiblityMode", false) or (NTConfig.Get("BotSuitSafteyMode", true) and c.character.IsBot)then
 					c.afflictions[i].strength = c.afflictions[i].strength + (5 * NT.Deltatime)
 					return
-				end
-				if (DivingSuit.HasTag("thermal") or (Index ~= 1 and DivingSuit.Prefab.VariantOf ~= "" and DivingSuit.Prefab.VariantOf.HasTag("thermal"))) and DivingSuit.OwnInventory.GetItemAt(Index) ~= nil and DivingSuit.OwnInventory.GetItemAt(Index).Condition > 1 then
+
+				elseif (DivingSuit.HasTag("thermal") or (Index ~= 1 and DivingSuit.Prefab.VariantOf ~= "" and DivingSuit.Prefab.VariantOf.HasTag("thermal"))) and DivingSuit.OwnInventory.GetItemAt(Index) ~= nil and DivingSuit.OwnInventory.GetItemAt(Index).Condition > 1 then
 					local BatteryCell = c.character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).OwnInventory.GetItemAt(Index)
 					if BatteryCell.Condition > 1 then
 						BatteryCell.Condition = BatteryCell.Condition - BatteryConsumption
@@ -911,6 +915,7 @@ NTTHERM.UpdateAfflictions = {
 					end
 					c.afflictions[i].strength = 0
 					return
+
 				-- External Heater Check
 				elseif Bag ~= nil and Bag.Prefab.Identifier == "esh" and Bag.OwnInventory.GetItemAt(0) ~= nil and Bag.OwnInventory.GetItemAt(0).Condition > 1 then
 					local BatteryCell = Bag.OwnInventory.GetItemAt(0)
@@ -921,6 +926,7 @@ NTTHERM.UpdateAfflictions = {
 					end
 					c.afflictions[i].strength = 0
 					return
+
 				-- ExceptedSuits
 				elseif ExceptedSuits[tostring(DivingSuit.Prefab.Identifier)] ~= nil then
 					local HeaterIndex = ExceptedSuits[tostring(DivingSuit.Prefab.Identifier)].index
@@ -938,10 +944,11 @@ NTTHERM.UpdateAfflictions = {
 				end
 				c.afflictions[i].strength = 0
 				return
+
 			-- Immersive Diving Gear compat (Yes this is basically duplicated code, you're welcome.)
 			elseif c.character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes) ~= nil
 			 	and THERM.ImmersiveDivingGearEquipped(c.character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes),c.character.Inventory.GetItemInLimbSlot(InvSlotType.InnerClothes)) then
-				if NTConfig.Get("SuitCompatiblityMode", false) then
+				if NTConfig.Get("SuitCompatiblityMode", false) or (NTConfig.Get("BotSuitSafteyMode", true) and c.character.IsBot) then
 					c.afflictions[i].strength = c.afflictions[i].strength + (5 * NT.Deltatime)
 					return
 				elseif DivingSuit.OwnInventory ~= nil and DivingSuit.OwnInventory.GetItemAt(0) ~= nil and DivingSuit.OwnInventory.GetItemAt(0).Condition > 1 then
