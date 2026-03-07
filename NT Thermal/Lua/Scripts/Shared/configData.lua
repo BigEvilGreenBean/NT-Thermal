@@ -62,6 +62,13 @@ NTTHERM.ConfigData = {
 		type = "float",
 		description = "Multiplies incoming external temperature changes by this value. Water, Fire etc.",
 	},
+	HeaterBatteryConsumption = {
+		name = "Heater Battery Consumption",
+		default = 0.2,
+		range = {0, 1},
+		type = "float",
+		description = "How much of a heater's battery's condition is used per second."
+	},
 	SuitCompatiblityMode = { name = "Suit Compatibility Mode", default = false, type = "bool", description = "This makes all suits heated by default, rather than using batteries or external heaters. This should be used only when needed and a patch isn't out." },
 	BotSuitSafteyMode = { name = "Bot Suit Compatibility Mode", default = true, type = "bool", description = "This makes all suits worn by a bot heated. Useful so you don't have to babysit them."},
 	HeatTransferToggle = { name = "Fire Transfers Heat", default = true, type = "bool", description = "This setting allows heat to transfer between hulls in a submarine. This should be left on for the intended experience." }
