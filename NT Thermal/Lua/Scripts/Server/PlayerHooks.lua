@@ -12,7 +12,7 @@ Hook.Add("NTTHERM.CustomInWater", "CustomInWater", function (effect, deltaTime, 
                 if target ~= nil and target.IsHuman and target.IsDead ~= true and target.InWater ~= true and target.CurrentHull ~= nil then
                         -- Fetch the player table once.
                         local CharacterTable = THERM.GetCharacter(target.ID,target)
-                        if CharacterTable ~= nil then
+                        if CharacterTable ~= nil  and not (NTConfig.Get("BotTempIgnoreMode", true) and target.IsBot) then
                                 -- Check to see if the last calculated water volume hull is different from the current water volume hull, if it is then calculate for the rat jacuzzi overlord. Or, if the y position is different.
                                 if (CharacterTable.LastHullWaterVolume ~= target.CurrentHull.WaterVolume)
                                 or (target.CurrentHull.WaterVolume > 0 and (math.floor(CharacterTable.LastStoredPlayerY) ~= math.floor(target.position.Y))) then
@@ -65,7 +65,7 @@ end)
 Hook.Add("NTTHERM.InWater", "InWater", function (effect, deltaTime, item, targets, worldPosition, element)
         
         for h, target in pairs(targets) do
-                if target ~= nil and target.IsHuman and target.IsDead ~= true and target.InWater then
+                if target ~= nil and target.IsHuman and target.IsDead ~= true and target.InWater and not (NTConfig.Get("BotTempIgnoreMode", true) and target.IsBot) then
                         local CharacterTable = THERM.GetCharacter(target.ID,target)
                         if CharacterTable ~= nil then
                                 CharacterTable.LimbWaterValues.HeadV = 1
@@ -87,7 +87,7 @@ end)
 
 Hook.Add("NTTHERM.OnFire", "OnFire", function (effect, deltaTime, item, targets, worldPosition, element)
         for h, target in pairs(targets) do
-                if target ~= nil and target.IsHuman and target.IsDead ~= true then
+                if target ~= nil and target.IsHuman and target.IsDead ~= true and not (NTConfig.Get("BotTempIgnoreMode", true) and target.IsBot) then
                         local CharacterTable = THERM.GetCharacter(target.ID,target)
                         if CharacterTable ~= nil then
                                 for index, value in pairs(CharacterTable.OnFire) do

@@ -19,10 +19,12 @@ Timer.Wait(function ()
         NTC.RegisterExpansion(NTTHERM)
 		NTC.AddPreHumanUpdateHook(function (character) -- Used to freeze patients in stasis. Since limbs dont update when stasis is on.
 			if HF.GetAfflictionStrength(character, "stasis", 0) > 0 and HF.GetAfflictionStrength(character, "givetemp", 0) > 0 then
+				if not (NTConfig.Get("BotTempIgnoreMode", true) and character.IsBot) then
 				for index, limb in pairs({LimbType.Head,LimbType.Torso,LimbType.RightArm,LimbType.LeftArm,LimbType.LeftLeg,LimbType.RightLeg}) do
 					local LimbTemp = HF.GetAfflictionStrengthLimb(character, limb, "ntt_temperature", 0)
 					HF.AddAfflictionLimb(character, "ntt_temperature", limb,((-.05 * ((LimbTemp/2)/(NTConfig.Get("NewHypothermiaLevel", 36)))) * NT.Deltatime), character)
 				end
+			end
 			end
 		end)
 		NTTHERM.UsingEnhancedReactors = EnhancedReactors -- Used to determine if enhanced reactors is on.

@@ -179,7 +179,7 @@ NTTHERM.UpdateLimbAfflictions = {
 		update = function(c, limbaff, i, type)
 			if limbaff[i].strength > 0 then
 				if THERM.GetCharacter(c.character.ID) ~= nil
-					-- If the character is a bot with the safety suit config on, do not mess with temperature regardless of suit
+					-- If the character is a bot with the temp ignore config on, don't change the temperature
 					and not (NTConfig.Get("BotTempIgnoreMode", true) and c.character.IsBot) then
 					local NormalBodyTemp = FetchConfigStats().NormalBodyTemp
 					local HypothermiaLevel = FetchConfigStats().HypothermiaLevel
@@ -298,11 +298,14 @@ NTTHERM.UpdateLimbAfflictions = {
 			local MaxWarmingTemp = FetchOtherStats().MaxWarmingTemp
 			-- Warm up skin.
 			if limbaff[i].strength > 0 then
+				-- If the character is a bot with the temp ignore config on, don't change the temperature
+				if not (NTConfig.Get("BotTempIgnoreMode", true) and c.character.IsBot) then
 				limbaff.ntt_temperature.strength = limbaff.ntt_temperature.strength 
 					+ (WarmingAbility
 					/(limbaff.ntt_temperature.strength/MaxWarmingTemp)
 					/WarmthScaling 
 					* NT.Deltatime)
+				end
 				limbaff[i].strength = limbaff[i].strength - 1.7 * NT.Deltatime
 				if type == LimbType.Torso and c.afflictions.internalbleeding.strength > 0 then
 					c.afflictions.internalbleeding.strength = c.afflictions.internalbleeding.strength
@@ -321,11 +324,14 @@ NTTHERM.UpdateLimbAfflictions = {
 			-- over time skin temperature goes up again
 			if limbaff[i].strength > 0 then
 				limbaff[i].strength = limbaff[i].strength - 1.7 * NT.Deltatime
+				-- If the character is a bot with the temp ignore config on, don't change the temperature
+				if not (NTConfig.Get("BotTempIgnoreMode", true) and c.character.IsBot) then
 				limbaff.ntt_temperature.strength = limbaff.ntt_temperature.strength 
 					+ ((CoolingAbility
 					/(MaxCoolingTemp/limbaff.ntt_temperature.strength))
 					* CoolScaling  
 					* NT.Deltatime)
+				end
 			end
 			-- iced effects
 			if limbaff[i].strength > 0 then
@@ -874,6 +880,7 @@ NTTHERM.UpdateAfflictions = {
 			,["ek_armored_hardsuit2_paintbandit"] = {valid = true, index = 1},["ek_armored_hardsuit2_paintmercenary"] = {valid = true, index = 1}, -- EK
 			['exosuitplayerPA'] = {valid = true, index = 1},['exosuitPA'] = {valid = true, index = 1},["piratedivingsuitmakeshift"] = {valid = true,index = 0}, -- Dynamic Europa
 			['scp_combathardsuit'] = {valid = true, index = 1}} -- EA
+			local ExceptionsToNotUSE = {["stasisbag"] = false}
 			local IndexedSuits = {["pucs"] = 2} -- Used for suits that have extra storage. I.E pucs.
 			local HypothermiaLevel = FetchConfigStats().HypothermiaLevel
 			if c.afflictions[i].strength > 0 then
@@ -900,49 +907,51 @@ NTTHERM.UpdateAfflictions = {
 			local DivingSuit = c.character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes)
 			local Bag = c.character.Inventory.GetItemInLimbSlot(InvSlotType.Bag)
 			local BatteryConsumption = NTConfig.Get("HeaterBatteryConsumption") * NT.Deltatime
-			if c.character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes) ~= nil and (c.character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("diving") or c.character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("deepdivinglarge") or c.character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("deepdiving")) then
-				-- Internal Heater Check
-				local Index = IndexedSuits[tostring(DivingSuit.Prefab.Identifier)] or IndexedSuits[tostring(DivingSuit.Prefab.VariantOf)] or 1
-				-- Suit Compatibility Mode is on
-				if NTConfig.Get("SuitCompatiblityMode", false) or (NTConfig.Get("BotSuitSafteyMode", true) and c.character.IsBot)then
-					c.afflictions[i].strength = c.afflictions[i].strength + (5 * NT.Deltatime)
-					return
-
-				elseif (DivingSuit.HasTag("thermal") or (Index ~= 1 and DivingSuit.Prefab.VariantOf ~= "" and DivingSuit.Prefab.VariantOf.HasTag("thermal"))) and DivingSuit.OwnInventory.GetItemAt(Index) ~= nil and DivingSuit.OwnInventory.GetItemAt(Index).Condition > 1 then
-					local BatteryCell = c.character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).OwnInventory.GetItemAt(Index)
-					if BatteryCell.Condition > 1 then
-						BatteryCell.Condition = BatteryCell.Condition - BatteryConsumption
+			if DivingSuit ~= nil and (DivingSuit.HasTag("diving") or DivingSuit.HasTag("deepdivinglarge") or DivingSuit.HasTag("deepdiving")) then
+				if ExceptionsToNotUSE[tostring(DivingSuit.Prefab.Identifier)] == nil then
+					-- Internal Heater Check
+					local Index = IndexedSuits[tostring(DivingSuit.Prefab.Identifier)] or IndexedSuits[tostring(DivingSuit.Prefab.VariantOf)] or 1
+					-- Suit Compatibility Mode is on
+					if NTConfig.Get("SuitCompatiblityMode", false) or (NTConfig.Get("BotSuitSafteyMode", true) and c.character.IsBot)then
 						c.afflictions[i].strength = c.afflictions[i].strength + (5 * NT.Deltatime)
+						return
+
+					elseif (DivingSuit.HasTag("thermal") or (Index ~= 1 and DivingSuit.Prefab.VariantOf ~= "" and DivingSuit.Prefab.VariantOf.HasTag("thermal"))) and DivingSuit.OwnInventory.GetItemAt(Index) ~= nil and DivingSuit.OwnInventory.GetItemAt(Index).Condition > 1 then
+						local BatteryCell = c.character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).OwnInventory.GetItemAt(Index)
+						if BatteryCell.Condition > 1 then
+							BatteryCell.Condition = BatteryCell.Condition - BatteryConsumption
+							c.afflictions[i].strength = c.afflictions[i].strength + (5 * NT.Deltatime)
+							return
+						end
+						c.afflictions[i].strength = 0
+						return
+
+					-- External Heater Check
+					elseif Bag ~= nil and Bag.Prefab.Identifier == "esh" and Bag.OwnInventory.GetItemAt(0) ~= nil and Bag.OwnInventory.GetItemAt(0).Condition > 1 then
+						local BatteryCell = Bag.OwnInventory.GetItemAt(0)
+						if BatteryCell ~= nil and BatteryCell.Condition > 1 then
+							BatteryCell.Condition = BatteryCell.Condition - BatteryConsumption
+							c.afflictions[i].strength = c.afflictions[i].strength + (5 * NT.Deltatime)
+							return
+						end
+						c.afflictions[i].strength = 0
+						return
+
+					-- ExceptedSuits
+					elseif ExceptedSuits[tostring(DivingSuit.Prefab.Identifier)] ~= nil then
+						local HeaterIndex = ExceptedSuits[tostring(DivingSuit.Prefab.Identifier)].index
+						if HeaterIndex ~= 0 
+							and DivingSuit.OwnInventory.GetItemAt(HeaterIndex) 
+							and DivingSuit.OwnInventory.GetItemAt(HeaterIndex).Condition > 1 then
+							c.afflictions[i].strength = c.afflictions[i].strength + (5 * NT.Deltatime)
+							return
+						elseif HeaterIndex == 0 then
+							c.afflictions[i].strength = c.afflictions[i].strength + (5 * NT.Deltatime)
+							return
+						end
+						c.afflictions[i].strength = 0
 						return
 					end
-					c.afflictions[i].strength = 0
-					return
-
-				-- External Heater Check
-				elseif Bag ~= nil and Bag.Prefab.Identifier == "esh" and Bag.OwnInventory.GetItemAt(0) ~= nil and Bag.OwnInventory.GetItemAt(0).Condition > 1 then
-					local BatteryCell = Bag.OwnInventory.GetItemAt(0)
-					if BatteryCell ~= nil and BatteryCell.Condition > 1 then
-						BatteryCell.Condition = BatteryCell.Condition - BatteryConsumption
-						c.afflictions[i].strength = c.afflictions[i].strength + (5 * NT.Deltatime)
-						return
-					end
-					c.afflictions[i].strength = 0
-					return
-
-				-- ExceptedSuits
-				elseif ExceptedSuits[tostring(DivingSuit.Prefab.Identifier)] ~= nil then
-					local HeaterIndex = ExceptedSuits[tostring(DivingSuit.Prefab.Identifier)].index
-					if HeaterIndex ~= 0 
-						and DivingSuit.OwnInventory.GetItemAt(HeaterIndex) 
-						and DivingSuit.OwnInventory.GetItemAt(HeaterIndex).Condition > 1 then
-						c.afflictions[i].strength = c.afflictions[i].strength + (5 * NT.Deltatime)
-						return
-					elseif HeaterIndex == 0 then
-						c.afflictions[i].strength = c.afflictions[i].strength + (5 * NT.Deltatime)
-						return
-					end
-					c.afflictions[i].strength = 0
-					return
 				end
 				c.afflictions[i].strength = 0
 				return
@@ -1087,12 +1096,15 @@ NTTHERM.UpdateBloodAfflictions = {
 			if c.afflictions[i].strength > 0 then
 				for index, limb in pairs(FetchOtherStats().LimbsToCheck) do
 					local Chilled = HF.Clamp(HF.GetAfflictionStrengthLimb(c.character, limb, "iced", 1)/50,1,2)
+					-- If the character is a bot with the temp ignore config on, don't change the temperature
+					if not (NTConfig.Get("BotTempIgnoreMode", true) and c.character.IsBot) then
 					HF.AddAfflictionLimb(c.character, "ntt_temperature", limb, 
 						TempIncrease
 						+ (MaxWarmingTemp/LimbStrength)/80 
 						* c.afflictions[i].strength/20 
 						/ Chilled
 						* NT.Deltatime)
+					end
 				end
 				-- Side effect of elevated_core_temperature.
 				if c.afflictions[i].strength > 30 then
