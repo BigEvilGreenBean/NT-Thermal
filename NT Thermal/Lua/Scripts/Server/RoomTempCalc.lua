@@ -2,7 +2,7 @@
 -- Used to store the temperature info of rooms and functions.
 THERMRoom = {}
 THERMRoom.Tick = 0
-THERMRoom.UpdateInterval = 50
+THERMRoom.UpdateInterval = NTConfig.Get("ThermalRoomCalcInterval", 50)
 THERMRoom.DeltaTime = THERMRoom.UpdateInterval/620
 THERMRoom.DefaultRoomTemp = 22
 THERMRoom.Rooms = {}
@@ -35,6 +35,7 @@ Hook.Add("think", "THERMRoom.update", function()
                 if THERMRoom.Rooms ~= nil and THERMRoom.Intiated then
                         THERMRoom.CalculateRoomTemp()
                 end
+                THERMRoom.UpdateInterval = NTConfig.Get("ThermalRoomCalcInterval", 50)
                 THERMRoom.Tick = THERMRoom.UpdateInterval
 	end
 end)

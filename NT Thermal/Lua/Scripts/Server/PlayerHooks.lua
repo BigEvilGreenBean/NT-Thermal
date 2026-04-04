@@ -5,6 +5,7 @@ local Result = {}
 local LimbsToCheck = {LimbType.Head,LimbType.Torso,LimbType.RightForearm,LimbType.RightLeg}
 local LimbsToCheck2 = {LimbType.Head,LimbType.Torso,LimbType.RightForearm,LimbType.LeftForearm,LimbType.RightLeg,LimbType.LeftLeg}
 -- Key set of Water Values.
+
 local WaterLimbValues = {"HeadV", "TorsoV", "RightArmV", "RightLegV"}
 Hook.Add("NTTHERM.CustomInWater", "CustomInWater", function (effect, deltaTime, item, targets, worldPosition, element)
         
@@ -50,7 +51,6 @@ Hook.Add("NTTHERM.CustomInWater", "CustomInWater", function (effect, deltaTime, 
                                         CharacterTable.LimbWaterValues.LeftLegV = 0
                                         CharacterTable.LimbWaterValues.RightLegV = 0
                                         THERM.RemoveWet(target)
-                                        
                                 end
                                 -- Remove wetness due to a suit being put on.
                                 if target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes) and (target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("diving") or target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("deepdivinglarge") or target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("deepdiving")) then
@@ -76,7 +76,7 @@ Hook.Add("NTTHERM.InWater", "InWater", function (effect, deltaTime, item, target
                                 CharacterTable.LimbWaterValues.RightLegV = 1
                                 if not (target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes) and (target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("diving") or target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("deepdivinglarge") or target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("deepdiving"))) then
                                         THERM.MakeWet(target,1)
-                                else
+                                else 
                                 THERM.RemoveWet(target)
                                 end
                         end

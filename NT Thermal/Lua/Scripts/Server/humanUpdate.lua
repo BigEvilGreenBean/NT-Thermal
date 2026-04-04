@@ -35,7 +35,8 @@ local function FetchConfigStats()
 		HypothermiaLevel = NTConfig.Get("NewHypothermiaLevel", 36),
 		HyperthermiaLevel = NTConfig.Get("NewHyperthermiaLevel", 39),
 		WarmingAbility = NTConfig.Get("NewWarmingAbility", .2),
-		DryingSpeed = NTConfig.Get("NewDryingSpeed", -.1)
+		DryingSpeed = NTConfig.Get("NewDryingSpeed", -.1),
+		PerformanceMode = NTConfig.Get("PerformanceMode",true)
 		}
 	return ConfigStats
 end
@@ -189,11 +190,11 @@ NTTHERM.UpdateLimbAfflictions = {
 			if limbaff[i].strength > 0 then
 
 				if CharacterTable ~= nil then
-					if CharacterTable.InCustomWater or RoomIsHot() or c.afflictions.bloodloss.strength > 0 or c.afflictions.sepsis.strength > 0 then -- We check to see if we need to update.
+					if CharacterTable.InCustomWater or c.character.InWater or RoomIsHot() or c.afflictions.bloodloss.strength > 0 or c.afflictions.sepsis.strength > 0 then -- We check to see if we need to update.
 						CharacterTable.TemperatureUpdate = true
 					end
 
-					if (CharacterTable.TemperatureUpdate or limbaff[i].strength ~= FetchConfigStats().NormalBodyTemp)
+					if (CharacterTable.TemperatureUpdate or HF.Round(limbaff[i].strength, 2) ~= FetchConfigStats().NormalBodyTemp) or not NTConfig.Get("PerformanceMode", true)
 						-- If the character is a bot with the temp ignore config on, don't change the temperature
 						and not (NTConfig.Get("BotTempIgnoreMode", true) and c.character.IsBot) then
 						local NormalBodyTemp = FetchConfigStats().NormalBodyTemp
@@ -254,6 +255,10 @@ NTTHERM.UpdateLimbAfflictions = {
 								elseif  limbaff[i].strength > HyperthermiaLevel * NTTHERM.MediumHyperthermiaScaling then
 									limbaff.heat_cramp.strength = limbaff.heat_cramp.strength + CalculateHeatCramp(type,c.character)
 								end
+								if type == LimbType.RightLeg then -- We tell the temp to stop.
+									CharacterTable.TemperatureUpdate = false
+								end
+
 							end
 						else
 							-- Give hypothermia
@@ -302,9 +307,6 @@ NTTHERM.UpdateLimbAfflictions = {
 			-- Set Temperature since the current is 0.
 			else
 				limbaff[i].strength = FetchConfigStats().NormalBodyTemp
-			end
-			if type == "RightLeg" then
-				CharacterTable.TemperatureUpdate = false
 			end
 		end,
 	},
@@ -369,7 +371,7 @@ NTTHERM.UpdateLimbAfflictions = {
 	wet = {
 		update = function(c, limbaff, i, type)
 			-- cool down skin.
-			if limbaff[i].strength > 0 then
+			if limbaff[i].strength > 1.1 then
 				THERM.ApplyTemperatureUpdate(c.character.ID)
 				local DryingSpeed = FetchConfigStats().DryingSpeed
 				local WetStrength = limbaff[i].strength

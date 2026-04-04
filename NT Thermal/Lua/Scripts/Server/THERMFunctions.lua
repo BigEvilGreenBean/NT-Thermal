@@ -331,7 +331,7 @@ THERM.MakeLimbWet = function (character, limb, watervalue, alreadychecked)
         elseif alreadychecked then
                 if not ((watervalue * -2) < HF.GetAfflictionStrengthLimb(character, limb, "wet", 0)) then
                         HF.SetAfflictionLimb(character, "wet", limb,
-                        watervalue * -2, character, HF.GetAfflictionStrengthLimb(character, limb, "wet", 0))    
+                        watervalue * -2, character, HF.GetAfflictionStrengthLimb(character, limb, "wet", 0))
                 end
         end
 end
