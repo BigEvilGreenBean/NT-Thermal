@@ -265,7 +265,7 @@ THERM.CalculateTemperature = function (limbwet,target,limb)
         end
         local Sepsis = function ()
                 if HF.GetAfflictionStrengthLimb(target, limb, "ntt_temperature", 0) < HyperthermiaLevel then
-                        return HF.GetAfflictionStrength(target, "sepsis", 0)/50
+                        return HF.GetAfflictionStrength(target, "sepsis", 0)/90
                 end
                 return 0 
         end
@@ -277,7 +277,7 @@ THERM.CalculateTemperature = function (limbwet,target,limb)
                 THERM.MakeLimbWet(target,limb,Water,false)
         end
         -- Heat Calculation
-        local Heat = HF.Clamp(RoomTemp - 1,0,10) + Sepsis()
+        local Heat = HF.Clamp(RoomTemp - 1,0,10) + .2
                 * (HF.BoolToNum(THERM.IsLimbCyber(target,limb),1) + 1)
                 * OnFire
                 /LimbClothResistance
@@ -285,6 +285,7 @@ THERM.CalculateTemperature = function (limbwet,target,limb)
                 * HF.Clamp((HF.GetAfflictionStrengthLimb(target, LimbType.Torso, "husksymbiosis", 0)/40),1,10)
                 / 20 -- Scaling feature
                 * NTConfig.Get("ETempScaling", 1.5)
+                + Sepsis()
                 * NT.Deltatime
         local Cold = ((((Water - BloodLoss()) 
                 * WaterMultipliers)
@@ -399,7 +400,8 @@ THERM.IntiateCharacterTemp = function(createdCharacter)
                             LastStoredSuit = nil,
                             LastStoredInnerSuit = nil,
                             DivingSuitBurnRes = 1,
-                            InnerClothingBurnRes = 1}
+                            InnerClothingBurnRes = 1,
+                            TemperatureUpdate = false}
 	THERMCharacters[createdCharacter.ID] = new_character
 end
 
@@ -429,4 +431,17 @@ end
 THERM.IsRobot = function(character)
     -- return true
     return not character.IsFemale and not character.IsMale
+end
+
+-- We use this to determine if the suit is a diving suit.
+THERM.IsDivingSuit = function(DivingSuit)
+        return DivingSuit.HasTag("diving") or DivingSuit.HasTag("deepdivinglarge") or DivingSuit.HasTag("deepdiving")
+end
+
+-- We use this to optimize the shit out of temperature calculations.
+THERM.ApplyTemperatureUpdate = function (CharacterID)
+        local CharacterTable = THERM.GetCharacter(CharacterID)
+        if CharacterTable ~= nil then
+                CharacterTable.TemperatureUpdate = true
+        end
 end

@@ -90,6 +90,7 @@ Hook.Add("NTTHERM.OnFire", "OnFire", function (effect, deltaTime, item, targets,
                 if target ~= nil and target.IsHuman and target.IsDead ~= true and not (NTConfig.Get("BotTempIgnoreMode", true) and target.IsBot) then
                         local CharacterTable = THERM.GetCharacter(target.ID,target)
                         if CharacterTable ~= nil then
+                                THERM.ApplyTemperatureUpdate(target.ID)
                                 for index, value in pairs(CharacterTable.OnFire) do
                                         CharacterTable.OnFire[index] = 4
                                 end
@@ -100,9 +101,11 @@ end)
 
 -- Prints out Thermal data.
 Hook.Add("chatMessage", "Debug", function (message, sender)
+
         if message == "THERMALDebug(BLAHBLAHBLAHDEBUGDEBUG123456789)" then
-                print("Beginning Debug of NT THERMAL.")
+                print("Beginning Debug of NT THERMAL.\n")
                 for index, character in pairs(THERMCharacters) do
+                        print("\n")
                         if character ~= nil then
                                 print("Entry " .. tostring(index) .. ": " .. character.Character.Name)
                                 for index2, field in character do
@@ -114,6 +117,7 @@ Hook.Add("chatMessage", "Debug", function (message, sender)
                 end
                 print("Debug Over.")
         end
+
         if message == "THERMALRoomTemp(BLAHBLAHBLAHDEBUGDEBUG123456789)" then
                 if THERMRoom.Rooms ~= nil then
                         for index2, room in pairs(THERMRoom.Rooms) do
