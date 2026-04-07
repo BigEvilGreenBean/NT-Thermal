@@ -194,113 +194,120 @@ NTTHERM.UpdateLimbAfflictions = {
 						CharacterTable.TemperatureUpdate = true
 					end
 
-					if (CharacterTable.TemperatureUpdate or HF.Round(limbaff[i].strength, 2) ~= FetchConfigStats().NormalBodyTemp) or not NTConfig.Get("PerformanceMode", true)
-						-- If the character is a bot with the temp ignore config on, don't change the temperature
-						and not (NTConfig.Get("BotTempIgnoreMode", true) and c.character.IsBot) then
+					if (CharacterTable.TemperatureUpdate or limbaff[i].strength ~= FetchConfigStats().NormalBodyTemp) then
 						local NormalBodyTemp = FetchConfigStats().NormalBodyTemp
-						local HypothermiaLevel = FetchConfigStats().HypothermiaLevel
-						local HyperthermiaLevel = FetchConfigStats().HyperthermiaLevel
-						local AffectBodyCold = FetchOtherStats().AffectBodyCold
-						local AffectBodyWarm = FetchOtherStats().AffectBodyWarm
-						local TorsoTempStrength = HF.GetAfflictionStrengthLimb(c.character, LimbType.Torso, "ntt_temperature", 0)
-						-- CompromisedTemp is the value at which the body will struggle to generate it's own heat or cool down. (You're cooked essentially.)
-						local CompromisedColdTemp = HypothermiaLevel/1.5
-						local CompromisedHotTemp = HyperthermiaLevel*1.5
-						local CompromisedTempVal = 1
-						-- Calculate new temperature
-						limbaff[i].strength = limbaff[i].strength + THERM.CalculateTemperature(limbaff.wet.strength,c.character,type)
-						-- Calculate CompromisedTempVal: Being too low or high in temperature will make the body slower to reach normal body temp.
-						-- The division by three is a scaling feature, i'm too lazy to make it a variable.
-						if limbaff[i].strength < CompromisedColdTemp then
-							CompromisedTempVal = (CompromisedColdTemp/limbaff[i].strength)/3
-						-- The division by five is a scaling feature as well, same as last one.
-						elseif limbaff[i].strength > CompromisedHotTemp then
-							CompromisedTempVal = (limbaff[i].strength/CompromisedHotTemp)/5
-						end
-
-							-- Make torso colder or warmer based off limb temp being lower then certain point.
-						if type ~= LimbType.Torso then 
-							-- Slight optimization, if the temps are the same don't calculate.
-							if TorsoTempStrength ~= limbaff[i].strength then
-								local TempDiffs = ApplyHeatDifference(c.character,TorsoTempStrength,LimbType.Torso,limbaff[i].strength,type)
-								HF.AddAfflictionLimb(c.character, "ntt_temperature", LimbType.Torso, TempDiffs.ToLimbDiff, c.character)
-								limbaff[i].strength = limbaff[i].strength + TempDiffs.FromLimbDiff
+						-- If the character is a bot with the temp ignore config on or is under pressure stabilizer effect with config on, don't change the temperature
+						if not (NTConfig.Get("BotTempIgnoreMode", true) and c.character.IsBot)
+						and not (NTConfig.Get("PressureStabilizerTemperature", true) and HF.GetAfflictionStrength(c.character, "pressurestabilized", 0) > 0) then
+							local HypothermiaLevel = FetchConfigStats().HypothermiaLevel
+							local HyperthermiaLevel = FetchConfigStats().HyperthermiaLevel
+							local AffectBodyCold = FetchOtherStats().AffectBodyCold
+							local AffectBodyWarm = FetchOtherStats().AffectBodyWarm
+							local TorsoTempStrength = HF.GetAfflictionStrengthLimb(c.character, LimbType.Torso, "ntt_temperature", 0)
+							-- CompromisedTemp is the value at which the body will struggle to generate it's own heat or cool down. (You're cooked essentially.)
+							local CompromisedColdTemp = HypothermiaLevel/1.5
+							local CompromisedHotTemp = HyperthermiaLevel*1.5
+							local CompromisedTempVal = 1
+							-- Calculate new temperature
+							limbaff[i].strength = limbaff[i].strength + THERM.CalculateTemperature(limbaff.wet.strength,c.character,type)
+							-- Calculate CompromisedTempVal: Being too low or high in temperature will make the body slower to reach normal body temp.
+							-- The division by three is a scaling feature, i'm too lazy to make it a variable.
+							if limbaff[i].strength < CompromisedColdTemp then
+								CompromisedTempVal = (CompromisedColdTemp/limbaff[i].strength)/3
+							-- The division by five is a scaling feature as well, same as last one.
+							elseif limbaff[i].strength > CompromisedHotTemp then
+								CompromisedTempVal = (limbaff[i].strength/CompromisedHotTemp)/5
 							end
-							if type == LimbType.Head then
-								if limbaff[i].strength < HypothermiaLevel and HF.GetAfflictionStrength(c.character, "husksymbiosis", 0) == 0 then
-									HF.SetAffliction(c.character, "overlay_ice", HF.Clamp(5/limbaff[i].strength*150,0,60))
-								elseif limbaff[i].strength > HyperthermiaLevel then
-									HF.SetAffliction(c.character, "overlay_fire", HF.Clamp(limbaff[i].strength/NormalBodyTemp*50,0,100))
-								else
-									HF.SetAffliction(c.character, "overlay_ice", 0)
-									HF.SetAffliction(c.character, "overlay_fire", 0)
+
+								-- Make torso colder or warmer based off limb temp being lower then certain point.
+							if type ~= LimbType.Torso then 
+								-- Slight optimization, if the temps are the same don't calculate.
+								if TorsoTempStrength ~= limbaff[i].strength then
+									local TempDiffs = ApplyHeatDifference(c.character,TorsoTempStrength,LimbType.Torso,limbaff[i].strength,type)
+									HF.AddAfflictionLimb(c.character, "ntt_temperature", LimbType.Torso, TempDiffs.ToLimbDiff, c.character)
+									limbaff[i].strength = limbaff[i].strength + TempDiffs.FromLimbDiff
 								end
-								if limbaff[i].strength < 2 and HF.GetAfflictionStrength(c.character, "husksymbiosis", 0) == 0 then
-									c.afflictions.cerebralhypoxia.strength = c.afflictions.cerebralhypoxia.strength + (.05 * NT.Deltatime)
-								elseif limbaff[i].strength < HypothermiaLevel/NTTHERM.ExtremeHypothermiaScaling/1.5 and HF.GetAfflictionStrength(c.character, "husksymbiosis", 0) == 0 then
-									NTC.SetSymptomTrue(c.character, "sym_lightheadedness", 5)
-								elseif limbaff[i].strength > HyperthermiaLevel * NTTHERM.MediumHyperthermiaScaling then
-									NTC.SetSymptomTrue(c.character, "sym_fever", 5)
+								if type == LimbType.Head then
+									if limbaff[i].strength < HypothermiaLevel and HF.GetAfflictionStrength(c.character, "husksymbiosis", 0) == 0 then
+										HF.SetAffliction(c.character, "overlay_ice", HF.Clamp(5/limbaff[i].strength*150,0,60))
+									elseif limbaff[i].strength > HyperthermiaLevel then
+										HF.SetAffliction(c.character, "overlay_fire", HF.Clamp(limbaff[i].strength/NormalBodyTemp*50,0,100))
+									else
+										HF.SetAffliction(c.character, "overlay_ice", 0)
+										HF.SetAffliction(c.character, "overlay_fire", 0)
+									end
+									if limbaff[i].strength < 2 and HF.GetAfflictionStrength(c.character, "husksymbiosis", 0) == 0 then
+										c.afflictions.cerebralhypoxia.strength = c.afflictions.cerebralhypoxia.strength + (.05 * NT.Deltatime)
+									elseif limbaff[i].strength < HypothermiaLevel/NTTHERM.ExtremeHypothermiaScaling/1.5 and HF.GetAfflictionStrength(c.character, "husksymbiosis", 0) == 0 then
+										NTC.SetSymptomTrue(c.character, "sym_lightheadedness", 5)
+									elseif limbaff[i].strength > HyperthermiaLevel * NTTHERM.MediumHyperthermiaScaling then
+										NTC.SetSymptomTrue(c.character, "sym_fever", 5)
+									end
+								else
+									--FrostNip
+									if limbaff[i].strength < HypothermiaLevel/NTTHERM.MediumHypothermiaScaling 
+										and limbaff.frostnip.strength == 0 
+										and limbaff.d1_frostbite.strength == 0 
+										and limbaff.d2_frostbite.strength == 0 
+										and limbaff.d3_frostbite.strength == 0 
+										and not THERM.IsLimbCyber(c.character,type) 
+										and HF.GetAfflictionStrength(c.character, "husksymbiosis", 0) == 0 then
+										limbaff.frostnip.strength = 1
+									elseif  limbaff[i].strength > HyperthermiaLevel * NTTHERM.MediumHyperthermiaScaling then
+										limbaff.heat_cramp.strength = limbaff.heat_cramp.strength + CalculateHeatCramp(type,c.character)
+									end
+									if type == LimbType.RightLeg then -- We tell the temp to stop.
+										CharacterTable.TemperatureUpdate = false
+									end
+
 								end
 							else
-								--FrostNip
-								if limbaff[i].strength < HypothermiaLevel/NTTHERM.MediumHypothermiaScaling 
-									and limbaff.frostnip.strength == 0 
-									and limbaff.d1_frostbite.strength == 0 
-									and limbaff.d2_frostbite.strength == 0 
-									and limbaff.d3_frostbite.strength == 0 
-									and not THERM.IsLimbCyber(c.character,type) 
-									and HF.GetAfflictionStrength(c.character, "husksymbiosis", 0) == 0 then
-									limbaff.frostnip.strength = 1
-								elseif  limbaff[i].strength > HyperthermiaLevel * NTTHERM.MediumHyperthermiaScaling then
-									limbaff.heat_cramp.strength = limbaff.heat_cramp.strength + CalculateHeatCramp(type,c.character)
+								-- Give hypothermia
+								if limbaff[i].strength < HypothermiaLevel and HF.GetAfflictionStrength(c.character, "husksymbiosis", 0) == 0 then
+									c.afflictions.hypothermia.strength = 100
+									if limbaff[i].strength < HypothermiaLevel * NTTHERM.ExtremeHypothermiaScaling then
+									NTC.SetSymptomTrue(c.character, "dyspnea", 2)
+									end
+								-- Give hyperthermia
+								elseif limbaff[i].strength > HyperthermiaLevel then
+									c.afflictions.hyperthermia.strength = 100
+									-- Get burnt nerd
+									if limbaff[i].strength > HyperthermiaLevel * NTTHERM.ExtremeHyperthermiaScaling * 1.05 then
+										limbaff.burn.strength = limbaff.burn.strength + (.5 * NT.Deltatime)
+									elseif  limbaff[i].strength > HyperthermiaLevel * NTTHERM.ExtremeHyperthermiaScaling * 1.3 then
+										limbaff.burn.strength = limbaff.burn.strength + (2 * NT.Deltatime)
+									end
 								end
-								if type == LimbType.RightLeg then -- We tell the temp to stop.
-									CharacterTable.TemperatureUpdate = false
-								end
-
+								-- Transfer heat from body to rest of character for accurate gameplay provided by thou Rat Jaccuzi
+								limbaff[i].strength = limbaff[i].strength + TransferBodyHeat(c.character,TorsoTempStrength)
 							end
-						else
-							-- Give hypothermia
-							if limbaff[i].strength < HypothermiaLevel and HF.GetAfflictionStrength(c.character, "husksymbiosis", 0) == 0 then
-								c.afflictions.hypothermia.strength = 100
-								if limbaff[i].strength < HypothermiaLevel * NTTHERM.ExtremeHypothermiaScaling then
-								NTC.SetSymptomTrue(c.character, "dyspnea", 2)
-								end
-							-- Give hyperthermia
-							elseif limbaff[i].strength > HyperthermiaLevel then
-								c.afflictions.hyperthermia.strength = 100
-								-- Get burnt nerd
-								if limbaff[i].strength > HyperthermiaLevel * NTTHERM.ExtremeHyperthermiaScaling * 1.05 then
-									limbaff.burn.strength = limbaff.burn.strength + (.5 * NT.Deltatime)
-								elseif  limbaff[i].strength > HyperthermiaLevel * NTTHERM.ExtremeHyperthermiaScaling * 1.3 then
-									limbaff.burn.strength = limbaff.burn.strength + (2 * NT.Deltatime)
-								end
-							end
-							-- Transfer heat from body to rest of character for accurate gameplay provided by thou Rat Jaccuzi
-							limbaff[i].strength = limbaff[i].strength + TransferBodyHeat(c.character,TorsoTempStrength)
-						end
 
-						-- Passive temperature reactions
-						-- Warm up if cold.
-						local RoomTempGain = GetRoomTempAddition(c.character,type)
-						local AmputatedLimbValue = HF.BoolToNum(NT.LimbIsAmputated(c.character, type),1) + 1
-						if limbaff[i].strength < NormalBodyTemp then
-							limbaff[i].strength = HF.Clamp(limbaff[i].strength
-								+ RoomTempGain + (.05
-									/CompromisedTempVal
-										*(c.afflictions.bloodpressure.strength
-											/100)/AmputatedLimbValue
-												* NT.Deltatime),1,NormalBodyTemp)
-						-- Cool down if warm
-						elseif limbaff[i].strength > NormalBodyTemp then
-							limbaff[i].strength = HF.Clamp(limbaff[i].strength 
-									- RoomTempGain - (.05
+							-- Passive temperature reactions
+							-- Warm up if cold.
+							local RoomTempGain = GetRoomTempAddition(c.character,type)
+							local AmputatedLimbValue = HF.BoolToNum(NT.LimbIsAmputated(c.character, type),1) + 1
+							if limbaff[i].strength < NormalBodyTemp then
+								limbaff[i].strength = HF.Clamp(limbaff[i].strength
+									+ RoomTempGain + (.05
 										/CompromisedTempVal
 											*(c.afflictions.bloodpressure.strength
-												/100)/AmputatedLimbValue 
-												* NT.Deltatime),NormalBodyTemp,101)
-						end 
+												/100)/AmputatedLimbValue
+													* NT.Deltatime),1,NormalBodyTemp)
+							-- Cool down if warm
+							elseif limbaff[i].strength > NormalBodyTemp then
+								limbaff[i].strength = HF.Clamp(limbaff[i].strength 
+										- RoomTempGain - (.05
+											/CompromisedTempVal
+												*(c.afflictions.bloodpressure.strength
+													/100)/AmputatedLimbValue 
+													* NT.Deltatime),NormalBodyTemp,101)
+							end
+						else
+							-- If the character is a bot with the temp ignore config on or is under pressure stabilizer effect with config on, set the temperature to normal body temp
+							limbaff[i].strength = NormalBodyTemp
+							HF.SetAffliction(c.character, "overlay_ice", 0)
+							HF.SetAffliction(c.character, "overlay_fire", 0)
+						end
 					end
 				end
 				return
@@ -320,8 +327,9 @@ NTTHERM.UpdateLimbAfflictions = {
 			-- Warm up skin.
 			if limbaff[i].strength > 0 then
 				THERM.ApplyTemperatureUpdate(c.character.ID)
-				-- If the character is a bot with the temp ignore config on, don't change the temperature
-				if not (NTConfig.Get("BotTempIgnoreMode", true) and c.character.IsBot) then
+				-- If the character is a bot with the temp ignore config on or is under pressure stabilizer effect with config on, don't change the temperature
+				if not (NTConfig.Get("BotTempIgnoreMode", true) and c.character.IsBot)
+				and not (NTConfig.Get("PressureStabilizerTemperature", true) and HF.GetAfflictionStrength(c.character, "pressurestabilized", 0) > 0) then
 				limbaff.ntt_temperature.strength = limbaff.ntt_temperature.strength 
 					+ (WarmingAbility
 					/(limbaff.ntt_temperature.strength/MaxWarmingTemp)
@@ -347,8 +355,9 @@ NTTHERM.UpdateLimbAfflictions = {
 			if limbaff[i].strength > 0 then
 				THERM.ApplyTemperatureUpdate(c.character.ID)
 				limbaff[i].strength = limbaff[i].strength - 1.7 * NT.Deltatime
-				-- If the character is a bot with the temp ignore config on, don't change the temperature
-				if not (NTConfig.Get("BotTempIgnoreMode", true) and c.character.IsBot) then
+				-- If the character is a bot with the temp ignore config on or is under pressure stabilizer effect with config on, don't change the temperature
+				if not (NTConfig.Get("BotTempIgnoreMode", true) and c.character.IsBot)
+				and not (NTConfig.Get("PressureStabilizerTemperature", true) and HF.GetAfflictionStrength(c.character, "pressurestabilized", 0) > 0) then
 				limbaff.ntt_temperature.strength = limbaff.ntt_temperature.strength 
 					+ ((CoolingAbility
 					/(MaxCoolingTemp/limbaff.ntt_temperature.strength))
@@ -372,18 +381,26 @@ NTTHERM.UpdateLimbAfflictions = {
 		update = function(c, limbaff, i, type)
 			-- cool down skin.
 			if limbaff[i].strength > 1.1 then
-				THERM.ApplyTemperatureUpdate(c.character.ID)
-				local DryingSpeed = FetchConfigStats().DryingSpeed
-				local WetStrength = limbaff[i].strength
-				local WetTempAddition = .1
-				if limbaff.bandaged.strength > 0 then
-					limbaff.dirtybandage.strength = limbaff.dirtybandage.strength + (WetStrength/4 * NT.Deltatime)
-					limbaff.bandaged.strength = limbaff.bandaged.strength - (WetStrength/4 * NT.Deltatime)
+				-- If the character is a bot with the temp ignore config on or is under pressure stabilizer effect with config on, don't change the temperature
+				if not (NTConfig.Get("BotTempIgnoreMode", true) and c.character.IsBot)
+				and not (NTConfig.Get("PressureStabilizerTemperature", true) and HF.GetAfflictionStrength(c.character, "pressurestabilized", 0) > 0) then
+					THERM.ApplyTemperatureUpdate(c.character.ID)
+					local DryingSpeed = FetchConfigStats().DryingSpeed
+					local WetStrength = limbaff[i].strength
+					local WetTempAddition = .1
+					if limbaff.bandaged.strength > 0 then
+						limbaff.dirtybandage.strength = limbaff.dirtybandage.strength + (WetStrength/4 * NT.Deltatime)
+						limbaff.bandaged.strength = limbaff.bandaged.strength - (WetStrength/4 * NT.Deltatime)
+					end
+					limbaff.ntt_temperature.strength = limbaff.ntt_temperature.strength 
+						+ (.05
+							* (WetStrength + WetTempAddition) 
+								* NT.Deltatime)
+				else
+					-- If the character is a bot with the temp ignore config on or is under pressure stabilizer effect with config on, remove the affliction
+					limbaff[i].strength = 0
+					THERM.ApplyTemperatureUpdate(c.character.ID)
 				end
-				limbaff.ntt_temperature.strength = limbaff.ntt_temperature.strength 
-					+ (.05
-						* (WetStrength + WetTempAddition) 
-							* NT.Deltatime)
 			end
 		end,
 	},
@@ -392,6 +409,11 @@ NTTHERM.UpdateLimbAfflictions = {
 	frostnip = {
 		update = function(c, limbaff, i, type)
 			if limbaff[i].strength > 0 and limbaff.d1_frostbite.strength == 0 and not THERM.IsLimbCyber(c.character,type) and HF.GetAfflictionStrength(c.character, "husksymbiosis", 0) == 0 then
+				-- If the character is a bot with the temp ignore config on or is under pressure stabilizer effect with config on, remove the affliction
+				if (NTConfig.Get("BotTempIgnoreMode", true) and c.character.IsBot)
+				or (NTConfig.Get("PressureStabilizerTemperature", true) and HF.GetAfflictionStrength(c.character, "pressurestabilized", 0) > 0) then
+					limbaff[i].strength = 0
+				end
 				local LimbTemp = limbaff.ntt_temperature.strength
 				local HypothermiaLevel = FetchConfigStats().HypothermiaLevel
 				if LimbTemp < HypothermiaLevel/NTTHERM.MediumHypothermiaScaling then
@@ -415,6 +437,11 @@ NTTHERM.UpdateLimbAfflictions = {
 				c.stats.speedmultiplier = c.stats.speedmultiplier * 0.90 -- 10% slow per limb
 				NTC.SetSymptomTrue(c.character, "sym_pins_needles", 5)
 				limbaff.frostnip.strength = 0
+				-- If the character is a bot with the temp ignore config on or is under pressure stabilizer effect with config on, remove the affliction
+				if (NTConfig.Get("BotTempIgnoreMode", true) and c.character.IsBot)
+				or (NTConfig.Get("PressureStabilizerTemperature", true) and HF.GetAfflictionStrength(c.character, "pressurestabilized", 0) > 0) then
+					limbaff[i].strength = 0
+				end
 				local LimbTemp = limbaff.ntt_temperature.strength
 				local HypothermiaLevel = FetchConfigStats().HypothermiaLevel
 				if LimbTemp < HypothermiaLevel/NTTHERM.ExtremeHypothermiaScaling then
@@ -442,6 +469,11 @@ NTTHERM.UpdateLimbAfflictions = {
 				c.stats.speedmultiplier = c.stats.speedmultiplier * 0.80 -- 20% slow per limb
 				NTC.SetSymptomTrue(c.character, "sym_pins_needles", 5)
 				limbaff.d1_frostbite.strength = 0
+				-- If the character is a bot with the temp ignore config on or is under pressure stabilizer effect with config on, remove the affliction
+				if (NTConfig.Get("BotTempIgnoreMode", true) and c.character.IsBot)
+				or (NTConfig.Get("PressureStabilizerTemperature", true) and HF.GetAfflictionStrength(c.character, "pressurestabilized", 0) > 0) then
+					limbaff[i].strength = 0
+				end
 				local LimbTemp = limbaff.ntt_temperature.strength
 				local HypothermiaLevel = FetchConfigStats().HypothermiaLevel
 				limbaff.bloodclot.strength = limbaff.bloodclot.strength + (CalculateBloodClots(c.character,type) * NT.Deltatime)
@@ -472,6 +504,11 @@ NTTHERM.UpdateLimbAfflictions = {
 			if limbaff[i].strength > 0 and not THERM.IsLimbCyber(c.character,type) and HF.GetAfflictionStrength(c.character, "husksymbiosis", 0) == 0 then
 				c.stats.speedmultiplier = c.stats.speedmultiplier * 0.70 -- 30% slow per limb
 				limbaff.d2_frostbite.strength = 0
+				-- If the character is a bot with the temp ignore config on or is under pressure stabilizer effect with config on, remove the affliction
+				if (NTConfig.Get("BotTempIgnoreMode", true) and c.character.IsBot)
+				or (NTConfig.Get("PressureStabilizerTemperature", true) and HF.GetAfflictionStrength(c.character, "pressurestabilized", 0) > 0) then
+					limbaff[i].strength = 0
+				end
 				limbaff.bloodclot.strength = limbaff.bloodclot.strength + (CalculateBloodClots(c.character,type,.1) * NT.Deltatime)
 				if limbaff.ntt_temperature.strength < 2 then
 					limbaff[i].strength = limbaff[i].strength + (.5 * NT.Deltatime)
@@ -1125,8 +1162,9 @@ NTTHERM.UpdateBloodAfflictions = {
 				THERM.ApplyTemperatureUpdate(c.character.ID)
 				for index, limb in pairs(FetchOtherStats().LimbsToCheck) do
 					local Chilled = HF.Clamp(HF.GetAfflictionStrengthLimb(c.character, limb, "iced", 1)/50,1,2)
-					-- If the character is a bot with the temp ignore config on, don't change the temperature
-					if not (NTConfig.Get("BotTempIgnoreMode", true) and c.character.IsBot) then
+					-- If the character is a bot with the temp ignore config on or is under pressure stabilizer effect with config on, set the temperature to normal body temp
+					if not (NTConfig.Get("BotTempIgnoreMode", true) and c.character.IsBot)
+					and not (NTConfig.Get("PressureStabilizerTemperature", true) and HF.GetAfflictionStrength(c.character, "pressurestabilized", 0) > 0) then
 					HF.AddAfflictionLimb(c.character, "ntt_temperature", limb, 
 						TempIncrease
 						+ (MaxWarmingTemp/LimbStrength)/80 
