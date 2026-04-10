@@ -6,6 +6,7 @@ ExceptedSuits = {["respawndivingsuit"] = {valid = true,index = 0},["exosuit"] = 
     ["SAFS_onyx"] = {valid = true, index = 1},["SAFS_camo2"] = {valid = true, index = 1},  -- Safs compatibility
     ["ek_armored_hardsuit"] = {valid = true, index = 1},["ek_armored_hardsuit_paintbandit"] = {valid = true, index = 1},["ek_armored_hardsuit_paintmercenary"] = {valid = true, index = 1},["ek_armored_hardsuit2"] = {valid = true, index = 1} -- EK
     ,["ek_armored_hardsuit2_paintbandit"] = {valid = true, index = 1},["ek_armored_hardsuit2_paintmercenary"] = {valid = true, index = 1}, -- EK
+    ["ekutility_Utility_hardsuit_mk2"] = {valid = true, index = 1}, -- EK
     ['exosuitplayerPA'] = {valid = true, index = 1},['exosuitPA'] = {valid = true, index = 1},["piratedivingsuitmakeshift"] = {valid = true,index = 0}, -- Dynamic Europa
     ['scp_combathardsuit'] = {valid = true, index = 1}} -- EA
 

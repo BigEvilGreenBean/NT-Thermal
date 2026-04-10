@@ -2,7 +2,7 @@
 -- Set up dictonary
 NTTHERM = {}
 NTTHERM.Name = "Thermal"
-NTTHERM.Version = "1.4.6h49"
+NTTHERM.Version = "1.4.7h51"
 NTTHERM.VersionNum = 000000001
 NTTHERM.MinNTVersion = "A1.12.1"
 NTTHERM.MinNTVersionNum = 01120100

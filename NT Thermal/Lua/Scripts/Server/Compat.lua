@@ -64,7 +64,7 @@ THERMCompat.SetUpEnhancedReactors = function ()
     }
 
     EnhancedReactors.ApplyTemperatureRadius = function (item, character, maxDistance, wallPenetration, armorPenetration, afflictions)
-    if not (NTConfig.Get("BotTempIgnoreMode", true) and character.IsBot) then
+    if not (NTConfig.Get("BotTempIgnoreMode", true) and character.IsBot) and not (NTConfig.Get("PressureStabilizerTemperature", true) and HF.GetAfflictionStrength(character, "pressurestabilized", 0) > 0) then
         if HF.GetAfflictionStrength(character, "givetemp", 0) > 0 then -- Make sure the temperature is actually set up.
             if Vector2.Distance(character.WorldPosition, item.WorldPosition) > maxDistance then
                 return

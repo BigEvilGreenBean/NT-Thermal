@@ -53,8 +53,9 @@ Hook.Add("NTTHERM.CustomInWater", "CustomInWater", function (effect, deltaTime, 
                                         THERM.RemoveWet(target)
                                 end
                                 -- Remove wetness due to a suit being put on.
-                                if target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes) and (target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("diving") or target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("deepdivinglarge") or target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("deepdiving")) then
-                                THERM.RemoveWet(target)
+                                local DivingSuit = target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes)
+                                if not (DivingSuit and THERM.IsDivingSuit(DivingSuit)) then
+                                        THERM.RemoveWet(target)
                                 end
                         end
                 end
@@ -74,7 +75,8 @@ Hook.Add("NTTHERM.InWater", "InWater", function (effect, deltaTime, item, target
                                 CharacterTable.LimbWaterValues.RightArmV = 1
                                 CharacterTable.LimbWaterValues.LeftLegV = 1
                                 CharacterTable.LimbWaterValues.RightLegV = 1
-                                if not (target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes) and (target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("diving") or target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("deepdivinglarge") or target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("deepdiving"))) then
+                                local DivingSuit = target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes)
+                                if not (DivingSuit and THERM.IsDivingSuit(DivingSuit)) then
                                         THERM.MakeWet(target,1)
                                 else 
                                 THERM.RemoveWet(target)
@@ -139,6 +141,8 @@ Hook.Add("character.death", "Newcharacter", function (createdCharacter)
     end
 end)
 
+
+
 -- Lukako my absolute value goat. Thank you so much.
 Hook.Add("characterCreated", "NTTHERM.ForceUpdates", function(createdCharacter)
         -- run once on spawn then cope
@@ -154,4 +158,21 @@ Hook.Add("characterCreated", "NTTHERM.ForceUpdates", function(createdCharacter)
             end
         end
     end, 5000)
+end)
+
+
+-- We set the thermal character data for CSH heating here. 
+Hook.Add("NTTHERM.CSHHeat", "CSHHeat", function (effect, deltaTime, item, targets, worldPosition, element) 
+
+        for key, target in pairs(targets) do
+                if target ~= nil and target.IsHuman and target.IsDead ~= true and not (NTConfig.Get("BotTempIgnoreMode", true) and target.IsBot) then
+                        local CharacterTable = THERM.GetCharacter(target.ID,target)
+                        if CharacterTable ~= nil then
+                                CharacterTable.CompactHeater.Equipped, 
+                                CharacterTable.CompactHeater.ParentInventory, 
+                                CharacterTable.CompactHeater.Item = true, item.ParentInventory, item
+                        end
+                end
+        end
+        
 end)

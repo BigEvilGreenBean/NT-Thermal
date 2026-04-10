@@ -401,7 +401,8 @@ THERM.IntiateCharacterTemp = function(createdCharacter)
                             LastStoredInnerSuit = nil,
                             DivingSuitBurnRes = 1,
                             InnerClothingBurnRes = 1,
-                            TemperatureUpdate = false}
+                            TemperatureUpdate = false,
+                            CompactHeater = {Equipped = false, Item = nil}}
 	THERMCharacters[createdCharacter.ID] = new_character
 end
 

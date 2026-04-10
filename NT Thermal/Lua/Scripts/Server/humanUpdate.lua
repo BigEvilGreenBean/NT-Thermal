@@ -179,6 +179,7 @@ NTTHERM.UpdateLimbAfflictions = {
 		max = 101,
 		update = function(c, limbaff, i, type)
 			local CharacterTable = THERM.GetCharacter(c.character.ID)
+
 			local function RoomIsHot()
 				if c.character.CurrentHull ~= nil and THERMRoom.GetRoom(c.character.CurrentHull) ~= nil 
 					and THERMRoom.Rooms ~= nil and THERMRoom.Intiated 
@@ -187,6 +188,7 @@ NTTHERM.UpdateLimbAfflictions = {
         		end
 				return false
 			end
+
 			if limbaff[i].strength > 0 then
 
 				if CharacterTable ~= nil then
@@ -194,15 +196,14 @@ NTTHERM.UpdateLimbAfflictions = {
 						CharacterTable.TemperatureUpdate = true
 					end
 
-					if (CharacterTable.TemperatureUpdate or limbaff[i].strength ~= FetchConfigStats().NormalBodyTemp) then
+					if (CharacterTable.TemperatureUpdate or HF.Round(limbaff[i].strength, 2) ~= FetchConfigStats().NormalBodyTemp) or not NTConfig.Get("PerformanceMode", true) then
 						local NormalBodyTemp = FetchConfigStats().NormalBodyTemp
 						-- If the character is a bot with the temp ignore config on or is under pressure stabilizer effect with config on, don't change the temperature
 						if not (NTConfig.Get("BotTempIgnoreMode", true) and c.character.IsBot)
 						and not (NTConfig.Get("PressureStabilizerTemperature", true) and HF.GetAfflictionStrength(c.character, "pressurestabilized", 0) > 0) then
+							
 							local HypothermiaLevel = FetchConfigStats().HypothermiaLevel
 							local HyperthermiaLevel = FetchConfigStats().HyperthermiaLevel
-							local AffectBodyCold = FetchOtherStats().AffectBodyCold
-							local AffectBodyWarm = FetchOtherStats().AffectBodyWarm
 							local TorsoTempStrength = HF.GetAfflictionStrengthLimb(c.character, LimbType.Torso, "ntt_temperature", 0)
 							-- CompromisedTemp is the value at which the body will struggle to generate it's own heat or cool down. (You're cooked essentially.)
 							local CompromisedColdTemp = HypothermiaLevel/1.5
@@ -385,7 +386,6 @@ NTTHERM.UpdateLimbAfflictions = {
 				if not (NTConfig.Get("BotTempIgnoreMode", true) and c.character.IsBot)
 				and not (NTConfig.Get("PressureStabilizerTemperature", true) and HF.GetAfflictionStrength(c.character, "pressurestabilized", 0) > 0) then
 					THERM.ApplyTemperatureUpdate(c.character.ID)
-					local DryingSpeed = FetchConfigStats().DryingSpeed
 					local WetStrength = limbaff[i].strength
 					local WetTempAddition = .1
 					if limbaff.bandaged.strength > 0 then
@@ -710,7 +710,6 @@ NTTHERM.UpdateAfflictions = {
 		update = function(c, i)
 			if c.afflictions[i].strength > 0 and HF.GetAfflictionStrength(c.character, "husksymbiosis", 0) == 0 then
 				local HypothermiaLevel = FetchConfigStats().HypothermiaLevel
-				local NormalBodyTemp = FetchConfigStats().NormalBodyTemp
 				local TorsoTemp = HF.GetAfflictionStrength(c.character, "ntt_temperature", 0)
 				c.afflictions.bloodpressure.strength = c.afflictions.bloodpressure.strength + (.2 * NT.Deltatime)
 				if TorsoTemp < 2 then
@@ -752,7 +751,6 @@ NTTHERM.UpdateAfflictions = {
 			if c.afflictions[i].strength > 0 then
 				local Death = (5 * NT.Deltatime)
 				local HyperthermiaLevel = FetchConfigStats().HyperthermiaLevel
-				local NormalBodyTemp = FetchConfigStats().NormalBodyTemp
 				local TorsoTemp = HF.GetAfflictionStrength(c.character, "ntt_temperature", 0)
 				c.afflictions.bloodpressure.strength = c.afflictions.bloodpressure.strength - (.2 * NT.Deltatime)
 				if TorsoTemp < HyperthermiaLevel then
@@ -935,8 +933,8 @@ NTTHERM.UpdateAfflictions = {
 			-- Used for suits that have automatic heating or prebuilt power. I'm too scared to refactor this.
 			local HypothermiaLevel = FetchConfigStats().HypothermiaLevel
 
+			local CharacterTable = THERM.GetCharacter(c.character.ID,c.character)
 			if c.afflictions[i].strength > 0 then
-				local CharacterTable = THERM.GetCharacter(c.character.ID,c.character)
 				local LimbsToCheck2 = {LimbType.Head,LimbType.Torso,LimbType.RightArm,LimbType.LeftArm,LimbType.LeftLeg,LimbType.RightLeg}
 				for index, limb in pairs(LimbsToCheck2) do
 					local LimbTemp = HF.GetAfflictionStrengthLimb(c.character, limb, "ntt_temperature", 0)
@@ -963,8 +961,8 @@ NTTHERM.UpdateAfflictions = {
 			local Helmet = c.character.Inventory.GetItemInLimbSlot(InvSlotType.InnerClothes)
 			local Bag = c.character.Inventory.GetItemInLimbSlot(InvSlotType.Bag)
 			local BatteryConsumption = NTConfig.Get("HeaterBatteryConsumption") * NT.Deltatime
-			if DivingSuit ~= nil and THERM.IsDivingSuit(DivingSuit) and c.afflictions[i].strength ~= 100 then
-
+			if DivingSuit ~= nil and THERM.IsDivingSuit(DivingSuit) then
+				
 				if ExceptionsToNotUSE[DivingSuitIdentifier] == nil then
 					-- Internal Heater Check
 					local Index = IndexedSuits[DivingSuitIdentifier] or IndexedSuits[tostring(DivingSuit.Prefab.VariantOf)] or 1
@@ -997,6 +995,28 @@ NTTHERM.UpdateAfflictions = {
 						end
 						c.afflictions[i].strength = 0
 						return
+					
+					-- Compact Heater
+					elseif CharacterTable ~= nil and CharacterTable.CompactHeater.Equipped then
+
+						local CompactHeaterItem = CharacterTable.CompactHeater.Item
+						local CompactHeaterBattery = CompactHeaterItem.OwnInventory.GetItemAt(0)
+
+						if CompactHeaterItem.ParentInventory == c.character.Inventory then
+							if CompactHeaterBattery ~= nil and CompactHeaterBattery.Condition > 1 then
+								CompactHeaterBattery.Condition = CompactHeaterBattery.Condition - BatteryConsumption
+								c.afflictions[i].strength = c.afflictions[i].strength + (5 * NT.Deltatime)
+								return
+							else
+								c.afflictions[i].strength = 0
+								return
+							end
+
+						else
+							CharacterTable.CompactHeater.Equipped = false
+							c.afflictions[i].strength = 0
+							return
+						end
 
 					-- ExceptedSuits
 					elseif ExceptedSuits[DivingSuitIdentifier] ~= nil then

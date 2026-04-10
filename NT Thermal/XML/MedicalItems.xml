@@ -118,7 +118,7 @@
       <SkillRequirementHint identifier="electrical" level="60" />
       <SkillRequirementHint identifier="mechanical" level="20" />
       <RequiredSkill identifier="medical" level="50" />
-      <RequiredSkill identifier="electrical" level="60"/>
+      <RequiredSkill identifier="electrical" level="60" />
       <RequiredSkill identifier="mechanical" level="20" />
       <RequiredItem identifier="aluminium" amount="3" />
       <RequiredItem identifier="fulgurium" amount="1" />
@@ -199,7 +199,7 @@
     <MeleeWeapon canBeCombined="false" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="20,5" handle1="0,0" holdangle="10" reload="1.0" msg="ItemMsgPickUpSelect" HitOnlyCharacters="true">
       <SkillRequirementHint identifier="medical" level="20" />
       <RequiredSkill identifier="medical" level="20" />
-        <StatusEffect type="OnUse" target="Limb">
+      <StatusEffect type="OnUse" target="Limb">
         <Sound file="Content/Items/Medical/Bandage1.ogg" range="500" />
       </StatusEffect>
       <!-- HE compatibility -->
@@ -282,7 +282,7 @@
     <InventoryIcon texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="22,151,83,67" origin="0.52512914,0.54473233" />
     <Sprite texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="22,151,83,67" depth="0.55" origin="0.5225513,0.5474187" />
     <Body width="65" height="45" density="50" />
-    <MeleeWeapon slots="RightHand,LeftHand" controlpose="true" aimpos="45,10" handle1="0,23" holdangle="90" reload="1" range="50" combatpriority="6" msg="ItemMsgPickUpSelect">
+    <MeleeWeapon slots="RightHand,LeftHand" controlpose="true" aimpos="45,10" handle1="0,18" holdangle="90" reload="1" range="50" combatpriority="6" msg="ItemMsgPickUpSelect">
       <Attack structuredamage="0" itemdamage="1" targetimpulse="2">
         <Affliction identifier="blunttrauma" strength="1" />
         <Affliction identifier="stun" strength="0.6" />
@@ -319,12 +319,12 @@
   </Item>
   <!-- E.S.H -->
   <Item name="E.S.H" identifier="esh" category="Equipment" maxstacksize="1" maxstacksizecharacterinventory="1" Tags="human,mediumitem,tool" showcontentsintooltip="true" description="An external heater for diving suits, used when an internal option isn't avaliable. Made with a repurposed tool belt from a poor mechanic, requires a battery." scale="0.25" impactsoundtag="impact_metal_heavy">
-    <PreferredContainer primary="engcab"/>
-  <PreferredContainer primary="wreckstoragecab,abandonedstoragecab,piratestoragecab" amount="1" spawnprobability="0.05"/>
-  <PreferredContainer primary="outpostcrewcabinet" amount="1" spawnprobability="0.1"/>
+    <PreferredContainer primary="engcab" />
+    <PreferredContainer primary="wreckstoragecab,abandonedstoragecab,piratestoragecab" amount="1" spawnprobability="0.05" />
+    <PreferredContainer primary="outpostcrewcabinet" amount="1" spawnprobability="0.1" />
     <Fabricate suitablefabricators="fabricator" amount="1" requiredtime="10">
-    <SkillRequirementHint identifier="electrical" level="40" />
-      <RequiredSkill identifier="electrical" level="40"/>
+      <SkillRequirementHint identifier="electrical" level="40" />
+      <RequiredSkill identifier="electrical" level="40" />
       <RequiredItem identifier="steel" />
       <RequiredItem identifier="toolbelt" />
     </Fabricate>
@@ -336,15 +336,49 @@
     <Sprite texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="25,259,173,163" depth="0.55" origin="0.5323623,0.56623346" />
     <Body width="65" height="45" density="50" />
     <Wearable slots="Bag" msg="ItemMsgEquipSelect" displaycontainedstatus="true" canbeselected="false" canbepicked="true" pickkey="Select">
-    <Sprite texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="25,259,173,163" depth="0.55" origin="0.5,0.2" limb="Torso" scale="0.25"/>
+      <Sprite texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="25,259,173,163" depth="0.55" origin="0.5,0.2" limb="Torso" scale="0.25" />
     </Wearable>
-    <Holdable slots="RightHand+LeftHand" holdpos="0,-70" handle1="-5,0" handle2="10,-20" holdangle="0" msg="ItemMsgPickUpUse" canbeselected="false" canbepicked="true" pickkey="Use" allowswappingwhenpicked="false"/>
+    <Holdable slots="RightHand+LeftHand" holdpos="0,-70" handle1="-5,0" handle2="10,-20" holdangle="0" msg="ItemMsgPickUpUse" canbeselected="false" canbepicked="true" pickkey="Use" allowswappingwhenpicked="false" />
     <ItemContainer capacity="1" maxstacksize="1" hideitems="true" containedstateindicatorstyle="battery" ContainedStateIndicatorSlot="0">
-    <SlotIcon slotindex="0" texture="Content/UI/StatusMonitorUI.png" sourcerect="128,448,64,64" origin="0.5,0.5"/>
-    <Containable items="mobilebattery"/>
-    <SubContainer capacity="7" maxstacksize="32">
-    <Containable items="smallitem" excludeditems="toolbelt,toolbox,bandolier,esh"/>
-    </SubContainer>
+      <SlotIcon slotindex="0" texture="Content/UI/StatusMonitorUI.png" sourcerect="128,448,64,64" origin="0.5,0.5" />
+      <Containable items="mobilebattery" />
+      <SubContainer capacity="7" maxstacksize="32">
+        <Containable items="smallitem" excludeditems="toolbelt,toolbox,bandolier,esh" />
+      </SubContainer>
+    </ItemContainer>
+  </Item>
+  <!-- C.S.H -->
+  <Item name="C.S.H" identifier="csh" category="Equipment" maxstacksize="1" maxstacksizecharacterinventory="1" Tags="human,mediumitem,tool" showcontentsintooltip="true" description="An external heater for diving suits, used when an internal option isn't avaliable. Goes in the inventory, requires a battery." scale="0.25" impactsoundtag="impact_metal_heavy">
+    <PreferredContainer primary="engcab" />
+    <PreferredContainer primary="wreckstoragecab,abandonedstoragecab,piratestoragecab" amount="1" spawnprobability="0.05" />
+    <PreferredContainer primary="outpostcrewcabinet" amount="1" spawnprobability="0.1" />
+    <Fabricate suitablefabricators="fabricator" amount="1" requiredtime="10">
+      <SkillRequirementHint identifier="electrical" level="40" />
+      <RequiredSkill identifier="electrical" level="40" />
+      <RequiredItem identifier="steel" amount="2" />
+      <RequiredItem identifier="fpgacircuit"/>
+    </Fabricate>
+    <Deconstruct />
+    <Price baseprice="350">
+      <Price storeidentifier="merchantengineer" sold="true" multiplier="1.2" minavailable="1" />
+    </Price>
+    <InventoryIcon texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="295,250,150,171" origin="0.50163627,0.44125777" />
+    <Sprite texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="295,250,150,171" depth="0.55" origin="0.5203634,0.5014565" />
+    <Body width="65" height="45" density="50" />
+    
+    <Holdable slots="Any,LeftHand,RightHand" holdpos="0,-70" handle1="-5,0" handle2="10,-20" holdangle="0" msg="ItemMsgPickUpUse" canbeselected="false" canbepicked="true" pickkey="Use" allowswappingwhenpicked="false">
+    <StatusEffect type="OnContained" targettype="Character">
+        <RequiredItem items="mobilebattery" type="Contained" />
+        <LuaHook name="NTTHERM.CSHHeat" />
+    </StatusEffect>
+    </Holdable>
+      
+    <ItemContainer capacity="1" maxstacksize="1" hideitems="true" containedstateindicatorstyle="battery" ContainedStateIndicatorSlot="0">
+      <SlotIcon slotindex="0" texture="Content/UI/StatusMonitorUI.png" sourcerect="128,448,64,64" origin="0.5,0.5" />
+      
+      <Containable items="mobilebattery" >
+      </Containable>
+
     </ItemContainer>
   </Item>
 </Items>
