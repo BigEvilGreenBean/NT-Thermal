@@ -5,7 +5,6 @@
 
 NTTHERM.ConfigData = {
 	NTTHERM_Header1 = { name = NTTHERM.Name, type = "category" },
-
 	NewHypothermiaLevel = {
 		name = "Hypothermia level",
 		default = 36,
@@ -76,12 +75,19 @@ NTTHERM.ConfigData = {
 		type = "float",
 		description = "The time between temperature calculations of rooms. Higher values mean better performance but less accuracy. Lower values mean worse performance but more accuracy."
 	},
+	ShockMargin = {
+		name = "Thermal Shock Margin",
+		default = 100,
+		range = {1, 400},
+		type = "float",
+		description = "The margin in which thermal shock will activate. Extremely sensitive. Higher values mean less margin, lower means higher margin."
+	},
 	SuitCompatiblityMode = { name = "Suit Compatibility Mode", default = false, type = "bool", description = "This makes all suits heated by default, rather than using batteries or external heaters. This should be used only when needed and a patch isn't out." },
 	BotSuitSafteyMode = { name = "Bot Suit Compatibility Mode", default = true, type = "bool", description = "This makes all suits worn by a bot heated. Useful so you don't have to babysit them."},
 	BotTempIgnoreMode = { name = "Temperature Ignores Bot Mode", default = false, type = "bool", description = "This makes all bots immune to temperature and it's effects. This should theoretically give a performance boost."},
+	PressureStabilizerTemperature = { name = "Pressure Stabilizers Stabilize Temperature", default = false, type = "bool", description = "This setting makes pressure stabilizers also stabilize temperature, on top of pressure and oxygen." },
 	HeatTransferToggle = { name = "Fire Transfers Heat", default = true, type = "bool", description = "This setting allows heat to transfer between hulls in a submarine. This should be left on for the intended experience." },
 	PerformanceMode = { name = "Performance Mode", default = true, type = "bool", description = "This mode increases performance, however it sometimes might make inaccurate calculation. There really shouldn't be a difference though." },
-	PressureStabilizerTemperature = { name = "Pressure Stabilizers Stabilize Temperature", default = false, type = "bool", description = "This setting makes pressure stabilizers also stabilize temperature, on top of pressure and oxygen." }
 }
 
 --this adds above config options to the Neurotrauma config menu

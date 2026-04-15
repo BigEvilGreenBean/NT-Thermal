@@ -196,6 +196,11 @@
     <Effect minstrength="0" maxstrength="100" strengthchange="0" />
     <icon texture="%ModDir%/Images/NT_AZ_Afflictions.png" sheetelementsize="128,128" origin="0,0" sourcerect="2,401,125,127" />
   </Affliction>
+  <!-- Stasis Starter -->
+  <Affliction name="Cryo Stasis-Starter" identifier="cryo_stasis_starter" description="" limbspecific="true" showiconthreshold="1000000" showinhealthscannerthreshold="100000000" maxstrength="100" targets="human" type="gaze" isbuff="false" healableinmedicalclinic="false" iconcolors="80,82,87,255;107,80,82,255">
+    <Effect minstrength="0" maxstrength="100" strengthchange="0" />
+    <icon texture="%ModDir%/Images/NT_AZ_Afflictions.png" sheetelementsize="128,128" origin="0,0" sourcerect="2,401,125,127" />
+  </Affliction>
   <!-- Surgery-->
   <!-- Removed Skin-->
   <Affliction name="Removed Skin" identifier="removed_skin" description="The skin has been removed." limbspecific="true" showiconthreshold="1" showinhealthscannerthreshold="1000" maxstrength="100" targets="human" type="gaze" isbuff="false" healableinmedicalclinic="false" iconcolors="84,211,211,255;84,211,211,255">

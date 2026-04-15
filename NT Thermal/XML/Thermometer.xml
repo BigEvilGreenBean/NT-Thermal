@@ -26,7 +26,7 @@
       <StatusEffect type="OnUse" target="Limb" Voltage="1.0" setvalue="true">
         <!-- <Sound file="%ModDir%/Sound/hypospray.ogg" /> -->
       </StatusEffect>
-      <StatusEffect type="OnUse" target="Contained" Condition="-1.0">
+      <StatusEffect type="OnUse" target="Contained">
         <RequiredItem items="mobilebattery" type="Contained" />
       </StatusEffect>
     </ItemComponent>

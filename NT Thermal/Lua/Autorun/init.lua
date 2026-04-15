@@ -2,7 +2,7 @@
 -- Set up dictonary
 NTTHERM = {}
 NTTHERM.Name = "Thermal"
-NTTHERM.Version = "1.4.7h51"
+NTTHERM.Version = "1.5.7h53"
 NTTHERM.VersionNum = 000000001
 NTTHERM.MinNTVersion = "A1.12.1"
 NTTHERM.MinNTVersionNum = 01120100
@@ -27,6 +27,10 @@ Timer.Wait(function ()
 			end
 			end
 		end)
+
+		local thermal_afflictions = { "sym_hot", "sym_cold", "sym_shivers", "sym_numb", "heat_cramp" }
+		table.insert(NT.SymsForNPC, thermal_afflictions)
+
 		NTTHERM.UsingEnhancedReactors = EnhancedReactors -- Used to determine if enhanced reactors is on.
 		if NTTHERM.UsingEnhancedReactors ~= nil then
 			Timer.Wait(function()
@@ -53,6 +57,7 @@ Timer.Wait(function()
 		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/RoomTempCalc.lua") --Script used for a calculating temperature of rooms.
 		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/Items.lua") -- Item methods.
 		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/Compat.lua") -- Compat.
+		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/translationCompat.lua") -- Translation Compat.
 	end
 
 end, 1)

@@ -102,5 +102,17 @@
 
 <loadingscreentip>‖color:gui.blue‖NT Thermal:‖end‖ Гипотермия может служить альтернативой анальгезии, однако это может негативно сказаться на состоянии пациента.</loadingscreentip>
 
+
+<!-- Dialog -->
+<npcdialogsym.sym_cold>Мне становится немного холодно.</npcdialogsym.sym_cold>
+
+<npcdialogsym.sym_shivers>Слегка знобит.</npcdialogsym.sym_shivers>
+
+<npcdialogsym.sym_numb>Я... почти ничего не чувствую.</npcdialogsym.sym_numb>
+
+<npcdialogsym.sym_hot>Я начинаю потеть.</npcdialogsym.sym_hot>
+
+<npcdialogsym.heat_cramp>У меня судороги!</npcdialogsym.heat_cramp>
+
 </Override>
 </infotexts>

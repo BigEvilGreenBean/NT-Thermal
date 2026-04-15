@@ -36,7 +36,8 @@ local function FetchConfigStats()
 		HyperthermiaLevel = NTConfig.Get("NewHyperthermiaLevel", 39),
 		WarmingAbility = NTConfig.Get("NewWarmingAbility", .2),
 		DryingSpeed = NTConfig.Get("NewDryingSpeed", -.1),
-		PerformanceMode = NTConfig.Get("PerformanceMode",true)
+		PerformanceMode = NTConfig.Get("PerformanceMode",true),
+		ShockMargin = NTConfig.Get("ShockMargin",100)/357.142
 		}
 	return ConfigStats
 end
@@ -49,7 +50,7 @@ local function FetchOtherStats()
 	AffectBodyCold = 1.1,
 	AffectBodyWarm = 1.1,	
 	LimbsToCheck = {LimbType.Head,LimbType.RightArm,LimbType.LeftArm,LimbType.LeftLeg,LimbType.RightLeg},
-	BloodAfflictions = {"elevated_core_temperature","diuretics","thrombolytics","aafn"},
+	BloodAfflictions = {"elevated_core_temperature","diuretics","thrombolytics","aafn","cryo_stasis_starter"},
 	MaxWarmingTemp = FetchConfigStats().NormalBodyTemp * 1.02,
 	MaxCoolingTemp = FetchConfigStats().NormalBodyTemp/1.02
 	}
@@ -549,6 +550,10 @@ NTTHERM.UpdateLimbAfflictions = {
 				local BloodClotGrowthRate = 0
 				local BloodPressureIncrease = 0
 				local LimbClotScaling = 1
+
+				if c.stats.stasis then
+					return
+				end
 				if type == LimbType.LeftArm or type == LimbType.RightArm then
 					LimbClotScaling = .4
 				else
@@ -654,6 +659,11 @@ NTTHERM.UpdateAfflictions = {
 						end
 						c.afflictions[i].strength = 0
 					end
+
+				if c.stats.stasis then
+					return
+				end
+
 				if c.afflictions[i].strength > 10 then
 					NTC.SetSymptomTrue(c.character, "dyspnea", 5)
 				end
@@ -677,12 +687,19 @@ NTTHERM.UpdateAfflictions = {
 			max = 100,
 			update = function(c, i)
 				if c.afflictions[i].strength > 0 then
+
 					if c.afflictions.lungremoved.strength > 0 then
 						if c.afflictions.lungdamage.strength >= 50 then
 							c.afflictions.internalbleeding.strength = 50
 						end
 						c.afflictions[i].strength = 0
 					end
+
+					if c.stats.stasis then
+						print("Skip")
+						return
+					end
+					print("Continue")
 					c.afflictions[i].strength = c.afflictions[i].strength 
 						+ (c.afflictions.heartdamage.strength/80 -- Heart Damage aids Edema
 						+ c.afflictions.bloodpressure.strength/50 -- High blood pressure aids in edema
@@ -873,28 +890,28 @@ NTTHERM.UpdateAfflictions = {
 	thermal_shock = {
 		max = 100,
 		update = function(c, i)
-			local TorsoTemp = HF.GetAfflictionStrengthLimb(c.character, LimbType.Torso, "ntt_temperature", 0)
-			local LastTorsoTemp = 0
+			local HeadTemp = HF.GetAfflictionStrengthLimb(c.character, LimbType.Head, "ntt_temperature", 0)
+			local LastHeadTemp = 0
 			local NormalBodyTemp = FetchConfigStats().NormalBodyTemp
 			if THERM.GetCharacter(c.character.ID) ~= nil then
-				LastTorsoTemp = THERM.GetCharacter(c.character.ID).LastStoredTorsoTemp
+				LastHeadTemp = THERM.GetCharacter(c.character.ID).LastStoredHeadTemp
 			end
-			if LastTorsoTemp == 0 then
-				LastTorsoTemp = TorsoTemp
+			if LastHeadTemp == 0 then
+				LastHeadTemp = HeadTemp
 			end
-			local ShockMargin = .28 * NT.Deltatime
+			local ShockMargin = FetchConfigStats().ShockMargin * NT.Deltatime
 			local ShockDecrease = 2.5
 			if c.afflictions[i].strength > 0 then
 				NTC.SetSymptomTrue(c.character, "triggersym_seizure", 5)
 				NTC.SetSymptomTrue(c.character, "triggersym_stroke", 5)
 				c.afflictions.cerebralhypoxia.strength = c.afflictions.cerebralhypoxia.strength + (.05 * NT.Deltatime)
 				c.afflictions[i].strength = c.afflictions[i].strength -  (ShockDecrease * NT.Deltatime)
-			elseif LastTorsoTemp ~= TorsoTemp then
-				if    TorsoTemp/LastTorsoTemp/2 > ShockMargin -- Too hot
-				   or LastTorsoTemp/TorsoTemp/2 > ShockMargin -- Too cold
+			elseif LastHeadTemp ~= HeadTemp then
+				if    HeadTemp/LastHeadTemp/2 > ShockMargin -- Too hot
+				   or LastHeadTemp/HeadTemp/2 > ShockMargin -- Too cold
 				then
-					if (TorsoTemp < NormalBodyTemp and LastTorsoTemp > NormalBodyTemp)
-						or (TorsoTemp > NormalBodyTemp and LastTorsoTemp < NormalBodyTemp)
+					if (HeadTemp < NormalBodyTemp and LastHeadTemp > NormalBodyTemp)
+						or (HeadTemp > NormalBodyTemp and LastHeadTemp < NormalBodyTemp)
 						then
 						c.afflictions[i].strength = 100
 					end
@@ -1059,6 +1076,27 @@ NTTHERM.UpdateAfflictions = {
 					end
 					c.afflictions[i].strength = 0
 					return
+				-- Compact Heater
+				elseif CharacterTable ~= nil and CharacterTable.CompactHeater.Equipped then
+
+					local CompactHeaterItem = CharacterTable.CompactHeater.Item
+					local CompactHeaterBattery = CompactHeaterItem.OwnInventory.GetItemAt(0)
+
+					if CompactHeaterItem.ParentInventory == c.character.Inventory then
+						if CompactHeaterBattery ~= nil and CompactHeaterBattery.Condition > 1 then
+							CompactHeaterBattery.Condition = CompactHeaterBattery.Condition - BatteryConsumption
+							c.afflictions[i].strength = c.afflictions[i].strength + (5 * NT.Deltatime)
+							return
+						else
+							c.afflictions[i].strength = 0
+							return
+						end
+
+					else
+						CharacterTable.CompactHeater.Equipped = false
+						c.afflictions[i].strength = 0
+						return
+					end
 				end
 				c.afflictions[i].strength = 0
 
@@ -1254,7 +1292,43 @@ NTTHERM.UpdateBloodAfflictions = {
 				end
 			end
 		end
+	},
+
+	-- Stasis Starter
+	cryo_stasis_starter = {
+		max = 100,
+		update = function(c, i)
+			if c.afflictions[i].strength > 0 then
+
+				local temp = HF.GetAfflictionStrength(c.character, "ntt_temperature", 0)
+				if temp < FetchConfigStats().HyperthermiaLevel then
+
+					if temp <= 2 then
+						HF.AddAffliction(c.character, "stasis", 3 * NT.Deltatime, c.character)
+					end
+					c.afflictions[i].strength = c.afflictions[i].strength - .2 * NT.Deltatime
+
+					local StasisBag = function ()
+						local item = c.character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes)
+						if item ~= nil then
+							if item.Prefab.Identifier == "stasis_bag" then
+								return true
+							else
+								return false
+							end
+						end
+					end
+
+					if c.afflictions[i].strength <= 0 or temp > FetchConfigStats().HypothermiaLevel/NTTHERM.MediumHypothermiaScaling and not StasisBag() then
+						HF.SetAffliction(c.character, "stasis", 0)
+						c.afflictions[i].strength = 0
+					end
+
+				end
+			end
+		end,
 	}
+
 }
 
 

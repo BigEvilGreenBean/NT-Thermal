@@ -94,31 +94,8 @@ NT.ItemMethods.handheld_thermometer = function(item, usingCharacter, targetChara
         local hasVoltage = containedItem.Condition > 0
         -- Make sure the thermometer has a battery.
         if hasVoltage and THERM.GetCharacter(targetCharacter.ID)  ~= nil then
+                containedItem.Condition = containedItem.Condition - 2.5
                 -- Translations!
-                local EnglishTranslation = {
-                                                Readout = "Temperature readout of ", Hypothermic = "Hypothermic", Hyperthermic = "Hyperthermic", NormalTemp = "Normal temperature range", LimbsToCheck = {
-                                                [LimbType.Torso]      = "Torso",
-                                                [LimbType.Head]       = "Head",
-                                                [LimbType.LeftArm]    = "Left Arm",
-                                                [LimbType.RightArm]   = "Right Arm",
-                                                [LimbType.LeftThigh]  = "Left Leg",
-                                                [LimbType.RightThigh] = "Right Leg"},
-                                                Body = "Body"
-                }
-                local RussianTranslation = {
-                                                Readout = "Температура тела ", Hypothermic = "Гипотермия", Hyperthermic = "Гипертермия", NormalTemp = "Температура в пределах нормы", LimbsToCheck = {
-                                                [LimbType.Torso]      = "Торс",
-                                                [LimbType.Head]       = "Голова",
-                                                [LimbType.LeftArm]    = "Левая рука",
-                                                [LimbType.RightArm]   = "Правая рука",
-                                                [LimbType.LeftThigh]  = "Левая нога",
-                                                [LimbType.RightThigh] = "Правая нога"},
-                                                Body = "Тело"
-                }
-                local Translation = {
-                                        ["English"] = EnglishTranslation,
-                                        ["Russian"] = RussianTranslation
-                }
                 THERM.PlaySound("thermalsfx_thermometer",targetCharacter)
                 local actuallimb = limb.type
                 local HypothermiaLevel = NTConfig.Get("NewHypothermiaLevel", 36) - 1

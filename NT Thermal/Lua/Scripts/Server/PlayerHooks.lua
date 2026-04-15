@@ -3,7 +3,7 @@
 local Result = {}
 -- Limbs to Check with function
 local LimbsToCheck = {LimbType.Head,LimbType.Torso,LimbType.RightForearm,LimbType.RightLeg}
-local LimbsToCheck2 = {LimbType.Head,LimbType.Torso,LimbType.RightForearm,LimbType.LeftForearm,LimbType.RightLeg,LimbType.LeftLeg}
+local LimbsToCheck2 = {LimbType.Head,LimbType.Torso,LimbType.RightArm,LimbType.LeftArm,LimbType.RightLeg,LimbType.LeftLeg}
 -- Key set of Water Values.
 
 local WaterLimbValues = {"HeadV", "TorsoV", "RightArmV", "RightLegV"}
@@ -15,8 +15,9 @@ Hook.Add("NTTHERM.CustomInWater", "CustomInWater", function (effect, deltaTime, 
                         local CharacterTable = THERM.GetCharacter(target.ID,target)
                         if CharacterTable ~= nil  and not (NTConfig.Get("BotTempIgnoreMode", true) and target.IsBot) then
                                 -- Check to see if the last calculated water volume hull is different from the current water volume hull, if it is then calculate for the rat jacuzzi overlord. Or, if the y position is different.
-                                if (CharacterTable.LastHullWaterVolume ~= target.CurrentHull.WaterVolume)
+                                if (CharacterTable.LastHullWaterVolume ~= HF.Round(target.CurrentHull.WaterVolume,-2))
                                 or (target.CurrentHull.WaterVolume > 0 and (math.floor(CharacterTable.LastStoredPlayerY) ~= math.floor(target.position.Y))) then
+
                                         for i, limb in ipairs(LimbsToCheck) do
                                                 local LimbKey = WaterLimbValues[i]
                                                 -- Parameters = 1: target character, 2: limb to check, 3: offset values corresponds to LimbsToCheck, 4: index of limb.
@@ -35,7 +36,7 @@ Hook.Add("NTTHERM.CustomInWater", "CustomInWater", function (effect, deltaTime, 
                                                         CharacterTable.LimbWaterValues.RightLegV = Result
                                                         CharacterTable.LimbWaterValues.LeftLegV = Result
                                                         -- This will run last, so set it in here.
-                                                        CharacterTable.LastHullWaterVolume = target.CurrentHull.WaterVolume
+                                                        CharacterTable.LastHullWaterVolume = HF.Round(target.CurrentHull.WaterVolume,-2)
                                                         CharacterTable.LastStoredPlayerY = math.floor(target.position.Y)
                                                 -- Set the value
                                                 else
@@ -52,9 +53,10 @@ Hook.Add("NTTHERM.CustomInWater", "CustomInWater", function (effect, deltaTime, 
                                         CharacterTable.LimbWaterValues.RightLegV = 0
                                         THERM.RemoveWet(target)
                                 end
+
                                 -- Remove wetness due to a suit being put on.
                                 local DivingSuit = target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes)
-                                if not (DivingSuit and THERM.IsDivingSuit(DivingSuit)) then
+                                if DivingSuit and THERM.IsDivingSuit(DivingSuit) then
                                         THERM.RemoveWet(target)
                                 end
                         end
@@ -171,6 +173,29 @@ Hook.Add("NTTHERM.CSHHeat", "CSHHeat", function (effect, deltaTime, item, target
                                 CharacterTable.CompactHeater.Equipped, 
                                 CharacterTable.CompactHeater.ParentInventory, 
                                 CharacterTable.CompactHeater.Item = true, item.ParentInventory, item
+                        end
+                end
+        end
+        
+end)
+
+-- StasisStarter
+Hook.Add("NTTHERM.StasisStarter", "StasisStarter", function (effect, deltaTime, item, targets, worldPosition, element)
+
+        for key, target in pairs(targets) do
+                if target ~= nil and target.IsHuman and target.IsDead ~= true and not (NTConfig.Get("BotTempIgnoreMode", true) and target.IsBot) then
+                        local CharacterTable = THERM.GetCharacter(target.ID,target)
+                        local success = HF.GetSkillRequirementMet(target, "medical", 40)
+                        if CharacterTable ~= nil then
+                                if success then
+                                        if HF.GetAfflictionStrength(target, "ntt_temperature", 0) <= NTConfig.Get("NewHyperthermiaLevel", 39) then
+                                                HF.AddAffliction(target, "cryo_stasis_starter", 25, target)
+                                        end
+                                else
+                                        if HF.GetAfflictionStrength(target, "ntt_temperature", 0) <= NTConfig.Get("NewHyperthermiaLevel", 39) then
+                                                HF.AddAffliction(target, "cryo_stasis_starter", 5, target)
+                                        end
+                                end
                         end
                 end
         end

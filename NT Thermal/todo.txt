@@ -1,8 +1,5 @@
 Items to add:
 
-    - Stasis-Starter: A one time use medicine, causes the patient to enter stasis if at 1 Celsius or lower. 
-        However effects of being at freezing temperatures aren't negated.
-
     - Wet Suit: A suit that heats up like a diving suit, however it goes in the shirt slot, not suit.
 
     - Temperature Stabilizer: A one time use medicine, makes player immune to temperature for a minute.
@@ -16,3 +13,5 @@ Mechanics to add:
     - Advanced Skin Grafting:
 
     - Thermal Displays Temperature:
+
+    - Make husks get buffed from being cold.

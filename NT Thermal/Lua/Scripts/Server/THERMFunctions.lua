@@ -3,39 +3,36 @@
 THERM = {}
 
 -- Convert limb to waterlimb value
+local WaterLimbValues = 
+                {
+                [11] = "HeadV",
+                [3] = "LeftArmV",
+                [7] = "LeftLegV",
+                [4] = "RightArmV",
+                [8] = "RightLegV",
+                [12] = "TorsoV"
+                }
+
+local WaterLimbValues2 = 
+                {
+                ["HeadV"] = LimbType.Head,
+                ["LeftArmV"] = LimbType.LeftArm,
+                ["LeftLegV"] = LimbType.LeftLeg,
+                ["RightArmV"] = LimbType.RightArm,
+                ["RightLegV"] = LimbType.RightLeg,
+                ["TorsoV"] = LimbType.Torso
+                }
+
 THERM.LimbToWaterLimbV = function (givenlimb)
         local limb = HF.NormalizeLimbType(givenlimb)
-        local WaterLimbValues = {Head = {LimbType.Head,"HeadV"}, 
-                                Torso = {LimbType.Torso,"TorsoV"}, 
-                                RightArm = {LimbType.RightArm,"RightArmV"}, 
-                                LeftArm = {LimbType.LeftArm,"LeftArmV"}, 
-                                LeftLeg = {LimbType.LeftLeg,"LeftLegV"}, 
-                                RightLeg = {LimbType.RightLeg,"RightLegV"}}
-        for index, WaterLimb in pairs(WaterLimbValues) do
-                if WaterLimb[1] == limb then
-                        return WaterLimb[2]
-                end
-        end 
-        return "TorsoV"
+        return WaterLimbValues[limb]
 end
 
--- Converts a limb to a the name of it's group, so LeftArm to arm and vice versa. Currently unused, however I think it's quite neat so I'll leave it.
-THERM.LimbToFamily = function (givenlimb)
-        if givenlimb ~= nil then
-                local limb = HF.NormalizeLimbType(givenlimb)
-                local Families = {Head = {LimbType.Head,"Head"}, 
-                                        Torso = {LimbType.Torso,"Torso"}, 
-                                        RightArm = {LimbType.RightArm,"Arm"}, 
-                                        LeftArm = {LimbType.LeftArm,"Arm"}, 
-                                        LeftLeg = {LimbType.LeftLeg,"Leg"}, 
-                                        RightLeg = {LimbType.RightLeg,"Leg"}}
-                for index, FamilyLimb in pairs(Families) do
-                        if FamilyLimb[1] == limb then
-                                return FamilyLimb[2]
-                        end
-                end   
-        end
+-- Convert limb to waterlimb value
+THERM.WaterLimbVToLimb = function (givenlimb)
+        return WaterLimbValues2[givenlimb]
 end
+
 
 local LimbsToCheck = {LimbType.Head,LimbType.Torso,LimbType.RightArm,LimbType.LeftArm,LimbType.LeftLeg,LimbType.RightLeg}
 -- Calculate pressure
@@ -107,38 +104,6 @@ THERM.LimbTempResistance = function (limb)
                 return LimbResistance
         end
 end
-
-
--- Used to determine if a hull is safe from outside water. Uses pressure of hull to determine if a leak is occuring.
--- I might change it to use 'IsSectionLeakingFromOutside' in future, however that seems very expensive to implement, at least to me. 
--- ##Not used.
-THERM.IsHullLeakingOutsideWater = function (hull,character)
-        local NormalPressure = 14832
-        local InWaterVal = 3
-        if hull ~= nil then
-                return HF.Clamp(hull.Pressure/NormalPressure,1,3)
-        else
-                -- This indicates that the player must be in water, since they're not in a hull, so set the value to three.
-                return InWaterVal
-        end
-end
-
-
--- Used for returning the minimum temperature a player can reach.
--- ##Not used.
-THERM.CalculateMinimumTemp = function (OutsideValue,TempStrength)
-        local minimumTemp = 5
-        if OutsideValue > 2 then
-                minimumTemp = 1
-        elseif OutsideValue > 1 then
-                minimumTemp = 3
-        end
-        if  (minimumTemp- 1) > TempStrength  then
-                minimumTemp = TempStrength
-        end
-        return minimumTemp
-end
-
 
 -- Function to get general idea of if limb is in water.
 THERM.CalculateIsLimbInWater = function (target, LimbTypeToCheck, offset, index)
@@ -227,7 +192,7 @@ THERM.CalculateTemperature = function (limbwet,target,limb)
                 return
         end
         if limb == LimbType.Torso then
-                CharacterTable.LastStoredTorsoTemp = HF.GetAfflictionStrengthLimb(target, LimbType.Torso, "ntt_temperature", 0)
+                CharacterTable.LastStoredHeadTemp = HF.GetAfflictionStrengthLimb(target, LimbType.Torso, "ntt_temperature", 0)
                 if target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes) ~= CharacterTable.LastStoredSuit and target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes) ~= nil then
                         CharacterTable.LastStoredSuit = target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes)
                         CharacterTable.DivingSuitBurnRes = THERM.BurnReductionFactor(target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes))
@@ -395,7 +360,7 @@ THERM.IntiateCharacterTemp = function(createdCharacter)
                                      },
                             LastHullWaterVolume = 0,
                             LastStoredPlayerY = 0,
-                            LastStoredTorsoTemp = 0,
+                            LastStoredHeadTemp = 0,
 			    Character = createdCharacter,
                             LastStoredSuit = nil,
                             LastStoredInnerSuit = nil,

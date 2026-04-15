@@ -145,5 +145,17 @@
 
 <loadingscreentip>‖color:gui.blue‖NT Thermal:‖end‖ Hypothermia can be used as an Analgesia alternative, however the health of your patient might be of concern.</loadingscreentip>
 
+
+<!-- Dialog -->
+<npcdialogsym.sym_cold>I'm getting a little cold over here.</npcdialogsym.sym_cold>
+
+<npcdialogsym.sym_shivers>Shivering a bit.</npcdialogsym.sym_shivers>
+
+<npcdialogsym.sym_numb>I can't . . . feel much.</npcdialogsym.sym_numb>
+
+<npcdialogsym.sym_hot>I'm starting to sweat.</npcdialogsym.sym_hot>
+
+<npcdialogsym.heat_cramp>I'm- cramping up!.</npcdialogsym.heat_cramp>
+
 </Override>
 </infotexts>
