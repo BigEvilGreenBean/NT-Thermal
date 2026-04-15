@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<contentpackage name="NT Thermal (Baroverhaul Patch)" modversion="1.0.0h0" corepackage="False" steamworkshopid="3706976640" gameversion="1.12.6.2">
+  <Item file="%ModDir%/XML/Suit.xml" />
+</contentpackage>
