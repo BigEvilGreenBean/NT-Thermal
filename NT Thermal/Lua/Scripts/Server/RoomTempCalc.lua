@@ -59,6 +59,7 @@ end)
 THERMRoom.CalculateRoomTemp = function ()
         -- Check each room.
         if THERMRoom.Rooms ~= nil and THERMRoom.Intiated then
+
                 for index, update in pairs(THERMRoom.QueuedOxygenUpdates) do -- Used for transferring heat between hulls
                         local hull1 = update.hullA
                         local hull2 = update.hullB
@@ -90,6 +91,7 @@ THERMRoom.CalculateRoomTemp = function ()
                                 THERMRoom.QueuedOxygenUpdates[index] = nil -- Set update to nil
                         end,10)
                 end
+                
                 for index, room in pairs(THERMRoom.Rooms) do -- Update current temps.
                         if room ~= nil and room.Hull ~= nil then
                                 local Hull = room.Hull

@@ -77,7 +77,7 @@ NTTHERM.ConfigData = {
 	},
 	ShockMargin = {
 		name = "Thermal Shock Margin",
-		default = 100,
+		default = 200,
 		range = {1, 400},
 		type = "float",
 		description = "The margin in which thermal shock will activate. Extremely sensitive. Higher values mean less margin, lower means higher margin."
@@ -86,6 +86,7 @@ NTTHERM.ConfigData = {
 	BotSuitSafteyMode = { name = "Bot Suit Compatibility Mode", default = true, type = "bool", description = "This makes all suits worn by a bot heated. Useful so you don't have to babysit them."},
 	BotTempIgnoreMode = { name = "Temperature Ignores Bot Mode", default = false, type = "bool", description = "This makes all bots immune to temperature and it's effects. This should theoretically give a performance boost."},
 	PressureStabilizerTemperature = { name = "Pressure Stabilizers Stabilize Temperature", default = false, type = "bool", description = "This setting makes pressure stabilizers also stabilize temperature, on top of pressure and oxygen." },
+	SimpleWaterCalculation = { name = "Simple Water Calculations", default = false, type = "bool", description = "This setting makes water calculations extremely simple, the game will make you wet, only when 'in' water. However due to barotrauma limitations this is highly inaccurate." },
 	HeatTransferToggle = { name = "Fire Transfers Heat", default = true, type = "bool", description = "This setting allows heat to transfer between hulls in a submarine. This should be left on for the intended experience." },
 	PerformanceMode = { name = "Performance Mode", default = true, type = "bool", description = "This mode increases performance, however it sometimes might make inaccurate calculation. There really shouldn't be a difference though." },
 }

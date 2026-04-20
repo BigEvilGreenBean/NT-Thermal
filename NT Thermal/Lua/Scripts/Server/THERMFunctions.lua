@@ -199,7 +199,6 @@ THERM.CalculateTemperature = function (limbwet,target,limb)
                 elseif  target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes) == nil then
                         CharacterTable.LastStoredSuit = nil
                         CharacterTable.DivingSuitBurnRes = 1
-                else
                 end
                 if target.Inventory.GetItemInLimbSlot(InvSlotType.InnerClothes) ~= CharacterTable.LastStoredInnerSuit and target.Inventory.GetItemInLimbSlot(InvSlotType.InnerClothes) ~= nil then
                         CharacterTable.LastStoredInnerSuit = target.Inventory.GetItemInLimbSlot(InvSlotType.InnerClothes)

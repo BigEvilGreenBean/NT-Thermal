@@ -696,10 +696,9 @@ NTTHERM.UpdateAfflictions = {
 					end
 
 					if c.stats.stasis then
-						print("Skip")
 						return
 					end
-					print("Continue")
+					
 					c.afflictions[i].strength = c.afflictions[i].strength 
 						+ (c.afflictions.heartdamage.strength/80 -- Heart Damage aids Edema
 						+ c.afflictions.bloodpressure.strength/50 -- High blood pressure aids in edema

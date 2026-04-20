@@ -17,6 +17,7 @@ NTTHERM.UsingEnhancedReactors = false
 Timer.Wait(function ()
     if NTC ~= nil then
         NTC.RegisterExpansion(NTTHERM)
+		
 		NTC.AddPreHumanUpdateHook(function (character) -- Used to freeze patients in stasis. Since limbs dont update when stasis is on.
 			if HF.GetAfflictionStrength(character, "stasis", 0) > 0 and HF.GetAfflictionStrength(character, "givetemp", 0) > 0 then
 				if not (NTConfig.Get("BotTempIgnoreMode", true) and character.IsBot) then
