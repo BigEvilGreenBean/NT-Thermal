@@ -2,7 +2,7 @@
 -- Set up dictonary
 NTTHERM = {}
 NTTHERM.Name = "Thermal"
-NTTHERM.Version = "1.5.7h53"
+NTTHERM.Version = "1.5.7h59"
 NTTHERM.VersionNum = 000000001
 NTTHERM.MinNTVersion = "A1.12.1"
 NTTHERM.MinNTVersionNum = 01120100
@@ -31,6 +31,8 @@ Timer.Wait(function ()
 
 		local thermal_afflictions = { "sym_hot", "sym_cold", "sym_shivers", "sym_numb", "heat_cramp" }
 		table.insert(NT.SymsForNPC, thermal_afflictions)
+		
+		NT.DrainageAfflictions["pulmonary_edema"] = { xpgain = 3, case = "retractedskin"}
 
 		NTTHERM.UsingEnhancedReactors = EnhancedReactors -- Used to determine if enhanced reactors is on.
 		if NTTHERM.UsingEnhancedReactors ~= nil then
