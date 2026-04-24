@@ -963,7 +963,7 @@ NTTHERM.UpdateAfflictions = {
 											/25) 
 											* (c.afflictions[i].strength
 											/100) 
-											* 20
+											* 10
 											* IsCyber
 											* WaterCounter 
 											* NT.Deltatime)
@@ -1056,7 +1056,7 @@ NTTHERM.UpdateAfflictions = {
 
 			-- Immersive Diving Gear compat (Yes this is basically duplicated code, you're welcome.)
 			elseif DivingSuit ~= nil
-			 	and THERM.ImmersiveDivingGearEquipped(DivingSuit,Helmet) and c.afflictions[i].strength ~= 100 then
+			 	and THERM.ImmersiveDivingGearEquipped(DivingSuit,Helmet) then
 
 				if NTConfig.Get("SuitCompatiblityMode", false) or (NTConfig.Get("BotSuitSafteyMode", true) and c.character.IsBot) then
 					c.afflictions[i].strength = c.afflictions[i].strength + (5 * NT.Deltatime)

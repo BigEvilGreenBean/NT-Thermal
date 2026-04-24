@@ -1,4 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+<Override>
 <Items>
   <!--HeatPads-->
   <Item name="Heatpads" identifier="heatpads" category="Medical" maxstacksize="32" maxstacksizecharacterinventory="16" cargocontaineridentifier="mediccrate" Tags="smallitem,medical" description="An easy to store patch used for heating up cold tissue." useinhealthinterface="True" scale="0.2" impactsoundtag="impact_soft" RequireAimToUse="True">
@@ -245,6 +246,10 @@
         <Conditional hastag="heating" targetcontainer="true" />
         <Conditional HasStatusTag="eq activeheating" targetcontainer="true" />
       </StatusEffect>
+      <StatusEffect type="OnContained" target="This" interval="5" disabledeltatime="true" condition="-20">
+        <Conditional hastag="refrigerated" targetcontainer="true" />
+        <Conditional HasStatusTag="eq activecooling" targetcontainer="true" />
+      </StatusEffect>
       <StatusEffect type="OnFire" target="This" Condition="25.0" />
     </MeleeWeapon>
     <AiTarget sightrange="1000" static="true" />
@@ -287,6 +292,11 @@
       <StatusEffect type="OnContained" target="This" interval="5" disabledeltatime="true" condition="17.5">
         <Conditional hastag="heating" targetcontainer="true" />
         <Conditional HasStatusTag="eq activeheating" targetcontainer="true" />
+      </StatusEffect>
+      <!-- HE compatibility -->
+      <StatusEffect type="OnContained" target="This" interval="5" disabledeltatime="true" condition="-20" comparison="and">
+        <Conditional hastag="refrigerated" targetcontainer="true" />
+        <Conditional condition="gt 20" />
       </StatusEffect>
       <StatusEffect type="OnFire" target="This" Condition="25.0" />
       <RequiredSkill identifier="medical" level="40" />
@@ -343,7 +353,7 @@
     </Price>
     <InventoryIcon texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="119,145,145,82" origin="0.51347846,0.5360419" />
     <Sprite texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="119,145,145,82" depth="0.55" origin="0.50882435,0.5415284" />
-    <Body width="65" height="45" density="50" />
+    <Body width="145" height="85" density="50" />
     <Holdable slots="RightHand+LeftHand" holdpos="0,-80" handle1="-20,14" handle2="20,14" aimable="false" msg="ItemMsgPickUpSelect" />
     <ItemContainer capacity="12" keepopenwhenequipped="true" movableframe="true">
       <Containable items="warm_rag,warm_iv_bag" excludeditems="toolbelt,toolbox" />
@@ -409,3 +419,4 @@
     </ItemContainer>
   </Item>
 </Items>
+</Override>

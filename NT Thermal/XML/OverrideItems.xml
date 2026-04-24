@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Override>
+  <Items>
+
+    <Item name="" identifier="organcrate" tags="crate,refrigerated" scale="0.5" linkable="true" pickdistance="150" showcontentsintooltip="true" impactsoundtag="impact_metal_heavy" waterproof="true" fireproof="true" description="">
+      <Price baseprice="150">
+        <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" minavailable="8" />
+      </Price>
+      <Deconstruct time="10">
+        <Item identifier="steel" />
+        <Item identifier="potassium" amount="4" />
+      </Deconstruct>
+      <Fabricate suitablefabricators="fabricator" requiredtime="20">
+        <RequiredSkill identifier="mechanical" level="20" />
+        <Item identifier="steel" />
+        <Item identifier="potassium" amount="4" />
+        <Item identifier="phosphorus" amount="2" />
+      </Fabricate>
+      <Sprite texture="%ModDir%/Images/InGameItemIconAtlas(NTThermal).png" depth="0.54" sourcerect="10,578,146,82" origin="0.5,0.5" />
+      <Body width="145" height="85" density="50" />
+      <Holdable slots="RightHand+LeftHand" holdpos="0,-80" handle1="-20,14" handle2="20,14" aimable="false" msg="ItemMsgPickUpSelect" />
+      <ItemContainer capacity="12" canbeselected="false" hideitems="true" keepopenwhenequipped="true" movableframe="true">
+        <Containable items="smallitem,organ" excludeditems="toolbox,cargoscooter" />
+      </ItemContainer>
+    </Item>
+
+    <Item name="" identifier="organtoolbox" category="Equipment" tags="mediumitem,mobilecontainer,tool,refrigerated,toolbox" cargocontaineridentifier="" showcontentsintooltip="true" Scale="0.5" fireproof="true" impactsoundtag="impact_metal_heavy" RequireAimToUse="True" description="">
+      <PreferredContainer primary="medcab" minamount="1" maxamount="1" />
+      <PreferredContainer secondary="locker" />
+      <Price baseprice="100">
+        <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" minavailable="8" />
+      </Price>
+      <Deconstruct time="10">
+        <Item identifier="steel" />
+        <Item identifier="potassium" amount="2" />
+      </Deconstruct>
+      <Fabricate suitablefabricators="fabricator" requiredtime="20">
+        <RequiredSkill identifier="mechanical" level="20" />
+        <Item identifier="steel" />
+        <Item identifier="potassium" amount="2" />
+        <Item identifier="phosphorus" />
+      </Fabricate>
+      <Price baseprice="25">
+        <Price locationtype="outpost" multiplier="1" minavailable="4" />
+        <Price locationtype="city" multiplier="0.9" minavailable="6" />
+        <Price locationtype="research" multiplier="1.25" minavailable="1" />
+        <Price locationtype="military" multiplier="1.25" minavailable="1" />
+        <Price locationtype="mine" multiplier="1.25" minavailable="8" />
+      </Price>
+      <Sprite texture="%ModDir%/Images/InGameItemIconAtlas(NTThermal).png" sourcerect="173,403,84,67" origin="0.5,0.5" depth="0.6" />
+      <Body width="90" height="60" density="20" />
+      <MeleeWeapon slots="RightHand,LeftHand" controlpose="true" aimpos="45,10" handle1="0,18" holdangle="90" reload="1" range="50" combatpriority="6" msg="ItemMsgPickUpSelect">
+        <Attack structuredamage="0" itemdamage="1" targetimpulse="2">
+          <Affliction identifier="blunttrauma" strength="2" />
+          <Affliction identifier="stun" strength="0.6" />
+          <StatusEffect type="OnUse" target="UseTarget">
+            <Conditional entitytype="eq Character" />
+            <Sound file="Content/Items/Weapons/Smack1.ogg" selectionmode="random" range="500" />
+            <Sound file="Content/Items/Weapons/Smack2.ogg" range="500" />
+          </StatusEffect>
+        </Attack>
+      </MeleeWeapon>
+      <ItemContainer capacity="6" keepopenwhenequipped="true" movableframe="true">
+        <Containable items="smallitem,organ" excludeditems="toolbelt,toolbox" />
+      </ItemContainer>
+      <aitarget sightrange="1000" soundrange="1000" fadeouttime="2" />
+    </Item>
+
+    </Items>
+</Override>

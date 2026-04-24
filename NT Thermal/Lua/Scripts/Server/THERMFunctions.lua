@@ -71,7 +71,7 @@ THERM.ClothResistance = function (limb,Character)
         -- OuterClothing.
         if Character.Inventory.GetItemAt(4) then
                 WearingOuterEquip = 1.2
-                if Character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("diving") or Character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("deepdivinglarge") or Character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes).HasTag("deepdiving")then
+                if THERM.IsDivingSuit(Character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes)) then
                      WearingDivingSuitEquip  = 1.4
                 else
                      WearingDivingSuitEquip  = 1
@@ -192,18 +192,20 @@ THERM.CalculateTemperature = function (limbwet,target,limb)
                 return
         end
         if limb == LimbType.Torso then
+                local DivingSuit = target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes)
                 CharacterTable.LastStoredHeadTemp = HF.GetAfflictionStrengthLimb(target, LimbType.Torso, "ntt_temperature", 0)
-                if target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes) ~= CharacterTable.LastStoredSuit and target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes) ~= nil then
-                        CharacterTable.LastStoredSuit = target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes)
-                        CharacterTable.DivingSuitBurnRes = THERM.BurnReductionFactor(target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes))
-                elseif  target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes) == nil then
+                if DivingSuit ~= CharacterTable.LastStoredSuit and DivingSuit ~= nil then
+                        CharacterTable.LastStoredSuit = DivingSuit
+                        CharacterTable.DivingSuitBurnRes = THERM.BurnReductionFactor(DivingSuit)
+                elseif  DivingSuit == nil then
                         CharacterTable.LastStoredSuit = nil
                         CharacterTable.DivingSuitBurnRes = 1
                 end
-                if target.Inventory.GetItemInLimbSlot(InvSlotType.InnerClothes) ~= CharacterTable.LastStoredInnerSuit and target.Inventory.GetItemInLimbSlot(InvSlotType.InnerClothes) ~= nil then
-                        CharacterTable.LastStoredInnerSuit = target.Inventory.GetItemInLimbSlot(InvSlotType.InnerClothes)
-                        CharacterTable.InnerClothingBurnRes = THERM.BurnReductionFactor(target.Inventory.GetItemInLimbSlot(InvSlotType.InnerClothes))
-                elseif  target.Inventory.GetItemInLimbSlot(InvSlotType.InnerClothes) == nil then
+                local InnerSuit = target.Inventory.GetItemInLimbSlot(InvSlotType.InnerClothes)
+                if InnerSuit ~= CharacterTable.LastStoredInnerSuit and InnerSuit ~= nil then
+                        CharacterTable.LastStoredInnerSuit = InnerSuit
+                        CharacterTable.InnerClothingBurnRes = THERM.BurnReductionFactor(InnerSuit)
+                elseif  InnerSuit == nil then
                         CharacterTable.LastStoredInnerSuit = nil
                         CharacterTable.InnerClothingBurnRes = 1
                 end

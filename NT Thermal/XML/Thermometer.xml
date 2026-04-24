@@ -1,4 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+<Override>
 <Items>
   <!-- Thermometer for getting temperature of limbs -->
   <Item name="Handheld Thermometer" description="A handheld method of measuring a patients body temperature. Requires batteries in order to function." identifier="handheld_thermometer" category="Equipment" cargocontaineridentifier="metalcrate" tags="smallitem,tool,medical" useinhealthinterface="true" impactsoundtag="impact_metal_light" scale="0.22" isshootable="true" requireaimtouse="True">
@@ -36,3 +37,4 @@
     <Pickable msg="ItemMsgPickUpSelect" />
   </Item>
 </Items>
+</Override>

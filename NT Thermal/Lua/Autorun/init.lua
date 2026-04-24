@@ -2,7 +2,7 @@
 -- Set up dictonary
 NTTHERM = {}
 NTTHERM.Name = "Thermal"
-NTTHERM.Version = "1.5.7h59"
+NTTHERM.Version = "1.5.8h59"
 NTTHERM.VersionNum = 000000001
 NTTHERM.MinNTVersion = "A1.12.1"
 NTTHERM.MinNTVersionNum = 01120100
@@ -53,7 +53,7 @@ Timer.Wait(function()
     --Server Side scripts
 	if SERVER or (CLIENT and not Game.IsMultiplayer) then
     	dofile(NTTHERM.Path .. "/Lua/Scripts/Server/humanUpdate.lua") --HumanUpdates.
-		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/HeatedSuitList.lua")
+		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/HeatedSuitList.lua") -- The Heated Diving Suit
 		--dofile(NTTHERM.Path .. "/Lua/Scripts/Server/clankerUpdate.lua") --RoboTrauma Thermal Updates.
 		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/THERMFunctions.lua") --Setup THERM functions.
 		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/PlayerHooks.lua") --Main Hooks used for a large portion of the mod.

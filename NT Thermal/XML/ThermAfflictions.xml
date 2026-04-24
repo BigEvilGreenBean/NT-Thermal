@@ -1,4 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+<Override>
 <Afflictions>
   <!--Afflictions-->
   <!--Frostnip-->
@@ -88,7 +89,7 @@
     <icon texture="%ModDir%/Images/NT_AZ_Afflictions.png" sheetelementsize="128,128" origin="0,0" sourcerect="650,538,125,127" />
   </Affliction>
   <!-- Heated Diving Suit-->
-  <Affliction name="Heated Diving Suit" identifier="heated_diving_suit" description="The suit has been heated, the freezing temperature is neglible." limbspecific="false" indicatorlimb="Torso" showiconthreshold="1" showinhealthscannerthreshold="1000" maxstrength="100" targets="human" type="gaze" isbuff="true" healableinmedicalclinic="false" iconcolors="135,135,135,255;255,111,0,255">
+  <Affliction name="Heated Diving Suit" identifier="heated_diving_suit" description="The suit has been heated, the freezing temperature is neglible." limbspecific="false" indicatorlimb="Torso" showiconthreshold="1" showinhealthscannerthreshold="1000" maxstrength="100" targets="human" type="gaze" isbuff="true" healableinmedicalclinic="false" iconcolors="135,135,135,255;250,130,20,255">
     <Effect minstrength="0" maxstrength="100" strengthchange="0" />
     <icon texture="%ModDir%/Images/NT_AZ_Afflictions.png" sheetelementsize="128,128" origin="0,0" sourcerect="260,402,125,127" />
   </Affliction>
@@ -187,7 +188,7 @@
   </Affliction>
   <!--Buffs-->
   <!--Warmth-->
-  <Affliction name="Warmth" identifier="warmth" description="Warmth has been applied." limbspecific="true" showiconthreshold="1" showinhealthscannerthreshold="1" maxstrength="100" targets="human" type="gaze" isbuff="true" healableinmedicalclinic="false" iconcolors="149,193,157,255;149,193,157,255">
+  <Affliction name="Warmth" identifier="warmth" description="Warmth has been applied." limbspecific="true" showiconthreshold="1" showinhealthscannerthreshold="1" maxstrength="100" targets="human" type="gaze" isbuff="true" healableinmedicalclinic="false" iconcolors="50,140,70,255;149,193,157,255">
     <Effect minstrength="0" maxstrength="100" strengthchange="0" />
     <icon texture="%ModDir%/Images/NT_AZ_Afflictions.png" sheetelementsize="128,128" sourcerect="130,401,125,127" origin="0,0" />
   </Affliction>
@@ -213,3 +214,4 @@
     <icon texture="%ModDir%/Images/NT_AZ_Afflictions.png" sheetelementsize="128,128" origin="1.3438107E-08,0" sourcerect="10,669,109,126" />
   </Affliction>
 </Afflictions>
+</Override>
