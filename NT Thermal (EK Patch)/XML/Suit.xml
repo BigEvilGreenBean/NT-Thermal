@@ -1,0 +1,327 @@
+<Items>
+<Override>
+
+<Item name="" identifier="ekutility_Utility_hardsuit" aliases="utility_hardsuit,industrial hardsuit,industrial_hardsuit" category="Equipment" tags="divinggear_wearableindoors,diving,provocative,deepdiving,divingsuit,light,ekutility_utility_hardsuit,thermal" scale="0.5" fireproof="true" allowdroppingonswapwith="diving" impactsoundtag="impact_metal_heavy">
+<PreferredContainer primary="divingsuitcontainer"/>
+<Price baseprice="510" sold="false" minleveldifficulty="20">
+<Price storeidentifier="merchantoutpost" multiplier="1.3"/>
+<Price storeidentifier="merchantcity" multiplier="1.15" sold="true"/>
+<Price storeidentifier="merchantresearch" multiplier="1.3"/>
+<Price storeidentifier="merchantmilitary" multiplier="1"/>
+<Price storeidentifier="merchantmine" multiplier="0.9" sold="true" minavailable="2"/>
+<Price storeidentifier="merchantengineering" multiplier="1.2" sold="true" minavailable="1"/>
+</Price>
+<Deconstruct time="45">
+<Item identifier="titaniumaluminiumalloy"/>
+<Item identifier="fpgacircuit"/>
+<Item identifier="rubber"/>
+</Deconstruct>
+<Fabricate suitablefabricators="modfabricator,fabricator" requiredtime="45">
+<RequiredSkill identifier="mechanical" level="60"/>
+<RequiredSkill identifier="electrical" level="40"/>
+<RequiredItem identifier="titaniumaluminiumalloy" amount="2"/>
+<RequiredItem identifier="fpgacircuit" amount="2"/>
+<RequiredItem identifier="rubber" amount="2"/>
+</Fabricate>
+<!--  Paint Variants  -->
+<Fabricate suitablefabricators="modfabricator,fabricator" requiredtime="1">
+<RequiredItem tag="ekutility_utility_hardsuit"/>
+</Fabricate>
+<Sprite name="Diving Suit Item" texture="%ModDir%/Suits/ekutility_divinglockersprites.png" sourcerect="130,0,124,128" depth="0.55" origin="0.5,0.5"/>
+<InventoryIcon name="Diving Suit Item" texture="%ModDir%/Suits/utility_diving_suit.png" sourcerect="458,193,52,61"/>
+<ContainedSprite name="Diving Suit Behind Window" allowedcontainertags="divingsuitcontainerwindow" texture="%ModDir%/Suits/utility_diving_suit_inlocker.png" sourcerect="12,30,77,209" depth="0.55" origin="-0.12,-0.13"/>
+<ContainedSprite name="Diving Suit In Horizontal Locker" allowedcontainertags="divingsuitcontainerhorizontal" texture="%ModDir%/Suits/ekutility_divinglockersprites.png" sourcerect="134,134,248,59" depth="0.55" origin="0.58,0.5"/>
+<Body radius="45" width="34" density="15"/>
+<!--  TODO: wait for this to work -->
+<CustomInterface canbeselected="false" drawhudwhenequipped="true">
+<GuiFrame relativesize="0.12,0.08" anchor="BottomLeft" absoluteoffset="20,138" style="ItemUI"/>
+<TickBox text="Suit Lights" IsOn="true">
+<StatusEffect type="OnUse" target="This" IsOn="true"/>
+<StatusEffect type="OnSecondaryUse" target="This" IsOn="false"/>
+</TickBox>
+</CustomInterface>
+<!--  I'm just gonna leave this line here because its not like its breaking anything by itself, it just doesn't work yet  -->
+<Holdable slots="RightHand+LeftHand" msg="ItemMsgPickUpUse" controlpose="true" holdpos="0,-50" handle1="-10,-20" handle2="10,-20" holdangle="45" canbeselected="false" canbepicked="true" pickkey="Use" allowswappingwhenpicked="false"/>
+<Wearable slots="OuterClothes" msg="ItemMsgEquipSelect">
+<sprite name="Hardsuit Head" texture="%ModDir%/Suits/utility_diving_suit.png" limb="Head" hidelimb="true" inheritlimbdepth="true" inheritscale="true" inherittexturescale="true" ignorelimbscale="true" hideotherwearables="true" sourcerect="414,5,96,96" origin="0.5,0.5" scale="0.8">
+<LightComponent canbeselected="false" AllowInGameEditing="false" range="400.0" lightcolor="250,200,170,40" powerconsumption="10" IsOn="true">
+<StatusEffect type="OnWearing" target="This,Character" Voltage="1.0" setvalue="true">
+<Conditional IsDead="false"/>
+</StatusEffect>
+<LightTexture texture="%ModDir%/Suits/pointlight_bright.png" origin="0.5, 0.56" size="1.0,1.0"/>
+</LightComponent>
+</sprite>
+<sprite name="Hardsuit Torso" texture="%ModDir%/Suits/utility_diving_suit.png" limb="Torso" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true">
+<LightComponent canbeselected="false" AllowInGameEditing="false" range="500.0" lightcolor="250,200,170,200" powerconsumption="10" IsOn="true">
+<StatusEffect type="OnWearing" target="This,Character" Voltage="1.0" setvalue="true">
+<Conditional IsDead="false"/>
+</StatusEffect>
+<LightTexture texture="%ModDir%/Suits/utility_divingsuit_light.png" origin="0.002, 0.565" size="1.0,1.0"/>
+</LightComponent>
+</sprite>
+<sprite name="Hardsuit Left Lower Arm" texture="%ModDir%/Suits/utility_diving_suit.png" limb="LeftForearm" hidelimb="true" hideotherwearables="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true"/>
+<sprite name="Hardsuit Right Lower Arm" texture="%ModDir%/Suits/utility_diving_suit.png" limb="RightForearm" hidelimb="true" hideotherwearables="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true"/>
+<sprite name="Hardsuit Left Upper Arm" texture="%ModDir%/Suits/utility_diving_suit.png" limb="LeftArm" hidelimb="true" hideotherwearables="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true"/>
+<sprite name="Hardsuit Right Upper Arm" texture="%ModDir%/Suits/utility_diving_suit.png" limb="RightArm" hidelimb="true" hideotherwearables="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true"/>
+<sprite name="Hardsuit Waist" texture="%ModDir%/Suits/utility_diving_suit.png" limb="Waist" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true"/>
+<sprite name="Hardsuit Right Thigh" texture="%ModDir%/Suits/utility_diving_suit.png" limb="RightThigh" hideotherwearables="true" depthlimb="RightLeg" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true"/>
+<sprite name="Hardsuit Left Thigh" texture="%ModDir%/Suits/utility_diving_suit.png" limb="LeftThigh" hideotherwearables="true" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true"/>
+<sprite name="Hardsuit Right Leg" texture="%ModDir%/Suits/utility_diving_suit.png" limb="RightLeg" hideotherwearables="true" depthlimb="RightThigh" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true"/>
+<sprite name="Hardsuit Left Leg" texture="%ModDir%/Suits/utility_diving_suit.png" limb="LeftLeg" hideotherwearables="true" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true"/>
+<sprite name="Hardsuit Right Shoe" texture="%ModDir%/Suits/utility_diving_suit.png" limb="RightFoot" hideotherwearables="true" hidelimb="true" sound="footstep_exo" origin="0.6,0.5" sourcerect="273,209,71,46" inherittexturescale="true" inheritorigin="false" inheritsourcerect="false"/>
+<sprite name="Hardsuit Left Shoe" texture="%ModDir%/Suits/utility_diving_suit.png" limb="LeftFoot" hideotherwearables="true" hidelimb="true" sound="footstep_exo" origin="0.6,0.5" sourcerect="346,209,71,46" inherittexturescale="true" inheritorigin="false" inheritsourcerect="false"/>
+<sprite name="Hardsuit Right Hand" texture="%ModDir%/Suits/utility_diving_suit.png" limb="RightHand" hideotherwearables="true" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true"/>
+<sprite name="Hardsuit Left Hand" texture="%ModDir%/Suits/utility_diving_suit.png" limb="LeftHand" hideotherwearables="true" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true"/>
+<StatusEffect type="OnContained" target="Contained" Condition="1.0" targetslot="0">
+<Conditional Voltage="gt 0.01" targetcontainer="true" targetgrandparent="true" targetitemcomponent="Powered"/>
+<RequiredItem items="oxygentank" type="Contained" excludebroken="false"/>
+</StatusEffect>
+<StatusEffect type="OnWearing" target="Character" HideFace="true" ObstructVision="false" PressureProtection="5000.0" SpeedMultiplier="0.75" LowPassMultiplier="0.2" setvalue="true" disabledeltatime="true">
+<Sound file="Content/Items/Diving/DivingSuitLoop1.ogg" range="250" loop="true"/>
+<Sound file="Content/Items/Diving/DivingSuitLoop2.ogg" range="250" loop="true"/>
+<TriggerAnimation Type="Walk" FileName="HumanWalkDivingSuit" priority="1" ExpectedSpecies="Human"/>
+<TriggerAnimation Type="Run" FileName="HumanRunDivingSuit" priority="1" ExpectedSpecies="Human"/>
+</StatusEffect>
+<damagemodifier armorsector="0.0,360.0" afflictionidentifiers="gunshotwound,organdamage,explosiondamage" damagemultiplier="0.85" damagesound="LimbArmor" deflectprojectiles="true"/>
+<damagemodifier armorsector="0.0,360.0" afflictionidentifiers="blunttrauma,lacerations,bitewounds" damagemultiplier="0.85" damagesound="LimbArmor" deflectprojectiles="true"/>
+<damagemodifier armorsector="0.0,360.0" afflictiontypes="burn" damagemultiplier="0.5" damagesound="LimbArmor" deflectprojectiles="true"/>
+<damagemodifier armorsector="0.0,360.0" afflictiontypes="bleeding" damagemultiplier="0.85" damagesound="LimbArmor" deflectprojectiles="true"/>
+<damagemodifier armorsector="0.0,360.0" afflictiontypes="stun" damagemultiplier="0.9" damagesound="LimbArmor" deflectprojectiles="true"/>
+<damagemodifier armorsector="0.0,360.0" afflictionidentifiers="radiationsickness" damagemultiplier="0.5" damagesound="LimbArmor"/>
+<damagemodifier armorsector="0.0,360.0" afflictionidentifiers="huskinfection" damagemultiplier="0.5" probabilitymultiplier="0.5" damagesound="LimbArmor"/>
+<SkillModifier skillidentifier="mechanical" skillvalue="10"/>
+<SkillModifier skillidentifier="electrical" skillvalue="20"/>
+<StatValue stattype="FlowResistance" value="0.9"/>
+<ItemComponent>
+<IsActive HullOxygenPercentage="lt 50"/>
+<StatusEffect type="OnActive" target="Contained,Character" comparison="And">
+<RequiredItem items="oxygensource" type="Contained" targetslot="0"/>
+<Conditional condition="lt 5.0"/>
+<Sound file="Content/Items/WarningBeepSlow.ogg" range="500"/>
+</StatusEffect>
+<StatusEffect type="OnActive" target="Contained" playsoundonrequireditemfailure="true">
+<RequiredItem items="oxygensource" type="Contained" matchonempty="true"/>
+<Conditional condition="lte 0.0"/>
+<Sound file="Content/Items/WarningBeep.ogg" range="500"/>
+</StatusEffect>
+</ItemComponent>
+</Wearable>
+<ItemContainer capacity="1" maxstacksize="1" hideitems="true" containedstateindicatorstyle="tank" containedstateindicatorslot="0">
+<SlotIcon slotindex="0" texture="Content/UI/StatusMonitorUI.png" sourcerect="64,448,64,64" origin="0.5,0.5"/>
+<SlotIcon slotindex="1" texture="Content/UI/StatusMonitorUI.png" sourcerect="128,448,64,64" origin="0.5,0.5"/>
+<Containable items="oxygensource,weldingtoolfuel" excludeditems="oxygenitetank"/>
+<Containable items="oxygensource">
+<StatusEffect type="OnWearing" target="Character" OxygenAvailable="1000.0"/>
+<StatusEffect type="OnWearing" target="Contained" Condition="-0.3" comparison="And">
+<Conditional TargetContainer="true" TargetGrandparent="true" IsDead="false"/>
+<Conditional TargetContainer="true" TargetGrandparent="true" DecreasedOxygenConsumption="lt 99"/>
+<Conditional TargetContainer="true" TargetGrandparent="true" NeedsAir="true"/>
+</StatusEffect>
+<StatusEffect type="OnWearing" target="Contained">
+<Conditional condition="lt 5.0"/>
+<Sound file="Content/Items/WarningBeepSlow.ogg" range="250" loop="true"/>
+</StatusEffect>
+</Containable>
+<Containable items="oxygenitetank">
+<StatusEffect type="OnWearing" target="Character" SpeedMultiplier="1.2" setvalue="true" targetslot="0" comparison="And">
+<Conditional IsDead="false"/>
+<Conditional DecreasedOxygenConsumption="lt 99"/>
+<Conditional NeedsAir="true"/>
+</StatusEffect>
+</Containable>
+<Containable items="weldingfueltank">
+<StatusEffect type="OnWearing" target="Contained" Condition="-0.5" comparison="And">
+<Conditional TargetContainer="true" TargetGrandparent="true" IsDead="false"/>
+<Conditional TargetContainer="true" TargetGrandparent="true" DecreasedOxygenConsumption="lt 99"/>
+<Conditional TargetContainer="true" TargetGrandparent="true" NeedsAir="true"/>
+</StatusEffect>
+<StatusEffect type="OnWearing" target="Character" OxygenAvailable="-100.0" Oxygen="-5.0" comparison="And">
+<Conditional IsDead="false"/>
+<Conditional DecreasedOxygenConsumption="lt 99"/>
+<Conditional NeedsAir="true"/>
+</StatusEffect>
+</Containable>
+<Containable items="incendiumfueltank">
+<StatusEffect type="OnWearing" target="Contained" Condition="-0.5" comparison="And">
+<Conditional TargetContainer="true" TargetGrandparent="true" IsDead="false"/>
+<Conditional TargetContainer="true" TargetGrandparent="true" DecreasedOxygenConsumption="lt 99"/>
+<Conditional TargetContainer="true" TargetGrandparent="true" NeedsAir="true"/>
+</StatusEffect>
+<StatusEffect type="OnWearing" target="Character" OxygenAvailable="-100.0" comparison="And" targetlimb="Torso">
+<Affliction identifier="burn" amount="20.0"/>
+<Conditional IsDead="false"/>
+<Conditional DecreasedOxygenConsumption="lt 99"/>
+<Conditional NeedsAir="true"/>
+</StatusEffect>
+</Containable>
+<StatusEffect type="OnWearing" target="Contained" playsoundonrequireditemfailure="true">
+<RequiredItem items="oxygensource" type="Contained" matchonempty="true"/>
+<Conditional condition="lte 0.0"/>
+<Sound file="Content/Items/WarningBeep.ogg" range="250" loop="true"/>
+</StatusEffect>
+<!--  Internal Heater  -->
+<SubContainer capacity="1" maxstacksize="1">
+<Containable items="mobilebattery"/>
+</SubContainer>
+<!--  Exit  -->
+<SubContainer capacity="2" maxstacksize="64">
+<Containable items="smallitem,mediumitem" excludeditems="toolbelt,toolbox,bandolier,cargoscooter,oxygensource"/>
+</SubContainer>
+</ItemContainer>
+</Item>
+<Item name="" identifier="ekutility_utility_hardsuit_paintmechanic" aliases="utility_hardsuit,industrial hardsuit,industrial_hardsuit" category="Equipment" tags="divinggear_wearableindoors,diving,provocative,deepdiving,divingsuit,light,ekutility_utility_hardsuit,thermal" scale="0.5" fireproof="true" allowdroppingonswapwith="diving" impactsoundtag="impact_metal_heavy">
+      <PreferredContainer primary="divingsuitcontainer" />
+      <Price baseprice="540" sold="false" minleveldifficulty="20">
+        <Price storeidentifier="merchantoutpost" multiplier="1.3" />
+        <Price storeidentifier="merchantcity" multiplier="1.15" sold="true" />
+        <Price storeidentifier="merchantresearch" multiplier="1.3" />
+        <Price storeidentifier="merchantmilitary" multiplier="1" />
+        <Price storeidentifier="merchantmine" multiplier="0.9" sold="true" minavailable="2" />
+        <Price storeidentifier="merchantengineering" multiplier="1.2" sold="true" minavailable="1" />
+      </Price>
+      <Deconstruct time="30">
+        <Item identifier="titaniumaluminiumalloy" />
+        <Item identifier="titaniumaluminiumalloy" />
+        <Item identifier="fpgacircuit" />
+        <Item identifier="fpgacircuit" />
+        <Item identifier="rubber" />
+        <Item identifier="rubber" />
+        <Item identifier="rubber" />
+        <Item identifier="rubber" />
+      </Deconstruct>
+      <Fabricate suitablefabricators="modfabricator,fabricator" requiredtime="1">
+        <RequiredItem tag="ekutility_utility_hardsuit" />
+        <RequiredItem identifier="bluepaint" />
+        <Item identifier="aluminium" />
+      </Fabricate>
+      <Sprite name="Diving Suit Item" texture="%ModDir%/Suits/ekutility_divinglockersprites_paintmechanic.png" sourcerect="130,0,124,128" depth="0.55" origin="0.5,0.5" />
+      <InventoryIcon name="Diving Suit Item" texture="%ModDir%/Suits/Utility_Diving_SuitMechanic.png" sourcerect="458,193,52,61" />
+      <ContainedSprite name="Diving Suit Behind Window" allowedcontainertags="divingsuitcontainerwindow" texture="%ModDir%/Suits/utility_diving_suit_paintmechanic_inlocker.png" sourcerect="12,30,77,209" depth="0.55" origin="-0.12,-0.13" />
+      <ContainedSprite name="Diving Suit In Horizontal Locker" allowedcontainertags="divingsuitcontainerhorizontal" texture="%ModDir%/Suits/ekutility_divinglockersprites_paintmechanic.png" sourcerect="134,134,248,59" depth="0.55" origin="0.58,0.5" />
+      <Body radius="45" width="34" density="15" />
+      <!-- TODO: wait for this to work-->
+      <CustomInterface canbeselected="false" drawhudwhenequipped="true">
+        <GuiFrame relativesize="0.12,0.08" anchor="BottomLeft" absoluteoffset="20,138" style="ItemUI" />
+        <TickBox text="Suit Lights" IsOn="true">
+          <StatusEffect type="OnUse" target="This" IsOn="true" />
+          <StatusEffect type="OnSecondaryUse" target="This" IsOn="false" />
+        </TickBox>
+      </CustomInterface>
+      <!-- I'm just gonna leave this line here because its not like its breaking anything by itself, it just doesn't work yet -->
+      <Holdable slots="RightHand+LeftHand" msg="ItemMsgPickUpUse" controlpose="true" holdpos="0,-50" handle1="-10,-20" handle2="10,-20" holdangle="45" canbeselected="false" canbepicked="true" pickkey="Use" allowswappingwhenpicked="false" />
+      <Wearable slots="OuterClothes" msg="ItemMsgEquipSelect">
+        <sprite name="Hardsuit Head" texture="%ModDir%/Suits/Utility_Diving_SuitMechanic.png" limb="Head" hidelimb="true" inheritlimbdepth="true" inheritscale="true" inherittexturescale="true" ignorelimbscale="true" hideotherwearables="true" sourcerect="414,5,96,96" origin="0.5,0.5" scale="0.8">
+          <LightComponent canbeselected="false" AllowInGameEditing="false" range="400.0" lightcolor="250,200,170,40" powerconsumption="10" IsOn="true">
+            <StatusEffect type="OnWearing" target="This,Character" Voltage="1.0" setvalue="true">
+              <Conditional IsDead="false" />
+            </StatusEffect>
+            <LightTexture texture="%ModDir%/Suits/pointlight_bright.png" origin="0.5, 0.56" size="1.0,1.0" />
+          </LightComponent>
+        </sprite>
+        <sprite name="Hardsuit Torso" texture="%ModDir%/Suits/Utility_Diving_SuitMechanic.png" limb="Torso" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true">
+          <LightComponent canbeselected="false" AllowInGameEditing="false" range="500.0" lightcolor="250,200,170,200" powerconsumption="10" IsOn="true">
+            <StatusEffect type="OnWearing" target="This,Character" Voltage="1.0" setvalue="true">
+              <Conditional IsDead="false" />
+            </StatusEffect>
+            <LightTexture texture="%ModDir%/Suits/utility_divingsuit_light.png" origin="0.002, 0.565" size="1.0,1.0" />
+          </LightComponent>
+        </sprite>
+        <sprite name="Hardsuit Left Lower Arm" texture="%ModDir%/Suits/Utility_Diving_SuitMechanic.png" limb="LeftForearm" hidelimb="true" hideotherwearables="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite name="Hardsuit Right Lower Arm" texture="%ModDir%/Suits/Utility_Diving_SuitMechanic.png" limb="RightForearm" hidelimb="true" hideotherwearables="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite name="Hardsuit Left Upper Arm" texture="%ModDir%/Suits/Utility_Diving_SuitMechanic.png" limb="LeftArm" hidelimb="true" hideotherwearables="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite name="Hardsuit Right Upper Arm" texture="%ModDir%/Suits/Utility_Diving_SuitMechanic.png" limb="RightArm" hidelimb="true" hideotherwearables="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite name="Hardsuit Waist" texture="%ModDir%/Suits/Utility_Diving_SuitMechanic.png" limb="Waist" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite name="Hardsuit Right Thigh" texture="%ModDir%/Suits/Utility_Diving_SuitMechanic.png" limb="RightThigh" hideotherwearables="true" depthlimb="RightLeg" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite name="Hardsuit Left Thigh" texture="%ModDir%/Suits/Utility_Diving_SuitMechanic.png" limb="LeftThigh" hideotherwearables="true" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite name="Hardsuit Right Leg" texture="%ModDir%/Suits/Utility_Diving_SuitMechanic.png" limb="RightLeg" hideotherwearables="true" depthlimb="RightThigh" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite name="Hardsuit Left Leg" texture="%ModDir%/Suits/Utility_Diving_SuitMechanic.png" limb="LeftLeg" hideotherwearables="true" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite name="Hardsuit Right Shoe" texture="%ModDir%/Suits/Utility_Diving_SuitMechanic.png" limb="RightFoot" hideotherwearables="true" hidelimb="true" sound="footstep_exo" origin="0.6,0.5" sourcerect="273,209,71,46" inherittexturescale="true" inheritorigin="false" inheritsourcerect="false" />
+        <sprite name="Hardsuit Left Shoe" texture="%ModDir%/Suits/Utility_Diving_SuitMechanic.png" limb="LeftFoot" hideotherwearables="true" hidelimb="true" sound="footstep_exo" origin="0.6,0.5" sourcerect="346,209,71,46" inherittexturescale="true" inheritorigin="false" inheritsourcerect="false" />
+        <sprite name="Hardsuit Right Hand" texture="%ModDir%/Suits/Utility_Diving_SuitMechanic.png" limb="RightHand" hideotherwearables="true" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite name="Hardsuit Left Hand" texture="%ModDir%/Suits/Utility_Diving_SuitMechanic.png" limb="LeftHand" hideotherwearables="true" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+        <StatusEffect type="OnContained" target="Contained" Condition="1.0">
+          <Conditional Voltage="gt 0.01" targetcontainer="true" targetgrandparent="true" targetitemcomponent="Powered" />
+          <RequiredItem items="oxygentank" type="Contained" excludebroken="false" />
+        </StatusEffect>
+        <StatusEffect type="OnWearing" target="Character" HideFace="true" ObstructVision="false" PressureProtection="5000.0" SpeedMultiplier="0.75" LowPassMultiplier="0.2" setvalue="true" disabledeltatime="true">
+          <Sound file="Content/Items/Diving/DivingSuitLoop1.ogg" range="250" loop="true" />
+          <Sound file="Content/Items/Diving/DivingSuitLoop2.ogg" range="250" loop="true" />
+          <TriggerAnimation Type="Walk" FileName="HumanWalkDivingSuit" priority="1" ExpectedSpecies="Human" />
+          <TriggerAnimation Type="Run" FileName="HumanRunDivingSuit" priority="1" ExpectedSpecies="Human" />
+        </StatusEffect>
+        <damagemodifier armorsector="0.0,360.0" afflictionidentifiers="gunshotwound,organdamage,explosiondamage" damagemultiplier="0.85" damagesound="LimbArmor" deflectprojectiles="true" />
+        <damagemodifier armorsector="0.0,360.0" afflictionidentifiers="blunttrauma,lacerations,bitewounds" damagemultiplier="0.85" damagesound="LimbArmor" deflectprojectiles="true" />
+        <damagemodifier armorsector="0.0,360.0" afflictiontypes="burn" damagemultiplier="0.5" damagesound="LimbArmor" deflectprojectiles="true" />
+        <damagemodifier armorsector="0.0,360.0" afflictiontypes="bleeding" damagemultiplier="0.85" damagesound="LimbArmor" deflectprojectiles="true" />
+        <damagemodifier armorsector="0.0,360.0" afflictiontypes="stun" damagemultiplier="0.9" damagesound="LimbArmor" deflectprojectiles="true" />
+        <damagemodifier armorsector="0.0,360.0" afflictionidentifiers="radiationsickness" damagemultiplier="0.5" damagesound="LimbArmor" />
+        <damagemodifier armorsector="0.0,360.0" afflictionidentifiers="huskinfection" damagemultiplier="0.5" probabilitymultiplier="0.5" damagesound="LimbArmor" />
+        <SkillModifier skillidentifier="mechanical" skillvalue="20" />
+        <SkillModifier skillidentifier="electrical" skillvalue="10" />
+        <StatValue stattype="FlowResistance" value="0.9" />
+      </Wearable>
+      <ItemContainer capacity="1" maxstacksize="1" hideitems="true" containedstateindicatorstyle="tank" containedstateindicatorslot="0">
+        <SlotIcon slotindex="0" texture="Content/UI/StatusMonitorUI.png" sourcerect="64,448,64,64" origin="0.5,0.5" />
+        <SlotIcon slotindex="1" texture="Content/UI/StatusMonitorUI.png" sourcerect="128,448,64,64" origin="0.5,0.5"/>
+        <Containable items="oxygensource,weldingtoolfuel" excludeditems="oxygenitetank" />
+        <Containable items="oxygensource">
+          <StatusEffect type="OnWearing" target="Character" OxygenAvailable="1000.0" />
+          <StatusEffect type="OnWearing" target="Contained" Condition="-0.3" comparison="And">
+            <Conditional TargetContainer="true" TargetGrandparent="true" IsDead="false" />
+            <Conditional TargetContainer="true" TargetGrandparent="true" DecreasedOxygenConsumption="lt 99" />
+            <Conditional TargetContainer="true" TargetGrandparent="true" NeedsAir="true" />
+          </StatusEffect>
+          <StatusEffect type="OnWearing" target="Contained">
+            <Conditional condition="lt 5.0" />
+            <Sound file="Content/Items/WarningBeepSlow.ogg" range="250" loop="true" />
+          </StatusEffect>
+        </Containable>
+        <Containable items="oxygenitetank">
+          <StatusEffect type="OnWearing" target="Character" SpeedMultiplier="1.2" setvalue="true" targetslot="0" comparison="And">
+            <Conditional IsDead="false" />
+            <Conditional DecreasedOxygenConsumption="lt 99" />
+            <Conditional NeedsAir="true" />
+          </StatusEffect>
+        </Containable>
+        <Containable items="weldingfueltank">
+          <StatusEffect type="OnWearing" target="Contained" Condition="-0.5" comparison="And">
+            <Conditional TargetContainer="true" TargetGrandparent="true" IsDead="false" />
+            <Conditional TargetContainer="true" TargetGrandparent="true" DecreasedOxygenConsumption="lt 99" />
+            <Conditional TargetContainer="true" TargetGrandparent="true" NeedsAir="true" />
+          </StatusEffect>
+          <StatusEffect type="OnWearing" target="Character" OxygenAvailable="-100.0" Oxygen="-5.0" comparison="And">
+            <Conditional IsDead="false" />
+            <Conditional DecreasedOxygenConsumption="lt 99" />
+            <Conditional NeedsAir="true" />
+          </StatusEffect>
+        </Containable>
+        <Containable items="incendiumfueltank">
+          <StatusEffect type="OnWearing" target="Contained" Condition="-0.5" comparison="And">
+            <Conditional TargetContainer="true" TargetGrandparent="true" IsDead="false" />
+            <Conditional TargetContainer="true" TargetGrandparent="true" DecreasedOxygenConsumption="lt 99" />
+            <Conditional TargetContainer="true" TargetGrandparent="true" NeedsAir="true" />
+          </StatusEffect>
+          <StatusEffect type="OnWearing" target="Character" OxygenAvailable="-100.0" comparison="And" targetlimb="Torso">
+            <Affliction identifier="burn" amount="20.0" />
+            <Conditional IsDead="false" />
+            <Conditional DecreasedOxygenConsumption="lt 99" />
+            <Conditional NeedsAir="true" />
+          </StatusEffect>
+        </Containable>
+        <StatusEffect type="OnWearing" target="Contained" playsoundonrequireditemfailure="true">
+          <RequiredItem items="oxygensource" type="Contained" matchonempty="true" />
+          <Conditional condition="lte 0.0" />
+          <Sound file="Content/Items/WarningBeep.ogg" range="250" loop="true" />
+        </StatusEffect>
+        <!--  Internal Heater  -->
+        <SubContainer capacity="1" maxstacksize="1">
+        <Containable items="mobilebattery"/>
+        </SubContainer>
+        <!--  Exit  -->
+        <SubContainer capacity="2" maxstacksize="64">
+          <Containable items="smallitem,mediumitem" excludeditems="toolbelt,toolbox,bandolier,cargoscooter,oxygensource" />
+        </SubContainer>
+      </ItemContainer>
+    </Item>
+</Override>
+</Items>

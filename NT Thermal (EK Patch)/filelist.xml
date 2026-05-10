@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<contentpackage name="NT Thermal (EK Patch)" modversion="1.0.0h0" corepackage="False" steamworkshopid="3723705965" gameversion="1.12.7.0">
+  <Item file="%ModDir%/XML/Suit.xml" />
+</contentpackage>
