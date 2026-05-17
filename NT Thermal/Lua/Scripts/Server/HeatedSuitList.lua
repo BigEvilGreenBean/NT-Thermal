@@ -23,7 +23,7 @@ ExceptedSuits = {
     ["greenadvancedexosuit"] = {valid = true, index = 1}, ["redadvancedexosuit"] = {valid = true, index = 1}, ["pinkadvancedexosuit"] = {valid = true, index = 1}
     }
 
-ExceptionsToNotUSE = {["stasisbag"] = false}
+ExceptionsToNotUSE = {["stasisbag"] = false} -- Used for suits that we don't want to count.
 
 IndexedSuits = {["pucs"] = 2,["medicdivingsuit"] = 2} -- Used for suits that have extra storage. I.E pucs.
 

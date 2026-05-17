@@ -1,4 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<contentpackage name="NT Thermal (Enhanced Armaments Patch)" modversion="1.0.0h0" corepackage="False" steamworkshopid="3706583262" gameversion="1.12.6.2">
+<contentpackage name="NT Thermal (Enhanced Armaments Patch)" modversion="1.0.0h1" corepackage="False" steamworkshopid="3706583262" gameversion="1.12.7.0">
   <Item file="%ModDir%/XML/Suit.xml" />
 </contentpackage>

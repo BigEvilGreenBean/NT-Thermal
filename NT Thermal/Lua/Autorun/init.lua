@@ -2,7 +2,7 @@
 -- Set up dictonary
 NTTHERM = {}
 NTTHERM.Name = "Thermal"
-NTTHERM.Version = "1.5.8h59"
+NTTHERM.Version = "1.5.8h61"
 NTTHERM.VersionNum = 000000001
 NTTHERM.MinNTVersion = "A1.12.1"
 NTTHERM.MinNTVersionNum = 01120100
@@ -33,13 +33,7 @@ Timer.Wait(function ()
 		table.insert(NT.SymsForNPC, thermal_afflictions)
 		
 		NT.DrainageAfflictions["pulmonary_edema"] = { xpgain = 3, case = "retractedskin"}
-
-		NTTHERM.UsingEnhancedReactors = EnhancedReactors -- Used to determine if enhanced reactors is on.
-		if NTTHERM.UsingEnhancedReactors ~= nil then
-			Timer.Wait(function()
-    			THERMCompat.SetUpEnhancedReactors()
-			end, 1)
-		end
+		
     end
 end, 1)
 
@@ -53,14 +47,15 @@ Timer.Wait(function()
     --Server Side scripts
 	if SERVER or (CLIENT and not Game.IsMultiplayer) then
     	dofile(NTTHERM.Path .. "/Lua/Scripts/Server/humanUpdate.lua") --HumanUpdates.
-		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/HeatedSuitList.lua") -- The Heated Diving Suit
+		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/heatedSuitList.lua") -- The Heated Diving Suit
 		--dofile(NTTHERM.Path .. "/Lua/Scripts/Server/clankerUpdate.lua") --RoboTrauma Thermal Updates.
-		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/THERMFunctions.lua") --Setup THERM functions.
-		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/PlayerHooks.lua") --Main Hooks used for a large portion of the mod.
-		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/RoomTempCalc.lua") --Script used for a calculating temperature of rooms.
-		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/Items.lua") -- Item methods.
-		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/Compat.lua") -- Compat.
+		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/thermFunctions.lua") --Setup THERM functions.
+		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/playerHooks.lua") --Main Hooks used for a large portion of the mod.
+		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/roomTempCalc.lua") --Script used for a calculating temperature of rooms.
+		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/items.lua") -- Item methods.
+		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/modCompat.lua") -- Compat.
 		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/translationCompat.lua") -- Translation Compat.
+		--dofile(NTTHERM.Path .. "/Lua/Scripts/Server/botPatch.lua") -- Bot Patches.
 	end
 
 end, 1)

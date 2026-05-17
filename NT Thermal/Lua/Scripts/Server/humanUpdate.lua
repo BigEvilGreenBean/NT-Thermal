@@ -230,7 +230,9 @@ NTTHERM.UpdateLimbAfflictions = {
 									limbaff[i].strength = limbaff[i].strength + TempDiffs.FromLimbDiff
 								end
 								if type == LimbType.Head then
-									if limbaff[i].strength < HypothermiaLevel and HF.GetAfflictionStrength(c.character, "husksymbiosis", 0) == 0 then
+
+									-- Overlays
+									if limbaff[i].strength < HypothermiaLevel and not THERM.HasHuskSymbiosis(c.character) then
 										HF.SetAffliction(c.character, "overlay_ice", HF.Clamp(5/limbaff[i].strength*150,0,60))
 									elseif limbaff[i].strength > HyperthermiaLevel then
 										HF.SetAffliction(c.character, "overlay_fire", HF.Clamp(limbaff[i].strength/NormalBodyTemp*50,0,100))
@@ -238,9 +240,10 @@ NTTHERM.UpdateLimbAfflictions = {
 										HF.SetAffliction(c.character, "overlay_ice", 0)
 										HF.SetAffliction(c.character, "overlay_fire", 0)
 									end
-									if limbaff[i].strength < 2 and HF.GetAfflictionStrength(c.character, "husksymbiosis", 0) == 0 then
+
+									if limbaff[i].strength < 2 and not THERM.HasHuskSymbiosis(c.character) then
 										c.afflictions.cerebralhypoxia.strength = c.afflictions.cerebralhypoxia.strength + (.05 * NT.Deltatime)
-									elseif limbaff[i].strength < HypothermiaLevel/NTTHERM.ExtremeHypothermiaScaling/1.5 and HF.GetAfflictionStrength(c.character, "husksymbiosis", 0) == 0 then
+									elseif limbaff[i].strength < HypothermiaLevel/NTTHERM.ExtremeHypothermiaScaling/1.5 and not THERM.HasHuskSymbiosis(c.character) then
 										NTC.SetSymptomTrue(c.character, "sym_lightheadedness", 5)
 									elseif limbaff[i].strength > HyperthermiaLevel * NTTHERM.MediumHyperthermiaScaling then
 										NTC.SetSymptomTrue(c.character, "sym_fever", 5)
@@ -253,7 +256,7 @@ NTTHERM.UpdateLimbAfflictions = {
 										and limbaff.d2_frostbite.strength == 0 
 										and limbaff.d3_frostbite.strength == 0 
 										and not THERM.IsLimbCyber(c.character,type) 
-										and HF.GetAfflictionStrength(c.character, "husksymbiosis", 0) == 0 then
+										and not THERM.HasHuskSymbiosis(c.character) then
 										limbaff.frostnip.strength = 1
 									elseif  limbaff[i].strength > HyperthermiaLevel * NTTHERM.MediumHyperthermiaScaling then
 										limbaff.heat_cramp.strength = limbaff.heat_cramp.strength + CalculateHeatCramp(type,c.character)
@@ -265,7 +268,7 @@ NTTHERM.UpdateLimbAfflictions = {
 								end
 							else
 								-- Give hypothermia
-								if limbaff[i].strength < HypothermiaLevel and HF.GetAfflictionStrength(c.character, "husksymbiosis", 0) == 0 then
+								if limbaff[i].strength < HypothermiaLevel and not THERM.HasHuskSymbiosis(c.character) then
 									c.afflictions.hypothermia.strength = 100
 									if limbaff[i].strength < HypothermiaLevel * NTTHERM.ExtremeHypothermiaScaling then
 									NTC.SetSymptomTrue(c.character, "dyspnea", 2)
@@ -409,7 +412,7 @@ NTTHERM.UpdateLimbAfflictions = {
 	--frostnip
 	frostnip = {
 		update = function(c, limbaff, i, type)
-			if limbaff[i].strength > 0 and limbaff.d1_frostbite.strength == 0 and not THERM.IsLimbCyber(c.character,type) and HF.GetAfflictionStrength(c.character, "husksymbiosis", 0) == 0 then
+			if limbaff[i].strength > 0 and limbaff.d1_frostbite.strength == 0 and not THERM.IsLimbCyber(c.character,type) and not THERM.HasHuskSymbiosis(c.character) then
 				-- If the character is a bot with the temp ignore config on or is under pressure stabilizer effect with config on, remove the affliction
 				if (NTConfig.Get("BotTempIgnoreMode", true) and c.character.IsBot)
 				or (NTConfig.Get("PressureStabilizerTemperature", true) and HF.GetAfflictionStrength(c.character, "pressurestabilized", 0) > 0) then
@@ -434,7 +437,7 @@ NTTHERM.UpdateLimbAfflictions = {
 	--1st degree frostbite
 	d1_frostbite = {
 		update = function(c, limbaff, i, type)
-			if limbaff[i].strength > 0 and not THERM.IsLimbCyber(c.character,type) and HF.GetAfflictionStrength(c.character, "husksymbiosis", 0) == 0 then
+			if limbaff[i].strength > 0 and not THERM.IsLimbCyber(c.character,type) and not THERM.HasHuskSymbiosis(c.character) then
 				c.stats.speedmultiplier = c.stats.speedmultiplier * 0.90 -- 10% slow per limb
 				NTC.SetSymptomTrue(c.character, "sym_pins_needles", 5)
 				limbaff.frostnip.strength = 0
@@ -466,7 +469,7 @@ NTTHERM.UpdateLimbAfflictions = {
 	--2nd degree frostbite
 	d2_frostbite = {
 		update = function(c, limbaff, i, type)
-			if limbaff[i].strength > 0 and not THERM.IsLimbCyber(c.character,type) and HF.GetAfflictionStrength(c.character, "husksymbiosis", 0) == 0 then
+			if limbaff[i].strength > 0 and not THERM.IsLimbCyber(c.character,type) and not THERM.HasHuskSymbiosis(c.character) then
 				c.stats.speedmultiplier = c.stats.speedmultiplier * 0.80 -- 20% slow per limb
 				NTC.SetSymptomTrue(c.character, "sym_pins_needles", 5)
 				limbaff.d1_frostbite.strength = 0
@@ -502,7 +505,7 @@ NTTHERM.UpdateLimbAfflictions = {
 	--3rd degree frostbite
 	d3_frostbite = {
 		update = function(c, limbaff, i, type)
-			if limbaff[i].strength > 0 and not THERM.IsLimbCyber(c.character,type) and HF.GetAfflictionStrength(c.character, "husksymbiosis", 0) == 0 then
+			if limbaff[i].strength > 0 and not THERM.IsLimbCyber(c.character,type) and not THERM.HasHuskSymbiosis(c.character) then
 				c.stats.speedmultiplier = c.stats.speedmultiplier * 0.70 -- 30% slow per limb
 				limbaff.d2_frostbite.strength = 0
 				-- If the character is a bot with the temp ignore config on or is under pressure stabilizer effect with config on, remove the affliction
@@ -724,7 +727,7 @@ NTTHERM.UpdateAfflictions = {
 	hypothermia = {
 		max = 100,
 		update = function(c, i)
-			if c.afflictions[i].strength > 0 and HF.GetAfflictionStrength(c.character, "husksymbiosis", 0) == 0 then
+			if c.afflictions[i].strength > 0 and not THERM.HasHuskSymbiosis(c.character) then
 				local HypothermiaLevel = FetchConfigStats().HypothermiaLevel
 				local TorsoTemp = HF.GetAfflictionStrength(c.character, "ntt_temperature", 0)
 				c.afflictions.bloodpressure.strength = c.afflictions.bloodpressure.strength + (.2 * NT.Deltatime)
@@ -971,11 +974,11 @@ NTTHERM.UpdateAfflictions = {
 				end
 			end
 
-			local DivingSuit = c.character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes)
+			local DivingSuit = THERM.GetSuitSlot(c.character)
 			local DivingSuitIdentifier = "BlahBlah"
 			if DivingSuit ~= nil then DivingSuitIdentifier = tostring(DivingSuit.Prefab.Identifier) end
-			local Helmet = c.character.Inventory.GetItemInLimbSlot(InvSlotType.InnerClothes)
-			local Bag = c.character.Inventory.GetItemInLimbSlot(InvSlotType.Bag)
+			local Helmet = THERM.GetInnerSlot(c.character)
+			local Bag = THERM.GetBagSlot(c.character)
 			local BatteryConsumption = NTConfig.Get("HeaterBatteryConsumption") * NT.Deltatime
 			if DivingSuit ~= nil and THERM.IsDivingSuit(DivingSuit) then
 				
@@ -1057,15 +1060,20 @@ NTTHERM.UpdateAfflictions = {
 			-- Immersive Diving Gear compat (Yes this is basically duplicated code, you're welcome.)
 			elseif DivingSuit ~= nil
 			 	and THERM.ImmersiveDivingGearEquipped(DivingSuit,Helmet) then
-
+				
+				-- Compat
 				if NTConfig.Get("SuitCompatiblityMode", false) or (NTConfig.Get("BotSuitSafteyMode", true) and c.character.IsBot) then
 					c.afflictions[i].strength = c.afflictions[i].strength + (5 * NT.Deltatime)
 					return
+				
+				-- Internal Heater
 				elseif DivingSuit.OwnInventory ~= nil and DivingSuit.OwnInventory.GetItemAt(0) ~= nil and DivingSuit.OwnInventory.GetItemAt(0).Condition > 1 then
 					local BatteryCell = DivingSuit.OwnInventory.GetItemAt(0)
 					BatteryCell.Condition = BatteryCell.Condition - BatteryConsumption
 					c.afflictions[i].strength = c.afflictions[i].strength + (5 * NT.Deltatime)
 					return
+				
+				-- ESH
 				elseif Bag ~= nil and Bag.Prefab.Identifier == "esh" and Bag.OwnInventory.GetItemAt(0) ~= nil and Bag.OwnInventory.GetItemAt(0).Condition > 1 then
 					local BatteryCell = Bag.OwnInventory.GetItemAt(0)
 					if BatteryCell ~= nil and BatteryCell.Condition > 1 then
@@ -1075,6 +1083,7 @@ NTTHERM.UpdateAfflictions = {
 					end
 					c.afflictions[i].strength = 0
 					return
+
 				-- Compact Heater
 				elseif CharacterTable ~= nil and CharacterTable.CompactHeater.Equipped then
 
@@ -1099,7 +1108,7 @@ NTTHERM.UpdateAfflictions = {
 				end
 				c.afflictions[i].strength = 0
 
-			elseif DivingSuit == nil  then
+			else
 				c.afflictions[i].strength = 0
 			end
 		end,
@@ -1308,7 +1317,7 @@ NTTHERM.UpdateBloodAfflictions = {
 					c.afflictions[i].strength = c.afflictions[i].strength - .2 * NT.Deltatime
 
 					local StasisBag = function ()
-						local item = c.character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes)
+						local item = THERM.GetSuitSlot(c.character)
 						if item ~= nil then
 							if item.Prefab.Identifier == "stasis_bag" then
 								return true

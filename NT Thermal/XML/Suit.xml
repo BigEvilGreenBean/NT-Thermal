@@ -131,7 +131,13 @@
 </StatusEffect>
 <!-- Internal Heater -->
 <SubContainer capacity="1" maxstacksize="1">
-<Containable items="mobilebattery"/>
+<Containable items="mobilebattery">
+<StatusEffect type="OnWearing" target="Contained" playsoundonrequireditemfailure="true">
+<RequiredItem items="mobilebattery" type="Contained" matchonempty="true"/>
+<Conditional condition="lte 10.0"/>
+<Sound file="%ModDir%/Sound/LowHeater.ogg" range="250" loop="true"/>
+</StatusEffect>
+</Containable>
 </SubContainer>
 <!-- Exit -->
 </ItemContainer>
@@ -269,7 +275,13 @@
 </StatusEffect>
 <!-- Internal Heater -->
 <SubContainer capacity="1" maxstacksize="1">
-<Containable items="mobilebattery"/>
+<Containable items="mobilebattery">
+<StatusEffect type="OnWearing" target="Contained" playsoundonrequireditemfailure="true">
+<RequiredItem items="mobilebattery" type="Contained" matchonempty="true"/>
+<Conditional condition="lte 10.0"/>
+<Sound file="%ModDir%/Sound/LowHeater.ogg" range="250" loop="true"/>
+</StatusEffect>
+</Containable>
 </SubContainer>
 <!-- Exit -->
 </ItemContainer>
@@ -411,7 +423,13 @@
 </StatusEffect>
 <!-- Internal Heater -->
 <SubContainer capacity="1" maxstacksize="1">
-<Containable items="mobilebattery"/>
+<Containable items="mobilebattery">
+<StatusEffect type="OnWearing" target="Contained" playsoundonrequireditemfailure="true">
+<RequiredItem items="mobilebattery" type="Contained" matchonempty="true"/>
+<Conditional condition="lte 10.0"/>
+<Sound file="%ModDir%/Sound/LowHeater.ogg" range="250" loop="true"/>
+</StatusEffect>
+</Containable>
 </SubContainer>
 <!-- Exit -->
 </ItemContainer>
@@ -572,7 +590,13 @@
 </SubContainer>
 <!-- Internal Heater -->
 <SubContainer capacity="1" maxstacksize="1" >
-<Containable items="mobilebattery"/>
+<Containable items="mobilebattery">
+<StatusEffect type="OnWearing" target="Contained" playsoundonrequireditemfailure="true">
+<RequiredItem items="mobilebattery" type="Contained" matchonempty="true"/>
+<Conditional condition="lte 10.0"/>
+<Sound file="%ModDir%/Sound/LowHeater.ogg" range="250" loop="true"/>
+</StatusEffect>
+</Containable>
 </SubContainer>
 </ItemContainer>
 <aitarget maxsightrange="1500"/>

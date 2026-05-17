@@ -1,0 +1,21 @@
+Items to add:
+
+    - Wet Suit: A suit that heats up like a diving suit, however it goes in the shirt slot, not suit.
+
+    - Temperature Stabilizer: A one time use medicine, makes player immune to temperature for a minute.
+
+    - Cryo Tank: A way to lower temperature.
+
+Mechanics to add:
+
+    - Visible Room Temperature: On nav monitor.
+
+    - Advanced Skin Grafting:
+
+    - Thermal Displays Temperature:
+
+    - Make husks get buffed from being cold.
+
+Bugs to fix:
+
+    none currently.

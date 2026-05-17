@@ -1,4 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<contentpackage name="NT Thermal (Real Sonar Patch)" modversion="1.0.0h2" corepackage="False" steamworkshopid="3649596522" gameversion="1.11.5.0">
+<contentpackage name="NT Thermal (Real Sonar Patch)" modversion="1.0.0h3" corepackage="False" steamworkshopid="3649596522" gameversion="1.12.7.0">
   <Item file="%ModDir%/XML/Suit.xml" />
 </contentpackage>

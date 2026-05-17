@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<contentpackage name="NT Thermal" modversion="1.5.8h60" corepackage="False" steamworkshopid="3648890424" gameversion="1.12.7.0">
+<contentpackage name="NT Thermal" modversion="1.6.8h61" corepackage="False" steamworkshopid="3648890424" gameversion="1.12.7.0">
   <Afflictions file="%ModDir%/XML/ThermAfflictions.xml" />
+  <Afflictions file="%ModDir%/XML/OverrideAfflictions.xml" />
   <Item file="%ModDir%/XML/MedicalItems.xml" />
   <Item file="%ModDir%/XML/OverrideItems.xml" />
   <Item file="%ModDir%/XML/Thermometer.xml" />
   <Item file="%ModDir%/XML/SFX.xml" />
   <Item file="%ModDir%/XML/Suit.xml" />
-  <Sounds file="%ModDir%/XML/Sounds.xml" />
   <Text file="%ModDir%/Localization/English/English.xml" />
   <Text file="%ModDir%/Localization/Russian/Russian.xml" />
 </contentpackage>

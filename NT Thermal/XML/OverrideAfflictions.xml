@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Afflictions>
+  <Override>
+
+    <!-- Enhanced Reactors Patch -->
+
+      <Affliction name="Heat Stroke Risk" identifier="overheating" description="You're sweating. The surrouning air is way too hot. Better not stay here for too long!" type="burn" showiconthreshold="1000000" showinhealthscannerthreshold="1000000" causeofdeathdescription="Burned to death" selfcauseofdeathdescription="You have burned to death." limbspecific="false" indicatorlimb="Head" maxstrength="10" healableinmedicalclinic="false">
+      <Description textidentifier="afflictiondescription.overheating.self" target="Self" minstrength="0" maxstrength="10" />
+      <Description textidentifier="afflictiondescription.overheating" target="OtherCharacter" minstrength="0" maxstrength="10" />
+      <Effect minstrength="0" maxstrength="9.9" strengthchange="-0.25" multiplybymaxvitality="true" minfacetint="255,180,180,0" maxfacetint="255,180,180,200" minbodytint="255,180,180,0" maxbodytint="255,180,180,200">
+        <StatusEffect target="Character" interval="0.5" disabledeltatime="true">
+          <Conditional InWater="true" />
+          <ReduceAffliction identifier="overheating" amount="1.5" />
+        </StatusEffect>
+        <StatusEffect target="Character" interval="0.3" disabledeltatime="true">
+          <Conditional IsBot="true" />
+          <ReduceAffliction identifier="overheating" amount="100" />
+        </StatusEffect>
+        <StatusEffect target="Character" interval="1" disabledeltatime="true">
+          <LuaHook name="NTTHERM.AddTemp" temp="1"/>
+        </StatusEffect>
+      </Effect>
+      <Effect minstrength="9.9" maxstrength="10" strengthchange="-0.05" multiplybymaxvitality="true" minfacetint="255,180,180,200" maxfacetint="255,180,180,200" minbodytint="255,180,180,200" maxbodytint="255,180,180,200">
+        <StatusEffect target="Character" interval="0.5" disabledeltatime="true">
+          <Conditional InWater="true" />
+          <ReduceAffliction identifier="overheating" amount="1.5" />
+        </StatusEffect>
+        <StatusEffect target="Character" interval="1" disabledeltatime="true">
+          <Conditional IsBot="false" />
+          <Affliction identifier="applyburn" amount="0.25" />
+        </StatusEffect>
+        <StatusEffect target="Character" interval="1" disabledeltatime="true">
+          <LuaHook name="NTTHERM.AddTemp" temp="2"/>
+        </StatusEffect>
+        <StatusEffect target="Character" targetlimb="Head" interval="1" duration="1">
+          <Conditional IsBot="false" />
+          <ParticleEmitter particle="waterdrop" colormultiplier="255,255,255" copyentityangle="true" particlespersecond="3" anglemin="0" anglemax="360" distancemin="0" distancemax="15" scalemin="0.4" scalemax="0.8" velocitymin="0" velocitymax="10" highqualitycollisiondetection="false" />
+        </StatusEffect>
+      </Effect>
+      <icon texture="%ModDir:3045796581%/Content/Items/ER-ItemsAtlas.png" sourcerect="312,95,128,128" color="195,104,60,255" origin="0,0" />
+    </Affliction>
+
+    <Affliction name="Overheating 2" identifier="applyburn" description="You're sweating. The air in here is way too hot." type="burn" showiconthreshold="1000" showicontoothersthreshold="1000" showinhealthscannerthreshold="1000" causeofdeathdescription="Burned to death" selfcauseofdeathdescription="You have burned to death." limbspecific="false" indicatorlimb="Head" maxstrength="100" healableinmedicalclinic="false">
+      <Description textidentifier="afflictiondescription.overheating.low" minstrength="0" maxstrength="30" />
+      <Description textidentifier="afflictiondescription.overheating" minstrength="30" maxstrength="60" />
+      <Description textidentifier="afflictiondescription.overheating.high" minstrength="60" maxstrength="200" />
+      <Effect minstrength="0" maxstrength="50" strengthchange="-0.25" multiplybymaxvitality="true" minfacetint="255,80,80,0" maxfacetint="255,80,80,100" minbodytint="255,80,80,0" maxbodytint="255,80,80,100">
+        <StatusEffect target="Character" interval="1" disabledeltatime="true">
+          <Affliction identifier="burn" amount="0.02" />
+          <Affliction identifier="stun" amount="6.0" probability="0.005" />
+        </StatusEffect>
+        <StatusEffect target="Character" interval="1" disabledeltatime="true">
+          <Conditional overheating="lt 9" />
+          <ReduceAffliction identifier="applyburn" amount="100.0" />
+        </StatusEffect>
+      </Effect>
+      <Effect minstrength="50" maxstrength="100" strengthchange="-0.25" multiplybymaxvitality="true" minfacetint="255,80,80,100" maxfacetint="255,80,80,200" minbodytint="255,80,80,100" maxbodytint="255,80,80,200">
+        <StatusEffect target="Character" interval="1" disabledeltatime="true">
+          <Affliction identifier="burn" amount="0.04" />
+          <Affliction identifier="stun" amount="6.0" probability="0.01" />
+        </StatusEffect>
+        <StatusEffect target="Character" interval="1" disabledeltatime="true">
+          <Conditional overheating="lt 9" />
+          <ReduceAffliction identifier="applyburn" amount="100.0" />
+        </StatusEffect>
+      </Effect>
+      <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="768,640,128,128" color="195,104,60,255" origin="0,0" />
+    </Affliction>
+
+    <!-- Enhanced Reactors Patch -->
+
+    </Override>
+</Afflictions>

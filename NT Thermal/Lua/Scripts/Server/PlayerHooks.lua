@@ -1,4 +1,6 @@
 
+-- Elements ----------------------------------------------------------------------------------------------------------------------
+
 -- Whilst these could be included in the human update, they're seperate for a more accurate time. Since at high intervals, you could basically never get wet.
 -- Limbs to Check with function
 local LimbsToCheck = {LimbType.Head,LimbType.Torso,LimbType.RightForearm,LimbType.RightLeg}
@@ -45,49 +47,33 @@ Hook.Add("NTTHERM.CustomInWater", "CustomInWater", function (effect, deltaTime, 
                                                 end    
                                         -- Set to false
                                         elseif CharacterTable.InCustomWater == false then
-                                                CharacterTable.LimbWaterValues.HeadV = 0
-                                                CharacterTable.LimbWaterValues.TorsoV = 0
-                                                CharacterTable.LimbWaterValues.LeftArmV = 0
-                                                CharacterTable.LimbWaterValues.RightArmV = 0
-                                                CharacterTable.LimbWaterValues.LeftLegV = 0
-                                                CharacterTable.LimbWaterValues.RightLegV = 0
+                                                THERM.SetLimbWaterValues(CharacterTable,0)
                                                 THERM.RemoveWet(target)
                                         end
 
                                         -- Remove wetness due to a suit being put on.
-                                        local DivingSuit = target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes)
+                                        local DivingSuit = THERM.GetSuitSlot(target)
                                         if DivingSuit and THERM.IsDivingSuit(DivingSuit) then
                                                 THERM.RemoveWet(target)
                                         end
                                 end
                         elseif NTConfig.Get("SimpleWaterCalculation", true) and CharacterTable ~= nil then
-                                CharacterTable.InCustomWater = false
-                                CharacterTable.LimbWaterValues.HeadV = 0
-                                CharacterTable.LimbWaterValues.TorsoV = 0
-                                CharacterTable.LimbWaterValues.LeftArmV = 0
-                                CharacterTable.LimbWaterValues.RightArmV = 0
-                                CharacterTable.LimbWaterValues.LeftLegV = 0
-                                CharacterTable.LimbWaterValues.RightLegV = 0
+                                THERM.SetLimbWaterValues(CharacterTable,0)
                                 THERM.RemoveWet(target)
                         end
                 end
         end
 end)
 
-
+-- Used to decrease temp cause in water.
 Hook.Add("NTTHERM.InWater", "InWater", function (effect, deltaTime, item, targets, worldPosition, element)
         
         for h, target in pairs(targets) do
                 if target ~= nil and target.IsHuman and target.IsDead ~= true and target.InWater and not (NTConfig.Get("BotTempIgnoreMode", true) and target.IsBot) then
                         local CharacterTable = THERM.GetCharacter(target.ID,target)
                         if CharacterTable ~= nil then
-                                CharacterTable.LimbWaterValues.HeadV = 1
-                                CharacterTable.LimbWaterValues.TorsoV = 1
-                                CharacterTable.LimbWaterValues.LeftArmV = 1
-                                CharacterTable.LimbWaterValues.RightArmV = 1
-                                CharacterTable.LimbWaterValues.LeftLegV = 1
-                                CharacterTable.LimbWaterValues.RightLegV = 1
-                                local DivingSuit = target.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes)
+                                THERM.SetLimbWaterValues(CharacterTable,1)
+                                local DivingSuit = THERM.GetSuitSlot(target)
                                 if not (DivingSuit and THERM.IsDivingSuit(DivingSuit)) then
                                         THERM.MakeWet(target,1)
                                 else 
@@ -98,7 +84,7 @@ Hook.Add("NTTHERM.InWater", "InWater", function (effect, deltaTime, item, target
         end
 end)
 
-
+-- Used to check increase temp of a on fire character.
 Hook.Add("NTTHERM.OnFire", "OnFire", function (effect, deltaTime, item, targets, worldPosition, element)
         for h, target in pairs(targets) do
                 if target ~= nil and target.IsHuman and target.IsDead ~= true and not (NTConfig.Get("BotTempIgnoreMode", true) and target.IsBot) then
@@ -112,6 +98,91 @@ Hook.Add("NTTHERM.OnFire", "OnFire", function (effect, deltaTime, item, targets,
                 end
         end
 end)
+
+-- Used to increase or decrease temp from XML.
+Hook.Add("NTTHERM.AddTemp", "AddTemp", function (effect, deltaTime, item, targets, worldPosition, element)
+        for h, target in pairs(targets) do
+                local TempAmount = tonumber(element.GetAttributeString("temp", "default value"))
+                if target ~= nil and target.IsHuman and target.IsDead ~= true and not (NTConfig.Get("BotTempIgnoreMode", true) and target.IsBot) then
+                        local CharacterTable = THERM.GetCharacter(target.ID,target)
+                        if CharacterTable ~= nil then
+                                THERM.ApplyTemperatureUpdate(target.ID)
+                                HF.AddAffliction(target, "ntt_temperature", TempAmount/THERM.TotalBurnResistance(CharacterTable))
+                        end
+                end
+        end
+end)
+
+-- Character ----------------------------------------------------------------------------------------------------------------------
+
+-- Lukako my absolute value goat. Thank you so much.
+Hook.Add("characterCreated", "NTTHERM.ForceUpdates", function(createdCharacter)
+        -- run once on spawn then cope
+    Timer.Wait(function()
+        if createdCharacter.IsHuman and
+                   createdCharacter.TeamID == 1 or 
+                   createdCharacter.TeamID == 2 and not 
+                   createdCharacter.IsDead then
+
+        local temperaturecheck = createdCharacter.CharacterHealth.GetAffliction("ntt_temperature")
+            if temperaturecheck == nil then
+                HF.AddAffliction(createdCharacter, "luabotomy", 0.1)
+            end
+        end
+    end, 5000)
+end)
+
+-- Removes human in server from THERM
+Hook.Add("character.death", "Newcharacter", function (createdCharacter)
+    -- Verify not nil
+    local CharacterResult = THERM.GetCharacter(createdCharacter.ID)
+    if createdCharacter ~= nil and CharacterResult ~= nil then
+        THERM.ValidateThermalCharacterData()
+    end
+end)
+
+-- Items ----------------------------------------------------------------------------------------------------------------------
+
+-- StasisStarter
+Hook.Add("NTTHERM.StasisStarter", "StasisStarter", function (effect, deltaTime, item, targets, worldPosition, element)
+
+        for key, target in pairs(targets) do
+                if target ~= nil and target.IsHuman and target.IsDead ~= true and not (NTConfig.Get("BotTempIgnoreMode", true) and target.IsBot) then
+                        local CharacterTable = THERM.GetCharacter(target.ID,target)
+                        local success = HF.GetSkillRequirementMet(target, "medical", 40)
+                        if CharacterTable ~= nil then
+                                if success then
+                                        if HF.GetAfflictionStrength(target, "ntt_temperature", 0) <= NTConfig.Get("NewHyperthermiaLevel", 39) then
+                                                HF.AddAffliction(target, "cryo_stasis_starter", 25, target)
+                                        end
+                                else
+                                        if HF.GetAfflictionStrength(target, "ntt_temperature", 0) <= NTConfig.Get("NewHyperthermiaLevel", 39) then
+                                                HF.AddAffliction(target, "cryo_stasis_starter", 5, target)
+                                        end
+                                end
+                        end
+                end
+        end
+        
+end)
+
+-- We set the thermal character data for CSH heating here. 
+Hook.Add("NTTHERM.CSHHeat", "CSHHeat", function (effect, deltaTime, item, targets, worldPosition, element) 
+
+        for key, target in pairs(targets) do
+                if target ~= nil and target.IsHuman and target.IsDead ~= true and not (NTConfig.Get("BotTempIgnoreMode", true) and target.IsBot) then
+                        local CharacterTable = THERM.GetCharacter(target.ID,target)
+                        if CharacterTable ~= nil then
+                                CharacterTable.CompactHeater.Equipped, 
+                                CharacterTable.CompactHeater.ParentInventory, 
+                                CharacterTable.CompactHeater.Item = true, item.ParentInventory, item
+                        end
+                end
+        end
+        
+end)
+
+-- Debug ----------------------------------------------------------------------------------------------------------------------
 
 -- Prints out Thermal data.
 Hook.Add("chatMessage", "Debug", function (message, sender)
@@ -141,73 +212,4 @@ Hook.Add("chatMessage", "Debug", function (message, sender)
                         print("Nil table.")
                 end
         end
-end)
-
-
--- Removes human in server from THERM
-Hook.Add("character.death", "Newcharacter", function (createdCharacter)
-    -- Verify not nil
-    local CharacterResult = THERM.GetCharacter(createdCharacter.ID)
-    if createdCharacter ~= nil and CharacterResult ~= nil then
-        THERM.ValidateThermalCharacterData()
-    end
-end)
-
-
-
--- Lukako my absolute value goat. Thank you so much.
-Hook.Add("characterCreated", "NTTHERM.ForceUpdates", function(createdCharacter)
-        -- run once on spawn then cope
-    Timer.Wait(function()
-        if createdCharacter.IsHuman and
-                   createdCharacter.TeamID == 1 or 
-                   createdCharacter.TeamID == 2 and not 
-                   createdCharacter.IsDead then
-
-        local temperaturecheck = createdCharacter.CharacterHealth.GetAffliction("ntt_temperature")
-            if temperaturecheck == nil then
-                HF.AddAffliction(createdCharacter, "luabotomy", 0.1)
-            end
-        end
-    end, 5000)
-end)
-
-
--- We set the thermal character data for CSH heating here. 
-Hook.Add("NTTHERM.CSHHeat", "CSHHeat", function (effect, deltaTime, item, targets, worldPosition, element) 
-
-        for key, target in pairs(targets) do
-                if target ~= nil and target.IsHuman and target.IsDead ~= true and not (NTConfig.Get("BotTempIgnoreMode", true) and target.IsBot) then
-                        local CharacterTable = THERM.GetCharacter(target.ID,target)
-                        if CharacterTable ~= nil then
-                                CharacterTable.CompactHeater.Equipped, 
-                                CharacterTable.CompactHeater.ParentInventory, 
-                                CharacterTable.CompactHeater.Item = true, item.ParentInventory, item
-                        end
-                end
-        end
-        
-end)
-
--- StasisStarter
-Hook.Add("NTTHERM.StasisStarter", "StasisStarter", function (effect, deltaTime, item, targets, worldPosition, element)
-
-        for key, target in pairs(targets) do
-                if target ~= nil and target.IsHuman and target.IsDead ~= true and not (NTConfig.Get("BotTempIgnoreMode", true) and target.IsBot) then
-                        local CharacterTable = THERM.GetCharacter(target.ID,target)
-                        local success = HF.GetSkillRequirementMet(target, "medical", 40)
-                        if CharacterTable ~= nil then
-                                if success then
-                                        if HF.GetAfflictionStrength(target, "ntt_temperature", 0) <= NTConfig.Get("NewHyperthermiaLevel", 39) then
-                                                HF.AddAffliction(target, "cryo_stasis_starter", 25, target)
-                                        end
-                                else
-                                        if HF.GetAfflictionStrength(target, "ntt_temperature", 0) <= NTConfig.Get("NewHyperthermiaLevel", 39) then
-                                                HF.AddAffliction(target, "cryo_stasis_starter", 5, target)
-                                        end
-                                end
-                        end
-                end
-        end
-        
 end)
