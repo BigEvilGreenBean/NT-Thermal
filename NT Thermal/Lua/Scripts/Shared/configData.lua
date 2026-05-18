@@ -98,6 +98,15 @@ NTTHERM.ConfigData = {
 		group = true,
 		resettable = true,
 	},
+	ThermalReactorTempInterval = {
+		name = "Reactor Temperature Interval",
+		default = 60,
+		range = {10, 500},
+		type = "float",
+		description = "The time between temperature calculations of reactors giving temperature. Higher values mean better performance but less accuracy. Lower values mean worse performance but more accuracy.",
+		group = true,
+		resettable = true,
+	},
 	ShockMargin = {
 		name = "Thermal Shock Margin",
 		default = 200,
@@ -114,7 +123,9 @@ NTTHERM.ConfigData = {
 	BotSuitSafteyMode = { name = "Bot Suit Compatibility Mode", default = true, type = "bool", description = "This makes all suits worn by a bot heated. Useful so you don't have to babysit them."},
 	BotTempIgnoreMode = { name = "Temperature Ignores Bot Mode", default = false, type = "bool", description = "This makes all bots immune to temperature and it's effects. This should theoretically give a performance boost."},
 	PressureStabilizerTemperature = { name = "Pressure Stabilizers Stabilize Temperature", default = false, type = "bool", description = "This setting makes pressure stabilizers also stabilize temperature, on top of pressure and oxygen." },
-	
+	ReactorsGiveTemperature = { name = "Reactors Give Temperature", default = false, type = "bool", description = "This is a small fork of a enhanced reactors. It makes reactors give you temperature, this is forced on if you are using enhanced reactors." },
+	ReactorsGiveTemperatureBot = { name = "Reactors Give Temperature to Bots", default = true, type = "bool", description = "This makes it so bots will gain temperature from reactors (if the reactor toggle is on)." },
+
 	NTTHERM_Header4 = { name = "---------- Performance Settings ----------", type = "category" },
 
 	SimpleWaterCalculation = { name = "Simple Water Calculations", default = false, type = "bool", description = "This setting makes water calculations extremely simple, the game will make you wet, only when 'in' water. However due to barotrauma limitations this is highly inaccurate." },

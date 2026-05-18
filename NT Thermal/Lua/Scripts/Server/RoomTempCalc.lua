@@ -26,18 +26,20 @@ end)
 
 -- Hit a lick and lifted this from the Human update.
 Hook.Add("think", "THERMRoom.update", function()
-	if HF.GameIsPaused() then
-		return
-	end
-
-	THERMRoom.Tick = THERMRoom.Tick - 1
-	if THERMRoom.Tick <= 0 and NTConfig.Get("HeatTransferToggle", true) then
-                if THERMRoom.Rooms ~= nil and THERMRoom.Intiated then
-                        THERMRoom.CalculateRoomTemp()
+        if NTConfig.Get("HeatTransferToggle", true) then
+                if HF.GameIsPaused() then
+                        return
                 end
-                THERMRoom.UpdateInterval = NTConfig.Get("ThermalRoomCalcInterval", 50)
-                THERMRoom.Tick = THERMRoom.UpdateInterval
-	end
+
+                THERMRoom.Tick = THERMRoom.Tick - 1
+                if THERMRoom.Tick <= 0 then
+                        if THERMRoom.Rooms ~= nil and THERMRoom.Intiated then
+                                THERMRoom.CalculateRoomTemp()
+                        end
+                        THERMRoom.UpdateInterval = NTConfig.Get("ThermalRoomCalcInterval", 50)
+                        THERMRoom.Tick = THERMRoom.UpdateInterval
+                end
+        end
 end)
 
 -- Heat
@@ -50,7 +52,7 @@ end, Hook.HookMethodType.After)
 
 -- Used to increase the temp of a adjacent room if parameters match.
 Hook.Add("gapOxygenUpdate", "NTTHERM.OxygenHullUpdate", function (gap, hull1, hull2)
-        if THERMRoom.Intiated and THERMRoom.QueuedOxygenUpdates[gap] == nil and (hull1.FireCount > 0 or hull2.FireCount > 0) and NTConfig.Get("HeatTransferToggle", true) then
+        if NTConfig.Get("HeatTransferToggle", true) and THERMRoom.Intiated and THERMRoom.QueuedOxygenUpdates[gap] == nil and (hull1.FireCount > 0 or hull2.FireCount > 0) then
                 THERMRoom.QueueOxygenUpdate(gap,hull1,hull2)
         end
 end)

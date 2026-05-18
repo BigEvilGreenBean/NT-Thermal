@@ -373,7 +373,6 @@ THERM.ValidateThermalCharacterData = function()
 	end
 end
 
-
 -- Used to quickly add up all burn resistance
 THERM.TotalBurnResistance = function(CharacterTable)
         if CharacterTable then

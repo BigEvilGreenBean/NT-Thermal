@@ -16,9 +16,6 @@
           <Conditional IsBot="true" />
           <ReduceAffliction identifier="overheating" amount="100" />
         </StatusEffect>
-        <StatusEffect target="Character" interval="1" disabledeltatime="true">
-          <LuaHook name="NTTHERM.AddTemp" temp="1"/>
-        </StatusEffect>
       </Effect>
       <Effect minstrength="9.9" maxstrength="10" strengthchange="-0.05" multiplybymaxvitality="true" minfacetint="255,180,180,200" maxfacetint="255,180,180,200" minbodytint="255,180,180,200" maxbodytint="255,180,180,200">
         <StatusEffect target="Character" interval="0.5" disabledeltatime="true">
@@ -29,15 +26,12 @@
           <Conditional IsBot="false" />
           <Affliction identifier="applyburn" amount="0.25" />
         </StatusEffect>
-        <StatusEffect target="Character" interval="1" disabledeltatime="true">
-          <LuaHook name="NTTHERM.AddTemp" temp="2"/>
-        </StatusEffect>
         <StatusEffect target="Character" targetlimb="Head" interval="1" duration="1">
           <Conditional IsBot="false" />
           <ParticleEmitter particle="waterdrop" colormultiplier="255,255,255" copyentityangle="true" particlespersecond="3" anglemin="0" anglemax="360" distancemin="0" distancemax="15" scalemin="0.4" scalemax="0.8" velocitymin="0" velocitymax="10" highqualitycollisiondetection="false" />
         </StatusEffect>
       </Effect>
-      <icon texture="%ModDir:3045796581%/Content/Items/ER-ItemsAtlas.png" sourcerect="312,95,128,128" color="195,104,60,255" origin="0,0" />
+      <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="768,640,128,128" color="195,104,60,255" origin="0,0" />
     </Affliction>
 
     <Affliction name="Overheating 2" identifier="applyburn" description="You're sweating. The air in here is way too hot." type="burn" showiconthreshold="1000" showicontoothersthreshold="1000" showinhealthscannerthreshold="1000" causeofdeathdescription="Burned to death" selfcauseofdeathdescription="You have burned to death." limbspecific="false" indicatorlimb="Head" maxstrength="100" healableinmedicalclinic="false">
