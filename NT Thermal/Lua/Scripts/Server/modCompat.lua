@@ -6,7 +6,7 @@ THERMCompat = {}
 THERMCompat.EH = {}
 THERMCompat.EH.Tick = 0
 THERMCompat.EH.UpdateInterval = 60
-THERMCompat.EH.DeltaTime = THERMCompat.EH.UpdateInterval/40
+THERMCompat.EH.DeltaTime = (THERMCompat.EH.UpdateInterval/40)
 THERMCompat.EH.ManagedItems = {}
 
 Util.RegisterItemGroup("reactors", function (item)
@@ -34,19 +34,19 @@ local fuelRods = {
         radiationSickness = 0.5,
         contaminated = 0.5,
         radiationSounds = 2.0,
-        overheating = 1.5,
+        overheating = 1,
     },
     ["fulguriumfuelrod_er"] = {
         radiationSickness = 2,
         contaminated = 2,
         radiationSounds = 4.5,
-        overheating = 2,
+        overheating = 1.5,
     },
     ["fulguriumfuelrodvolatile_er"] = {
         radiationSickness = 3,
         contaminated = 3,
         radiationSounds = 5.5,
-        overheating = 3,
+        overheating = 2,
     },
     ["emptyfuelrod"] = {
         radiationSickness = 0.1,
@@ -64,12 +64,12 @@ local fuelRods = {
 
 THERMCompat.ProcessItem = function (item)
     if reactors[item.Prefab.Identifier.Value] then
-        item.AddTag("lua_managed")
+        item.AddTag("lua_managed_thermal")
         table.insert(THERMCompat.EH.ManagedItems, item)
     end
 
     if fuelRods[item.Prefab.Identifier.Value] then
-        item.AddTag("lua_managed")
+        item.AddTag("lua_managed_thermal")
         -- item.AddTag("fuelrod")
         table.insert(THERMCompat.EH.ManagedItems, item)
     end
@@ -114,11 +114,13 @@ local temperature = AfflictionPrefab.Prefabs["ntt_temperature"]
 THERMCompat.ProcessItemUpdate = function (item) -- My forked EH version.
 local reactor = item.GetComponentString("Reactor")
     if reactor then
-        if reactor.Temperature > 40 then
+        local ItemCount = THERM.EnumerableSize(item.OwnInventory.GetAllItems(false))
+        local ItemScaling = ItemCount * 15
+        if reactor.Temperature > 25 + ItemScaling then
             for character in Character.CharacterList do
                 local CharacterTable = THERM.GetCharacter(character.ID)
                 local BurnResistance = THERM.TotalBurnResistance(CharacterTable)
-                THERMCompat.ApplyTemperatureRadius(item, character, 750, 1, 0, { temperature.Instantiate(.5 * ((reactor.Temperature/100 + 1))/BurnResistance  * THERMCompat.EH.DeltaTime) }) -- :crying emoji: why does this mod have like a 1/100000 of a second tick rate.
+                THERMCompat.ApplyTemperatureRadius(item, character, 750, 1, 0, { temperature.Instantiate(.5 * ((reactor.Temperature/100 + 1))/BurnResistance  * THERMCompat.EH.DeltaTime * NTConfig.Get("ThermalReactorTempScaling", 1)) }) -- :crying emoji: why does this mod have like a 1/100000 of a second tick rate.
             end
         end
     end
@@ -145,7 +147,7 @@ local reactor = item.GetComponentString("Reactor")
                 local CharacterTable = THERM.GetCharacter(character.ID)
                 local BurnResistance = THERM.TotalBurnResistance(CharacterTable)
                 THERMCompat.ApplyTemperatureRadius(item, character, 750, 1, 0, {
-                    temperature.Instantiate((2 * data.overheating * THERMCompat.EH.DeltaTime)/BurnResistance)})
+                    temperature.Instantiate((2 * data.overheating * THERMCompat.EH.DeltaTime  * NTConfig.Get("ThermalReactorTempScaling", 1))/BurnResistance)})
             end
         end
 
@@ -155,7 +157,7 @@ local reactor = item.GetComponentString("Reactor")
                 for character in Character.CharacterList do
                     local CharacterTable = THERM.GetCharacter(character.ID)
                     local BurnResistance = THERM.TotalBurnResistance(CharacterTable)
-                    THERMCompat.ApplyTemperatureRadius(item, character, 750, 1, 0, {temperature.Instantiate((0.5 * data.overheating * THERMCompat.EH.DeltaTime)/BurnResistance)})
+                    THERMCompat.ApplyTemperatureRadius(item, character, 750, 1, 0, {temperature.Instantiate((0.01 * data.overheating * THERMCompat.EH.DeltaTime  * NTConfig.Get("ThermalReactorTempScaling", 1))/BurnResistance)})
                 end
             end
         end

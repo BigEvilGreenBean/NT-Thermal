@@ -107,6 +107,15 @@ NTTHERM.ConfigData = {
 		group = true,
 		resettable = true,
 	},
+	ThermalReactorTempScaling = {
+		name = "Reactor Temperature Scaling",
+		default = 1,
+		range = {0, 2},
+		type = "float",
+		description = "Scales the temperature given from reactors.",
+		group = true,
+		resettable = true,
+	},
 	ShockMargin = {
 		name = "Thermal Shock Margin",
 		default = 200,

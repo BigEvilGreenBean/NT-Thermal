@@ -477,3 +477,12 @@ THERM.SetLimbWaterValues = function (CharacterTable, NewValue)
                 water_value = NewValue
         end
 end
+
+-- Returns the size of an enumerable.
+THERM.EnumerableSize = function (enumerable)
+    local size = 0
+    for value in enumerable do
+        size = size + 1
+    end
+    return size
+end
