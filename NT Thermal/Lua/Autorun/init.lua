@@ -52,14 +52,13 @@ Timer.Wait(function()
 	if SERVER or (CLIENT and not Game.IsMultiplayer) then
     	dofile(NTTHERM.Path .. "/Lua/Scripts/Server/humanUpdate.lua") --HumanUpdates.
 		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/heatedSuitList.lua") -- The Heated Diving Suit
-		--dofile(NTTHERM.Path .. "/Lua/Scripts/Server/clankerUpdate.lua") --RoboTrauma Thermal Updates.
 		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/thermFunctions.lua") --Setup THERM functions.
 		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/playerHooks.lua") --Main Hooks used for a large portion of the mod.
 		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/roomTempCalc.lua") --Script used for a calculating temperature of rooms.
 		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/items.lua") -- Item methods.
 		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/modCompat.lua") -- Compat.
 		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/translationCompat.lua") -- Translation Compat.
-		--dofile(NTTHERM.Path .. "/Lua/Scripts/Server/botPatch.lua") -- Bot Patches.
+		--dofile(NTTHERM.Path .. "/Lua/Scripts/Server/patches.lua") -- Patches.
 	end
 
 end, 1)

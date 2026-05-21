@@ -6,7 +6,7 @@
 NTTHERM.ConfigData = {
 	NTTHERM_Header1 = { name = NTTHERM.Name, type = "category" },
 
-	NTTHERM_Header2 = { name = "---------- Temperature Settings ----------", type = "category" },
+	NTTHERM_HeaderTemp = { name = "---------- Temperature Settings ----------", type = "category" },
 	
 	NewHypothermiaLevel = {
 		name = "Hypothermia level",
@@ -98,6 +98,28 @@ NTTHERM.ConfigData = {
 		group = true,
 		resettable = true,
 	},
+	ShockMargin = {
+		name = "Thermal Shock Margin",
+		default = 200,
+		range = {1, 400},
+		type = "float",
+		description = "The margin in which thermal shock will activate. Extremely sensitive. Higher values mean less margin, lower means higher margin.",
+		group = true,
+		resettable = true,
+	},
+
+	NTTHERM_HeaderCompat = { name = "---------- Compatibility Toggles ----------", type = "category" },
+
+	SuitCompatiblityMode = { name = "Suit Compatibility Mode", default = false, type = "bool", description = "This makes all suits heated by default, rather than using batteries or external heaters. This should be used only when needed and a patch isn't out." },
+	BotSuitSafteyMode = { name = "Bot Suit Compatibility Mode", default = true, type = "bool", description = "This makes all suits worn by a bot heated. Useful so you don't have to babysit them."},
+	BotTempIgnoreMode = { name = "Temperature Ignores Bot Mode", default = false, type = "bool", description = "This makes all bots immune to temperature and it's effects. This should theoretically give a performance boost."},
+	PressureStabilizerTemperature = { name = "Pressure Stabilizers Stabilize Temperature", default = false, type = "bool", description = "This setting makes pressure stabilizers also stabilize temperature, on top of pressure and oxygen." },
+	
+	NTTHERM_HeaderReactor = { name = "---------- Reactor Settings ----------", type = "category" },
+
+	ReactorsGiveTemperature = { name = "Reactors Give Temperature", default = false, type = "bool", description = "This is a small fork of a enhanced reactors. It makes reactors give you temperature, this is forced on if you are using enhanced reactors." },
+	ReactorsGiveTemperatureBot = { name = "Reactors Give Temperature to Bots", default = true, type = "bool", description = "This makes it so bots will gain temperature from reactors (if the reactor toggle is on)." },
+	ReactorTempAccountsForRodCount = { name = "Reactors Account for Rod Count", default = true, type = "bool", description = "This makes it so reactors will account for the number of fuel rods in a reactor. This makes reactors much nicer to be around, since they won't give temperature as along as they are stable. If off, reactors will give temperature, even if stable, as long as the reactor temp is high enough." },
 	ThermalReactorTempInterval = {
 		name = "Reactor Temperature Interval",
 		default = 60,
@@ -116,26 +138,19 @@ NTTHERM.ConfigData = {
 		group = true,
 		resettable = true,
 	},
-	ShockMargin = {
-		name = "Thermal Shock Margin",
-		default = 200,
-		range = {1, 400},
+	ThermalReactorMaxTemp = {
+		name = "Reactor Max Temperature",
+		default = 40,
+		range = {0, 100},
 		type = "float",
-		description = "The margin in which thermal shock will activate. Extremely sensitive. Higher values mean less margin, lower means higher margin.",
+		description = "The max temperature a reactor can reach before heating up nearby crewmates. ONLY APPLIES IF ROD COUNT COFIG IS OFF!",
 		group = true,
 		resettable = true,
 	},
 
-	NTTHERM_Header3 = { name = "---------- Compatibility Toggles ----------", type = "category" },
+	--FireCausePanic = { name = "On Fire causes Panicking", default = false, type = "bool", description = "This makes it so being on fire will cause people to panic. Making them vulnerable to attacks and prevents them from using guns." },
 
-	SuitCompatiblityMode = { name = "Suit Compatibility Mode", default = false, type = "bool", description = "This makes all suits heated by default, rather than using batteries or external heaters. This should be used only when needed and a patch isn't out." },
-	BotSuitSafteyMode = { name = "Bot Suit Compatibility Mode", default = true, type = "bool", description = "This makes all suits worn by a bot heated. Useful so you don't have to babysit them."},
-	BotTempIgnoreMode = { name = "Temperature Ignores Bot Mode", default = false, type = "bool", description = "This makes all bots immune to temperature and it's effects. This should theoretically give a performance boost."},
-	PressureStabilizerTemperature = { name = "Pressure Stabilizers Stabilize Temperature", default = false, type = "bool", description = "This setting makes pressure stabilizers also stabilize temperature, on top of pressure and oxygen." },
-	ReactorsGiveTemperature = { name = "Reactors Give Temperature", default = false, type = "bool", description = "This is a small fork of a enhanced reactors. It makes reactors give you temperature, this is forced on if you are using enhanced reactors." },
-	ReactorsGiveTemperatureBot = { name = "Reactors Give Temperature to Bots", default = true, type = "bool", description = "This makes it so bots will gain temperature from reactors (if the reactor toggle is on)." },
-
-	NTTHERM_Header4 = { name = "---------- Performance Settings ----------", type = "category" },
+	NTTHERM_HeaderPerformance = { name = "---------- Performance Settings ----------", type = "category" },
 
 	SimpleWaterCalculation = { name = "Simple Water Calculations", default = false, type = "bool", description = "This setting makes water calculations extremely simple, the game will make you wet, only when 'in' water. However due to barotrauma limitations this is highly inaccurate." },
 	HeatTransferToggle = { name = "Fire Transfers Heat", default = true, type = "bool", description = "This setting allows heat to transfer between hulls in a submarine. This should be left on for the intended experience." },

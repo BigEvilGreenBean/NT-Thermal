@@ -341,7 +341,12 @@ end
 THERM.IntiateCharacterTemp = function(createdCharacter)
     -- Register character in thermal table.
     local new_character =  {CharacterID = createdCharacter.ID, 
-                            LimbWaterValues = {HeadV = 0, TorsoV = 0, RightArmV = 0, LeftArmV = 0, LeftLegV = 0, RightLegV = 0}, 
+                            LimbWaterValues = {HeadV = 0, 
+                                              TorsoV = 0, 
+                                              RightArmV = 0, 
+                                              LeftArmV = 0, 
+                                              LeftLegV = 0, 
+                                              RightLegV = 0}, 
                             PressureStrength = 1, 
                             InCustomWater = false,
                             OnFire = {  [LimbType.Head] = 1, 
@@ -464,7 +469,7 @@ end
 -- Returns true if the patient is has husk symbiosis.
 THERM.HasHuskSymbiosis = function (Character)
         if Character then
-                if HF.GetAfflictionStrength(Character, "husksymbiosis", 0) > 0 or HF.GetAfflictionStrength(Character, "symbiotichusk", 0) > 0 and HF.GetAfflictionStrength(Character, "boosterhusk", 0) > 0 then
+                if HF.GetAfflictionStrength(Character, "husksymbiosis", 0) > 0 or HF.GetAfflictionStrength(Character, "symbiotichusk", 0) > 0 or HF.GetAfflictionStrength(Character, "boosterhusk", 0) > 0 or HF.GetAfflictionStrength(Character, "husktransformimmunity", 0) > 0 then
                         return true
                 end
         end

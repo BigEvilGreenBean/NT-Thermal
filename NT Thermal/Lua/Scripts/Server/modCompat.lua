@@ -110,13 +110,21 @@ if character.IsBot and NTConfig.Get("ReactorsGiveTemperatureBot", true) or not c
     end
 end
 
+THERMCompat.ReactorTempMax = function (item)
+    if NTConfig.Get("ReactorTempAccountsForRodCount", true) then
+        local ItemCount = THERM.EnumerableSize(item.OwnInventory.GetAllItems(false))
+        local ItemScaling = ItemCount * 15
+        return 25 + ItemScaling
+    else
+        return NTConfig.Get("ThermalReactorMaxTemp", 40)
+    end
+end
+
 local temperature = AfflictionPrefab.Prefabs["ntt_temperature"]
 THERMCompat.ProcessItemUpdate = function (item) -- My forked EH version.
 local reactor = item.GetComponentString("Reactor")
     if reactor then
-        local ItemCount = THERM.EnumerableSize(item.OwnInventory.GetAllItems(false))
-        local ItemScaling = ItemCount * 15
-        if reactor.Temperature > 25 + ItemScaling then
+        if reactor.Temperature > THERMCompat.ReactorTempMax(item) then
             for character in Character.CharacterList do
                 local CharacterTable = THERM.GetCharacter(character.ID)
                 local BurnResistance = THERM.TotalBurnResistance(CharacterTable)

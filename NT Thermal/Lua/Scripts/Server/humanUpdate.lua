@@ -945,6 +945,20 @@ NTTHERM.UpdateAfflictions = {
 		end,
 	},
 
+	-- Panicking
+	--panicking = {
+		--max = 10,
+		--update = function(c, i)
+			--if c.afflictions[i].strength > 0 then
+				--c.afflictions[i].strength = c.afflictions[i].strength - (.2 * NT.Deltatime)
+				--HF.AddAffliction(c.character, "onfire", 1 * NT.Deltatime, c.character)
+				--c.character.ForceRun = true
+			--else
+				--c.character.ForceRun = false
+			--end
+		--end,
+	--},
+
 	-- Heated Diving Suit
 	heated_diving_suit = {
 		max = 100,
