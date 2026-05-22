@@ -1,1 +1,0 @@
--- I'm going to patch the bots to not kill themselves in water here at some point.
