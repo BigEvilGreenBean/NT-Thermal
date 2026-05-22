@@ -23,7 +23,7 @@ Hook.Add("NTTHERM.CustomInWater", "CustomInWater", function (effect, deltaTime, 
                                                 for i, limb in ipairs(LimbsToCheck) do
                                                         local LimbKey = WaterLimbValues[i]
                                                         -- Parameters = 1: target character, 2: limb to check, 3: offset values corresponds to LimbsToCheck, 4: index of limb.
-                                                        local Result = THERM.CalculateIsLimbInWater(target, limb, {100,200,200,150}, i)
+                                                        local Result = THERM.CalculateIsLimbInWater(target, limb, {100,200,200,150}, i) or 0
                                                         -- Optimize algorithim by onlycomputing one limb of pairs and setting to both, less accurate but rat jacuzzi overlord is now happy.
                                                         if Result > 0 then
                                                                 CharacterTable.InCustomWater = true
@@ -47,7 +47,12 @@ Hook.Add("NTTHERM.CustomInWater", "CustomInWater", function (effect, deltaTime, 
                                                 end    
                                         -- Set to false
                                         elseif CharacterTable.InCustomWater == false then
-                                                THERM.SetLimbWaterValues(CharacterTable,0)
+                                                CharacterTable.LimbWaterValues.HeadV = 0
+                                                CharacterTable.LimbWaterValues.TorsoV = 0
+                                                CharacterTable.LimbWaterValues.LeftArmV = 0
+                                                CharacterTable.LimbWaterValues.RightArmV = 0
+                                                CharacterTable.LimbWaterValues.LeftLegV = 0
+                                                CharacterTable.LimbWaterValues.RightLegV = 0
                                                 THERM.RemoveWet(target)
                                         end
 
@@ -58,7 +63,12 @@ Hook.Add("NTTHERM.CustomInWater", "CustomInWater", function (effect, deltaTime, 
                                         end
                                 end
                         elseif NTConfig.Get("SimpleWaterCalculation", true) and CharacterTable ~= nil then
-                                THERM.SetLimbWaterValues(CharacterTable,0)
+                                CharacterTable.LimbWaterValues.HeadV = 0
+                                CharacterTable.LimbWaterValues.TorsoV = 0
+                                CharacterTable.LimbWaterValues.LeftArmV = 0
+                                CharacterTable.LimbWaterValues.RightArmV = 0
+                                CharacterTable.LimbWaterValues.LeftLegV = 0
+                                CharacterTable.LimbWaterValues.RightLegV = 0
                                 THERM.RemoveWet(target)
                         end
                 end
@@ -72,7 +82,12 @@ Hook.Add("NTTHERM.InWater", "InWater", function (effect, deltaTime, item, target
                 if target ~= nil and target.IsHuman and target.IsDead ~= true and target.InWater and not (NTConfig.Get("BotTempIgnoreMode", true) and target.IsBot) then
                         local CharacterTable = THERM.GetCharacter(target.ID,target)
                         if CharacterTable ~= nil then
-                                THERM.SetLimbWaterValues(CharacterTable,1)
+                                CharacterTable.LimbWaterValues.HeadV = 1
+                                CharacterTable.LimbWaterValues.TorsoV = 1
+                                CharacterTable.LimbWaterValues.LeftArmV = 1
+                                CharacterTable.LimbWaterValues.RightArmV = 1
+                                CharacterTable.LimbWaterValues.LeftLegV = 1
+                                CharacterTable.LimbWaterValues.RightLegV = 1
                                 local DivingSuit = THERM.GetSuitSlot(target)
                                 if not (DivingSuit and THERM.IsDivingSuit(DivingSuit)) then
                                         THERM.MakeWet(target,1)

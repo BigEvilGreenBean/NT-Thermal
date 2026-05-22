@@ -13,7 +13,6 @@ Util.RegisterItemGroup("reactors", function (item)
     return item.GetComponentString("Reactor") ~= nil
 end)
 
-
 -- Credit to _]|M|[_ for the original Enhanced Reactors mod.
 local reactors = {
     ["reactor1"] = true,

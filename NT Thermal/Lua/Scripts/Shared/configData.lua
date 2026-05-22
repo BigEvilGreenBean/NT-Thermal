@@ -114,12 +114,14 @@ NTTHERM.ConfigData = {
 	BotSuitSafteyMode = { name = "Bot Suit Compatibility Mode", default = true, type = "bool", description = "This makes all suits worn by a bot heated. Useful so you don't have to babysit them."},
 	BotTempIgnoreMode = { name = "Temperature Ignores Bot Mode", default = false, type = "bool", description = "This makes all bots immune to temperature and it's effects. This should theoretically give a performance boost."},
 	PressureStabilizerTemperature = { name = "Pressure Stabilizers Stabilize Temperature", default = false, type = "bool", description = "This setting makes pressure stabilizers also stabilize temperature, on top of pressure and oxygen." },
-	
+	FireCausePanic = { name = "On Fire Causes Panicking", default = false, type = "bool", description = "This makes it so being on fire will cause people to panic. Making them vulnerable to attacks and prevents them from using guns." },
+	HuskGenesHypothermia = { name = "Husk Genes Are Immune To Hypothermia", default = true, type = "bool", description = "This makes it so husk genes make you immune to hypothermia." },
+
 	NTTHERM_HeaderReactor = { name = "---------- Reactor Settings ----------", type = "category" },
 
 	ReactorsGiveTemperature = { name = "Reactors Give Temperature", default = false, type = "bool", description = "This is a small fork of a enhanced reactors. It makes reactors give you temperature, this is forced on if you are using enhanced reactors." },
-	ReactorsGiveTemperatureBot = { name = "Reactors Give Temperature to Bots", default = true, type = "bool", description = "This makes it so bots will gain temperature from reactors (if the reactor toggle is on)." },
-	ReactorTempAccountsForRodCount = { name = "Reactors Account for Rod Count", default = true, type = "bool", description = "This makes it so reactors will account for the number of fuel rods in a reactor. This makes reactors much nicer to be around, since they won't give temperature as along as they are stable. If off, reactors will give temperature, even if stable, as long as the reactor temp is high enough." },
+	ReactorsGiveTemperatureBot = { name = "Reactors Give Temperature To Bots", default = true, type = "bool", description = "This makes it so bots will gain temperature from reactors (if the reactor toggle is on)." },
+	ReactorTempAccountsForRodCount = { name = "Reactors Account For Rod Count", default = true, type = "bool", description = "This makes it so reactors will account for the number of fuel rods in a reactor. This makes reactors much nicer to be around, since they won't give temperature as along as they are stable. If off, reactors will give temperature, even if stable, as long as the reactor temp is high enough." },
 	ThermalReactorTempInterval = {
 		name = "Reactor Temperature Interval",
 		default = 60,
@@ -147,8 +149,6 @@ NTTHERM.ConfigData = {
 		group = true,
 		resettable = true,
 	},
-
-	--FireCausePanic = { name = "On Fire causes Panicking", default = false, type = "bool", description = "This makes it so being on fire will cause people to panic. Making them vulnerable to attacks and prevents them from using guns." },
 
 	NTTHERM_HeaderPerformance = { name = "---------- Performance Settings ----------", type = "category" },
 

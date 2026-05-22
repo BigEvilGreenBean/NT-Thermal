@@ -73,12 +73,12 @@
         isbuff="false"
         showiconthreshold="10000"
         showinhealthscannerthreshold="1000"
-        maxstrength="2"
+        maxstrength="5"
         iconcolors="255,90,0,255;255,90,0,255">
 
         <PeriodicEffect mininterval="1" maxinterval="1">
           <StatusEffect target="Limb" disabledeltatime="true" stackable="false" delay="0.1" checkconditionalalways="false">
-            <ReduceAffliction identifier="onfire" amount="0.1"/>
+            <ReduceAffliction identifier="onfire" amount="1"/>
           </StatusEffect>
           <StatusEffect target="Character" disabledeltatime="true" stackable="false" delay="0.1" checkconditionalalways="false">
             <Conditional inwater="true"/>
@@ -92,7 +92,6 @@
           <StatusEffect target="limb" disabledeltatime="true" stackable="false" delay="0.1" checkconditionalalways="false" comparison="and">
             <Conditional IsRagdolled="true"/>
             <Conditional ishuman="true"/>
-            <ReduceAffliction identifier="onfire" amount="-0.2" />
           </StatusEffect>
 
           <StatusEffect target="limb,character" multiplyafflictionsbymaxvitality="true" disabledeltatime="true" stackable="false" delay="0.1" checkconditionalalways="false">
@@ -101,8 +100,8 @@
             <sound file="Content/Sounds/FireSmall.ogg" range="500.0" loop="true" />
           </StatusEffect>
           <StatusEffect target="limb" checkconditionalalways="false" disabledeltatime="false" duration="1" stackable="false">
-            <Conditional onfire="gt 1" />
-            <Affliction identifier="burn" amount="5" />
+            <Conditional onfire="gt 3" />
+            <Affliction identifier="burn" amount="2" />
           </StatusEffect>
           <StatusEffect target="limb" disabledeltatime="true" stackable="true" duration="1" checkconditionalalways="false">
             <Conditional onfire="gt 1" />

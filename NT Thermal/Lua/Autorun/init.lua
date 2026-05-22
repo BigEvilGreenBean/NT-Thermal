@@ -2,7 +2,7 @@
 -- Set up dictonary
 NTTHERM = {}
 NTTHERM.Name = "Thermal"
-NTTHERM.Version = "1.6.9h67"
+NTTHERM.Version = "1.6.9h69"
 NTTHERM.VersionNum = 000000001
 NTTHERM.MinNTVersion = "A1.12.1"
 NTTHERM.MinNTVersionNum = 01120100
@@ -58,7 +58,7 @@ Timer.Wait(function()
 		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/items.lua") -- Item methods.
 		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/modCompat.lua") -- Compat.
 		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/translationCompat.lua") -- Translation Compat.
-		--dofile(NTTHERM.Path .. "/Lua/Scripts/Server/patches.lua") -- Patches.
+		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/patches.lua") -- Patches.
 	end
 
 end, 1)

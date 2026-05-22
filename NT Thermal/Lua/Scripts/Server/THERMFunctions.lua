@@ -131,57 +131,59 @@ end
 
 
 -- Used for calculating water exposure from given WorldPosition's
-local LimbData = {"LeftLeg (7)", {StartPoint = LimbType.LeftThigh, EndPoint = LimbType.LeftFoot, Offset = 10},
-                  "RightLeg (10)", {StartPoint = LimbType.RightThigh, EndPoint = LimbType.RightFoot, Offset = 10},
-                  "LeftForearm (13)", {StartPoint = LimbType.LeftArm, EndPoint = LimbType.LeftHand, Offset = 2},
-                  "RightForearm (14)", {StartPoint = LimbType.RightArm, EndPoint = LimbType.RightHand, Offset = 2}, 
-                  "Torso (0)", {StartPoint = LimbType.Torso, EndPoint = LimbType.Waist, Offset = 10},
-                  "Head (1)", {StartPoint = LimbType.Head, EndPoint = LimbType.Torso, Offset = 1},}
+local LimbData = {[LimbType.LeftLeg] = {StartPoint = LimbType.LeftThigh, EndPoint = LimbType.LeftFoot, Offset = 10},
+                  [LimbType.RightLeg] = {StartPoint = LimbType.RightThigh, EndPoint = LimbType.RightFoot, Offset = 10},
+                  [LimbType.RightForearm] = {StartPoint = LimbType.LeftArm, EndPoint = LimbType.LeftHand, Offset = 2},
+                  [LimbType.LeftForearm] = {StartPoint = LimbType.RightArm, EndPoint = LimbType.RightHand, Offset = 2}, 
+                  [LimbType.Torso] = {StartPoint = LimbType.Torso, EndPoint = LimbType.Waist, Offset = 10},
+                  [LimbType.Head] = {StartPoint = LimbType.Head, EndPoint = LimbType.Torso, Offset = 1},}
 -- Calculate Water Exposure for more accurate hypothermia.
 -- Abs value my goat.
 THERM.CalculateLimbWaterExposure = function (target, animcontrol, limb, LimbPosY, hull, WaterY)
-        for i, newlimb in pairs(LimbData) do
-                if limb.Name == newlimb then
-                        local LimbStartPoint = animcontrol.GetLimb(LimbData[i + 1].StartPoint,true,false,false).WorldPosition
-                        local LimbEndPoint = animcontrol.GetLimb(LimbData[i + 1].EndPoint,true,false,false).WorldPosition
-                        -- Two blocks incase the limbs are oriented in a manner where the endpoint is higher than the start, which will cause the water exposure to falsely go up.
-                        if LimbEndPoint.Y < LimbStartPoint.Y then
-                                local LimbLengthY = math.abs(LimbStartPoint.Y + LimbData[i + 1].Offset) - math.abs(LimbEndPoint.Y)
-                                local WaterExposureLimb = math.abs(WaterY) - math.abs(LimbEndPoint.Y)
-                                local WaterExposureLimbPercentage = HF.Clamp((WaterExposureLimb/LimbLengthY), 0, 1)
-                                return WaterExposureLimbPercentage     
-                        else
-                                local LimbLengthY = math.abs(LimbEndPoint.Y) - math.abs(LimbStartPoint.Y)
-                                local WaterExposureLimb = math.abs(WaterY) - math.abs(LimbStartPoint.Y)
-                                local WaterExposureLimbPercentage = HF.Clamp((WaterExposureLimb/LimbLengthY), 0, 1)
-                                return WaterExposureLimbPercentage     
-                        end
-                end
+        local NewLimbData = LimbData[limb.type] or nil
+        if not NewLimbData then
+                return 0
+        end
+        local LimbStartPoint = animcontrol.GetLimb(NewLimbData.StartPoint,true,false,false).WorldPosition
+        local LimbEndPoint = animcontrol.GetLimb(NewLimbData.EndPoint,true,false,false).WorldPosition
+        -- Two blocks incase the limbs are oriented in a manner where the endpoint is higher than the start, which will cause the water exposure to falsely go up.
+        if LimbEndPoint.Y < LimbStartPoint.Y then
+                local LimbLengthY = math.abs(LimbStartPoint.Y + NewLimbData.Offset) - math.abs(LimbEndPoint.Y)
+                local WaterExposureLimb = math.abs(WaterY) - math.abs(LimbEndPoint.Y)
+                local WaterExposureLimbPercentage = HF.Clamp((WaterExposureLimb/LimbLengthY), 0, 1)
+                return WaterExposureLimbPercentage     
+        else
+                local LimbLengthY = math.abs(LimbEndPoint.Y) - math.abs(LimbStartPoint.Y)
+                local WaterExposureLimb = math.abs(WaterY) - math.abs(LimbStartPoint.Y)
+                local WaterExposureLimbPercentage = HF.Clamp((WaterExposureLimb/LimbLengthY), 0, 1)
+                return WaterExposureLimbPercentage
         end
 end
 
 -- Made by Antinous (Thank you)
 THERM.BurnReductionFactor = function(item)
         if not item or not item.Prefab then return nil end
-                if not item.Prefab.ConfigElement then return nil end
-                        for element in item.Prefab.ConfigElement.Elements() do
-                                if element.Name.ToString() == "Wearable" then
-                                for child in element.Elements() do
-                                        if child.Name.ToString() == "damagemodifier" then
-                                        local afflictions = string.lower(child.GetAttributeString("afflictiontypes") or "")
-                                        if afflictions:find("burn") then
-                                                local multiplierString = child.GetAttributeString("damagemultiplier")
-                                                local multiplier = math.abs(multiplierString - 1) + 1
-                                                if multiplier > 1 then
-                                                        multiplier = HF.Clamp(multiplier * 1.2,1,100)
-                                                end
-                                                return multiplier
-                                        end
-                                        end
+        if not item.Prefab.ConfigElement then return nil end
+
+        for element in item.Prefab.ConfigElement.Elements() do
+                if element.Name.ToString() == "Wearable" then
+                for child in element.Elements() do
+                        if child.Name.ToString() == "damagemodifier" then
+                        local afflictions = string.lower(child.GetAttributeString("afflictiontypes") or "")
+                        if afflictions:find("burn") then
+                                local multiplierString = child.GetAttributeString("damagemultiplier")
+                                local multiplier = math.abs(multiplierString - 1) + 1
+                                if multiplier > 1 then
+                                        multiplier = HF.Clamp(multiplier * 1.2,1,100)
                                 end
-                                end
+                                return multiplier
                         end
-                return 1
+                        end
+                end
+                end
+        end
+
+        return 1
         end
 
 -- Key set of Water Values.
@@ -189,7 +191,7 @@ THERM.CalculateTemperature = function (limbwet,target,limb)
         local CharacterTable = THERM.GetCharacter(target.ID)
         -- Slight error handling.
         if CharacterTable == nil then
-                return
+                return 0
         end
         if limb == LimbType.Torso then
                 local DivingSuit = THERM.GetSuitSlot(target)
@@ -267,16 +269,16 @@ end
 -- Fetches character data from THERMCharacters. This is needed since it stores water related data.
 THERM.GetCharacter = function (characterID,character)
         character = character or nil
-        if characterID ~= nil then
-                if THERMCharacters[characterID] ~= nil then
-                        return THERMCharacters[characterID]
-                end
-                if character ~= nil then -- failsafe incase the character is needed but not yet added.
-                        THERM.IntiateCharacterTemp(character)
-                        return THERMCharacters[characterID]
-                end
+        if characterID == nil then
+                return nil
         end
-        return nil
+        if THERMCharacters[characterID] ~= nil then
+                return THERMCharacters[characterID]
+        end
+        if character ~= nil then -- failsafe incase the character is needed but not yet added.
+                THERM.IntiateCharacterTemp(character)
+                return THERMCharacters[characterID]
+        end
 end
 
 
@@ -469,7 +471,7 @@ end
 -- Returns true if the patient is has husk symbiosis.
 THERM.HasHuskSymbiosis = function (Character)
         if Character then
-                if HF.GetAfflictionStrength(Character, "husksymbiosis", 0) > 0 or HF.GetAfflictionStrength(Character, "symbiotichusk", 0) > 0 or HF.GetAfflictionStrength(Character, "boosterhusk", 0) > 0 or HF.GetAfflictionStrength(Character, "husktransformimmunity", 0) > 0 then
+                if HF.GetAfflictionStrength(Character, "husksymbiosis", 0) > 0 or HF.GetAfflictionStrength(Character, "symbiotichusk", 0) > 0 or HF.GetAfflictionStrength(Character, "boosterhusk", 0) > 0 or (NTConfig.Get("HuskGenesHypothermia", true) and HF.GetAfflictionStrength(Character, "husktransformimmunity", 0) > 0) then
                         return true
                 end
         end
@@ -490,4 +492,34 @@ THERM.EnumerableSize = function (enumerable)
         size = size + 1
     end
     return size
+end
+
+-- Function used to return config stats.
+THERM.FetchConfigStats = function ()
+	local ConfigStats = 
+		{
+		NormalBodyTemp = NTConfig.Get("NewNormalBodyTemp", 38),
+		HypothermiaLevel = NTConfig.Get("NewHypothermiaLevel", 36),
+		HyperthermiaLevel = NTConfig.Get("NewHyperthermiaLevel", 39),
+		WarmingAbility = NTConfig.Get("NewWarmingAbility", .2),
+		DryingSpeed = NTConfig.Get("NewDryingSpeed", -.1),
+		PerformanceMode = NTConfig.Get("PerformanceMode",true),
+		ShockMargin = NTConfig.Get("ShockMargin",100)/357.142
+		}
+	return ConfigStats
+end
+
+
+-- Function used to return random stats that I can't think of a better name for.
+THERM.FetchOtherStats = function ()
+	local Stats =
+	{
+	AffectBodyCold = 1.1,
+	AffectBodyWarm = 1.1,	
+	LimbsToCheck = {LimbType.Head,LimbType.RightArm,LimbType.LeftArm,LimbType.LeftLeg,LimbType.RightLeg},
+	BloodAfflictions = {"elevated_core_temperature","diuretics","thrombolytics","aafn","cryo_stasis_starter"},
+	MaxWarmingTemp = NTTHERM.FetchConfigStats().NormalBodyTemp * 1.02,
+	MaxCoolingTemp = NTTHERM.FetchConfigStats().NormalBodyTemp/1.02
+	}
+	return Stats
 end
