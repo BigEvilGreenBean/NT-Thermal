@@ -154,7 +154,7 @@ local reactor = item.GetComponentString("Reactor")
                 local CharacterTable = THERM.GetCharacter(character.ID)
                 local BurnResistance = THERM.TotalBurnResistance(CharacterTable)
                 THERMCompat.ApplyTemperatureRadius(item, character, 750, 1, 0, {
-                    temperature.Instantiate((2 * data.overheating * THERMCompat.EH.DeltaTime  * NTConfig.Get("ThermalReactorTempScaling", 1))/BurnResistance)})
+                    temperature.Instantiate((.5 * data.overheating * THERMCompat.EH.DeltaTime  * NTConfig.Get("ThermalReactorTempScaling", 1))/BurnResistance)})
             end
         end
 

@@ -47,12 +47,7 @@ Hook.Add("NTTHERM.CustomInWater", "CustomInWater", function (effect, deltaTime, 
                                                 end    
                                         -- Set to false
                                         elseif CharacterTable.InCustomWater == false then
-                                                CharacterTable.LimbWaterValues.HeadV = 0
-                                                CharacterTable.LimbWaterValues.TorsoV = 0
-                                                CharacterTable.LimbWaterValues.LeftArmV = 0
-                                                CharacterTable.LimbWaterValues.RightArmV = 0
-                                                CharacterTable.LimbWaterValues.LeftLegV = 0
-                                                CharacterTable.LimbWaterValues.RightLegV = 0
+                                                THERM.SetLimbWaterValues(CharacterTable,0)
                                                 THERM.RemoveWet(target)
                                         end
 
@@ -63,12 +58,7 @@ Hook.Add("NTTHERM.CustomInWater", "CustomInWater", function (effect, deltaTime, 
                                         end
                                 end
                         elseif NTConfig.Get("SimpleWaterCalculation", true) and CharacterTable ~= nil then
-                                CharacterTable.LimbWaterValues.HeadV = 0
-                                CharacterTable.LimbWaterValues.TorsoV = 0
-                                CharacterTable.LimbWaterValues.LeftArmV = 0
-                                CharacterTable.LimbWaterValues.RightArmV = 0
-                                CharacterTable.LimbWaterValues.LeftLegV = 0
-                                CharacterTable.LimbWaterValues.RightLegV = 0
+                                THERM.SetLimbWaterValues(CharacterTable,0)
                                 THERM.RemoveWet(target)
                         end
                 end
@@ -82,12 +72,7 @@ Hook.Add("NTTHERM.InWater", "InWater", function (effect, deltaTime, item, target
                 if target ~= nil and target.IsHuman and target.IsDead ~= true and target.InWater and not (NTConfig.Get("BotTempIgnoreMode", true) and target.IsBot) then
                         local CharacterTable = THERM.GetCharacter(target.ID,target)
                         if CharacterTable ~= nil then
-                                CharacterTable.LimbWaterValues.HeadV = 1
-                                CharacterTable.LimbWaterValues.TorsoV = 1
-                                CharacterTable.LimbWaterValues.LeftArmV = 1
-                                CharacterTable.LimbWaterValues.RightArmV = 1
-                                CharacterTable.LimbWaterValues.LeftLegV = 1
-                                CharacterTable.LimbWaterValues.RightLegV = 1
+                                THERM.SetLimbWaterValues(CharacterTable,1)
                                 local DivingSuit = THERM.GetSuitSlot(target)
                                 if not (DivingSuit and THERM.IsDivingSuit(DivingSuit)) then
                                         THERM.MakeWet(target,1)
@@ -104,11 +89,12 @@ Hook.Add("NTTHERM.OnFire", "OnFire", function (effect, deltaTime, item, targets,
         for h, target in pairs(targets) do
                 if target ~= nil and target.IsHuman and target.IsDead ~= true and not (NTConfig.Get("BotTempIgnoreMode", true) and target.IsBot) then
                         local CharacterTable = THERM.GetCharacter(target.ID,target)
-                        if CharacterTable ~= nil then
-                                THERM.ApplyTemperatureUpdate(target.ID)
-                                for index, value in pairs(CharacterTable.OnFire) do
-                                        CharacterTable.OnFire[index] = 4
-                                end
+                        if CharacterTable == nil then
+                                return
+                        end
+                        THERM.ApplyTemperatureUpdate(target.ID)
+                        for index, value in pairs(CharacterTable.OnFire) do
+                                CharacterTable.OnFire[index] = 4
                         end
                 end
         end

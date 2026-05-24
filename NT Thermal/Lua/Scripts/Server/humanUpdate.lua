@@ -906,10 +906,10 @@ NTTHERM.UpdateAfflictions = {
 				LastHeadTemp = HeadTemp
 			end
 			local ShockMargin = FetchConfigStats().ShockMargin * NT.Deltatime
-			local ShockDecrease = 2.5
+			local ShockDecrease = 5
 			if c.afflictions[i].strength > 0 then
-				NTC.SetSymptomTrue(c.character, "triggersym_seizure", 5)
-				NTC.SetSymptomTrue(c.character, "triggersym_stroke", 5)
+				NTC.SetSymptomTrue(c.character, "triggersym_seizure", 3)
+				NTC.SetSymptomTrue(c.character, "triggersym_stroke", 3)
 				c.afflictions.cerebralhypoxia.strength = c.afflictions.cerebralhypoxia.strength + (.05 * NT.Deltatime)
 				c.afflictions[i].strength = c.afflictions[i].strength -  (ShockDecrease * NT.Deltatime)
 			elseif LastHeadTemp ~= HeadTemp then
@@ -953,7 +953,7 @@ NTTHERM.UpdateAfflictions = {
 	panicking = {
 		max = 100,
 		update = function(c, i)
-			if c.afflictions[i].strength > 0 then
+			if c.afflictions[i].strength > 0 and NTConfig.Get("FireCausePanic", false) then
 				c.afflictions[i].strength = c.afflictions[i].strength - (10 * NT.Deltatime)
 				for n, limb in pairs({LimbType.Head,LimbType.Torso,LimbType.RightArm,LimbType.LeftArm,LimbType.LeftLeg,LimbType.RightLeg}) do
 					HF.AddAfflictionLimb(c.character, "onfire", limb, 1 * NT.Deltatime, c.character)

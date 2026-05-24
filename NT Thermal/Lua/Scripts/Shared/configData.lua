@@ -6,7 +6,7 @@
 NTTHERM.ConfigData = {
 	NTTHERM_Header1 = { name = NTTHERM.Name, type = "category" },
 
-	NTTHERM_HeaderTemp = { name = "---------- Temperature Settings ----------", type = "category" },
+	NTTHERM_HeaderTemp = { name = THERM.CreateHeader(" Temperature Settings ", 84), type = "category" },
 	
 	NewHypothermiaLevel = {
 		name = "Hypothermia level",
@@ -71,6 +71,24 @@ NTTHERM.ConfigData = {
 		group = true,
 		resettable = true,
 	},
+	HeatScaling = {
+		name = "Heat Scaling",
+		default = 1.5,
+		range = { 0, 10 },
+		type = "float",
+		description = "Multiplies all gained heat by this value! (Except for reactors!!!!)",
+		group = true,
+		resettable = true,
+	},
+	ColdScaling = {
+		name = "Cold Scaling",
+		default = 1,
+		range = { 0, 10 },
+		type = "float",
+		description = "Multiplies all gained cold by this value!",
+		group = true,
+		resettable = true,
+	},
 	ETempScaling = {
 		name = "External Temperature Scaling",
 		default = 1.5,
@@ -108,16 +126,16 @@ NTTHERM.ConfigData = {
 		resettable = true,
 	},
 
-	NTTHERM_HeaderCompat = { name = "---------- Compatibility Toggles ----------", type = "category" },
+	NTTHERM_HeaderCompat = { name = THERM.CreateHeader(" Compatibility Toggles ", 84), type = "category" },
 
 	SuitCompatiblityMode = { name = "Suit Compatibility Mode", default = false, type = "bool", description = "This makes all suits heated by default, rather than using batteries or external heaters. This should be used only when needed and a patch isn't out." },
 	BotSuitSafteyMode = { name = "Bot Suit Compatibility Mode", default = true, type = "bool", description = "This makes all suits worn by a bot heated. Useful so you don't have to babysit them."},
 	BotTempIgnoreMode = { name = "Temperature Ignores Bot Mode", default = false, type = "bool", description = "This makes all bots immune to temperature and it's effects. This should theoretically give a performance boost."},
 	PressureStabilizerTemperature = { name = "Pressure Stabilizers Stabilize Temperature", default = false, type = "bool", description = "This setting makes pressure stabilizers also stabilize temperature, on top of pressure and oxygen." },
-	FireCausePanic = { name = "On Fire Causes Panicking", default = false, type = "bool", description = "This makes it so being on fire will cause people to panic. Making them vulnerable to attacks and prevents them from using guns." },
+	FireCausePanic = { name = "On Fire Causes Panicking (Experimental)", default = false, type = "bool", description = "This makes it so being on fire will cause people to panic. Making them vulnerable to attacks and prevents them from using guns." },
 	HuskGenesHypothermia = { name = "Husk Genes Are Immune To Hypothermia", default = true, type = "bool", description = "This makes it so husk genes make you immune to hypothermia." },
 
-	NTTHERM_HeaderReactor = { name = "---------- Reactor Settings ----------", type = "category" },
+	NTTHERM_HeaderReactor = { name = THERM.CreateHeader(" Reactor Settings ", 84), type = "category" },
 
 	ReactorsGiveTemperature = { name = "Reactors Give Temperature", default = false, type = "bool", description = "This is a small fork of a enhanced reactors. It makes reactors give you temperature, this is forced on if you are using enhanced reactors." },
 	ReactorsGiveTemperatureBot = { name = "Reactors Give Temperature To Bots", default = true, type = "bool", description = "This makes it so bots will gain temperature from reactors (if the reactor toggle is on)." },
@@ -150,7 +168,7 @@ NTTHERM.ConfigData = {
 		resettable = true,
 	},
 
-	NTTHERM_HeaderPerformance = { name = "---------- Performance Settings ----------", type = "category" },
+	NTTHERM_HeaderPerformance = { name = THERM.CreateHeader(" Performance Settings ", 84), type = "category" },
 
 	SimpleWaterCalculation = { name = "Simple Water Calculations", default = false, type = "bool", description = "This setting makes water calculations extremely simple, the game will make you wet, only when 'in' water. However due to barotrauma limitations this is highly inaccurate." },
 	HeatTransferToggle = { name = "Fire Transfers Heat", default = true, type = "bool", description = "This setting allows heat to transfer between hulls in a submarine. This should be left on for the intended experience." },

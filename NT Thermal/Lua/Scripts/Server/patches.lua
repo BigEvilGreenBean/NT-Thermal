@@ -2,7 +2,7 @@
 
 -- Panicked stops you from shooting patch!
 Hook.Patch("Barotrauma.Items.Components.RangedWeapon","Use", function (instance, ptable)
-    if NTConfig.Get("FireCausePanic", true) then
+    if NTConfig.Get("FireCausePanic", false) then
         local Character = ptable["character"]
         if HF.GetAfflictionStrength(Character, "panicking", 0) > 0 then
             ptable.PreventExecution = true
@@ -12,7 +12,7 @@ end, Hook.HookMethodType.Before)
 
 -- Hooks Lua event "Barotrauma.Character" to apply vanilla burning (formerly NT onfire) affliction and set a human on fire
 Hook.HookMethod("Barotrauma.Character", "ApplyStatusEffects", function(instance, ptable)
-	if ptable.actionType == ActionType.OnFire then
+	if ptable.actionType == ActionType.OnFire and NTConfig.Get("FireCausePanic", false) then
 
         local function MakeOnFire(character)
             if HF.GetAfflictionStrength(character, "ntt_temperature", 0) > THERM.FetchConfigStats().HyperthermiaLevel * NTTHERM.LowHyperthermiaScaling then

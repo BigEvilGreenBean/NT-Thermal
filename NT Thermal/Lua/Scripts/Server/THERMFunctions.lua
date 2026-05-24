@@ -5,12 +5,12 @@ THERM = {}
 -- Convert limb to waterlimb value
 local WaterLimbValues = 
                 {
-                [11] = "HeadV",
-                [3] = "LeftArmV",
-                [7] = "LeftLegV",
-                [4] = "RightArmV",
-                [8] = "RightLegV",
-                [12] = "TorsoV"
+                [LimbType.Head] = "HeadV",
+                [LimbType.LeftArm] = "LeftArmV",
+                [LimbType.LeftLeg] = "LeftLegV",
+                [LimbType.RightArm] = "RightArmV",
+                [LimbType.RightLeg] = "RightLegV",
+                [LimbType.Torso] = "TorsoV"
                 }
 
 local WaterLimbValues2 = 
@@ -107,25 +107,26 @@ end
 
 -- Function to get general idea of if limb is in water.
 THERM.CalculateIsLimbInWater = function (target, LimbTypeToCheck, offset, index)
-        if target ~= nil then
-                -- Calculate if limb is in water. The IsInWater action type for XML doesn't properly detect limbs, I can be knee deep in water and it won't count. At least I couldn't find it, if you do let me know.
-                local limb = target.AnimController.GetLimb(LimbTypeToCheck, true, false, false)
-                local LimbPosY = target.AnimController.GetLimb(LimbTypeToCheck, true, false, false).WorldPosition.Y
-                local LimbHull = limb.Hull
-                local WaterExposure = 0
-                if LimbHull ~= nil then
-                        local CurrentHullWaterVolume = LimbHull.WaterVolume
-                        local CurrentHullWaterY = CurrentHullWaterVolume/LimbHull.Size.X
-                        local WorldCurrentHullWaterY = (LimbHull.WorldPosition.Y - ((math.abs(LimbHull.Size.Y))/2)) + CurrentHullWaterY
-                        if (LimbPosY - offset[index] < ((LimbHull.WorldPosition.Y - LimbHull.Size.Y) + CurrentHullWaterY)) and (CurrentHullWaterVolume > 0) then
-                                WaterExposure = THERM.CalculateLimbWaterExposure(target, target.AnimController, limb, LimbPosY, LimbHull, WorldCurrentHullWaterY)
-                                return WaterExposure
-                        else
-                                return 0 
-                        end
+        if target == nil then
+                return 0
+        end
+        -- Calculate if limb is in water. The IsInWater action type for XML doesn't properly detect limbs, I can be knee deep in water and it won't count. At least I couldn't find it, if you do let me know.
+        local limb = target.AnimController.GetLimb(LimbTypeToCheck, true, false, false)
+        local LimbPosY = target.AnimController.GetLimb(LimbTypeToCheck, true, false, false).WorldPosition.Y
+        local LimbHull = limb.Hull
+        local WaterExposure = 0
+        if LimbHull ~= nil then
+                local CurrentHullWaterVolume = LimbHull.WaterVolume
+                local CurrentHullWaterY = CurrentHullWaterVolume/LimbHull.Size.X
+                local WorldCurrentHullWaterY = (LimbHull.WorldPosition.Y - ((math.abs(LimbHull.Size.Y))/2)) + CurrentHullWaterY
+                if (LimbPosY - offset[index] < ((LimbHull.WorldPosition.Y - LimbHull.Size.Y) + CurrentHullWaterY)) and (CurrentHullWaterVolume > 0) then
+                        WaterExposure = THERM.CalculateLimbWaterExposure(target, target.AnimController, limb, LimbPosY, LimbHull, WorldCurrentHullWaterY)
+                        return WaterExposure
                 else
-                        return 0
+                        return 0 
                 end
+        else
+                return 0
         end
 end
 
@@ -225,6 +226,7 @@ THERM.CalculateTemperature = function (limbwet,target,limb)
         local Water = CharacterTable.LimbWaterValues[WaterLimbKey] * -1
         local RoomTemp = 0
         local OnFire = CharacterTable.OnFire[limb]
+        CharacterTable.OnFire[limb] = 1
         local BloodLoss = function ()
                 if HF.GetAfflictionStrengthLimb(target, limb, "ntt_temperature", 0) > HypothermiaLevel then
                         return HF.GetAfflictionStrength(target, "bloodloss", 0)/400
@@ -237,7 +239,6 @@ THERM.CalculateTemperature = function (limbwet,target,limb)
                 end
                 return 0 
         end
-        CharacterTable.OnFire[limb] = 1
         if target.CurrentHull ~= nil and THERMRoom.GetRoom(target.CurrentHull) ~= nil and THERMRoom.Rooms ~= nil and THERMRoom.Intiated then
                 RoomTemp = THERMRoom.GetRoom(target.CurrentHull).Temp/THERMRoom.DefaultRoomTemp * 2 -- Scaling
         end
@@ -251,10 +252,11 @@ THERM.CalculateTemperature = function (limbwet,target,limb)
                 /LimbClothResistance
                 /LimbTempResistance
                 * HF.Clamp((HF.GetAfflictionStrengthLimb(target, LimbType.Torso, "husksymbiosis", 0)/40),1,10)
-                / 20 -- Scaling feature
+                / 10 -- Scaling feature
                 * NTConfig.Get("ETempScaling", 1.5)
                 + Sepsis()
                 * NT.Deltatime
+                * NTConfig.Get("HeatScaling",1)
         local Cold = ((((Water - BloodLoss()) 
                 * WaterMultipliers)
                 /LimbClothResistance)
@@ -262,7 +264,9 @@ THERM.CalculateTemperature = function (limbwet,target,limb)
                 * NTConfig.Get("ETempScaling", 1.5) 
                 / 2 -- Scaling feature
                 * NT.Deltatime
-        return (Heat/THERM.TotalBurnResistance(CharacterTable)/2) + Cold
+                * NTConfig.Get("ColdScaling",1)
+        local TempResult = (Heat/THERM.TotalBurnResistance(CharacterTable)/2) + Cold
+        return TempResult
 end
 
 
@@ -391,11 +395,15 @@ end
 -- Used for compatibility with immersive diving gear.
 THERM.ImmersiveDivingGearEquipped = function (outerclothes,innerclothes)
         -- if staircase to glory.
-        if outerclothes ~= nil and innerclothes ~= nil then
-                if outerclothes.HasTag("divinghelmet") or outerclothes.HasTag("bothelmet") then
-                        if innerclothes.HasTag("diving") or innerclothes.HasTag("deepdivinglarge") then
-                                return true
-                        end
+        if outerclothes == nil then
+                return false
+        end 
+        if innerclothes == nil then
+                return false
+        end
+        if outerclothes.HasTag("divinghelmet") or outerclothes.HasTag("bothelmet") then
+                if innerclothes.HasTag("diving") or innerclothes.HasTag("deepdivinglarge") then
+                        return true
                 end
         end
         return false
@@ -480,9 +488,12 @@ end
 
 -- Sets out limb water values.
 THERM.SetLimbWaterValues = function (CharacterTable, NewValue)
-        for key, water_value in pairs(CharacterTable.LimbWaterValues) do
-                water_value = NewValue
-        end
+        CharacterTable.LimbWaterValues.HeadV = NewValue
+        CharacterTable.LimbWaterValues.TorsoV = NewValue
+        CharacterTable.LimbWaterValues.LeftArmV = NewValue
+        CharacterTable.LimbWaterValues.RightArmV = NewValue
+        CharacterTable.LimbWaterValues.LeftLegV = NewValue
+        CharacterTable.LimbWaterValues.RightLegV = NewValue
 end
 
 -- Returns the size of an enumerable.
@@ -494,32 +505,21 @@ THERM.EnumerableSize = function (enumerable)
     return size
 end
 
--- Function used to return config stats.
-THERM.FetchConfigStats = function ()
-	local ConfigStats = 
-		{
-		NormalBodyTemp = NTConfig.Get("NewNormalBodyTemp", 38),
-		HypothermiaLevel = NTConfig.Get("NewHypothermiaLevel", 36),
-		HyperthermiaLevel = NTConfig.Get("NewHyperthermiaLevel", 39),
-		WarmingAbility = NTConfig.Get("NewWarmingAbility", .2),
-		DryingSpeed = NTConfig.Get("NewDryingSpeed", -.1),
-		PerformanceMode = NTConfig.Get("PerformanceMode",true),
-		ShockMargin = NTConfig.Get("ShockMargin",100)/357.142
-		}
-	return ConfigStats
+-- Creates a header.
+THERM.CreateHeader = function(Text,Length)
+        local TextSize = string.len(Text)
+        local DashSize = Length - TextSize
+        if DashSize % 2 ~= 0 then
+                DashSize = DashSize + 1
+        end
+        return  THERM.CreateLine(HF.Round(DashSize/2,0)) .. Text .. THERM.CreateLine(HF.Round(DashSize/2,0))
 end
 
-
--- Function used to return random stats that I can't think of a better name for.
-THERM.FetchOtherStats = function ()
-	local Stats =
-	{
-	AffectBodyCold = 1.1,
-	AffectBodyWarm = 1.1,	
-	LimbsToCheck = {LimbType.Head,LimbType.RightArm,LimbType.LeftArm,LimbType.LeftLeg,LimbType.RightLeg},
-	BloodAfflictions = {"elevated_core_temperature","diuretics","thrombolytics","aafn","cryo_stasis_starter"},
-	MaxWarmingTemp = NTTHERM.FetchConfigStats().NormalBodyTemp * 1.02,
-	MaxCoolingTemp = NTTHERM.FetchConfigStats().NormalBodyTemp/1.02
-	}
-	return Stats
+-- Creates a Line
+THERM.CreateLine = function (Length)
+        local Line = ""
+        for i = 1, Length do
+                Line = Line .. "-"
+        end
+        return Line
 end

@@ -17,7 +17,7 @@ NT.ItemMethods.warm_iv_bag = function(item, usingCharacter, targetCharacter, lim
 	end
 	local limbtype = limb.type
 	local success = HF.BoolToNum(HF.GetSkillRequirementMet(usingCharacter, "medical", 40), 1)
-	HF.AddAfflictionLimb(targetCharacter, "elevated_core_temperature", limbtype, 5 + success * 25, usingCharacter)
+        HF.AddAffliction(targetCharacter, "elevated_core_temperature", 5 + success * 25, usingCharacter)
         THERM.PlaySound("thermalsfx_liquidiv",targetCharacter)
 	item.Condition = 0
 end
