@@ -161,29 +161,36 @@ THERM.CalculateLimbWaterExposure = function (target, animcontrol, limb, LimbPosY
         end
 end
 
--- Made by Antinous (Thank you)
+-- Made by Antinous (Thank you) and modified by me.
 THERM.BurnReductionFactor = function(item)
-        if not item or not item.Prefab then return nil end
-        if not item.Prefab.ConfigElement then return nil end
-
-        for element in item.Prefab.ConfigElement.Elements() do
-                if element.Name.ToString() == "Wearable" then
-                for child in element.Elements() do
-                        if child.Name.ToString() == "damagemodifier" then
-                        local afflictions = string.lower(child.GetAttributeString("afflictiontypes") or "")
-                        if afflictions:find("burn") then
-                                local multiplierString = child.GetAttributeString("damagemultiplier")
-                                local multiplier = math.abs(multiplierString - 1) + 1
-                                if multiplier > 1 then
-                                        multiplier = HF.Clamp(multiplier * 1.2,1,100)
-                                end
-                                return multiplier
-                        end
-                        end
-                end
-                end
+        if not item or not item.Prefab then 
+                return nil 
         end
-
+        if not item.Prefab.ConfigElement then 
+                return nil 
+        end
+        local PrefabXElement = item.Prefab.ConfigElement.Elements()
+        if not PrefabXElement then 
+                return 1  
+        end
+        local Wearable = THERM.ReturnEnumerableAttribute(PrefabXElement,"Wearable")
+        if not Wearable then
+                return 1    
+        end
+        local DamageModifier = Wearable.GetChildElement("damagemodifier")
+        if not DamageModifier then 
+                return 1    
+        end
+        local afflictions = string.lower(DamageModifier.GetAttributeString("afflictiontypes") or "")
+        print(DamageModifier)
+        if afflictions:find("burn") then
+                local multiplierString = DamageModifier.GetAttributeString("damagemultiplier")
+                local multiplier = math.abs(multiplierString - 1) + 1
+                if multiplier > 1 then
+                        multiplier = HF.Clamp(multiplier * 1.2,1,100)
+                end
+                return multiplier
+        end
         return 1
         end
 
@@ -497,12 +504,22 @@ THERM.SetLimbWaterValues = function (CharacterTable, NewValue)
 end
 
 -- Returns the size of an enumerable.
-THERM.EnumerableSize = function (enumerable)
+THERM.EnumerableSize = function (Enumerable)
     local size = 0
-    for value in enumerable do
+    for value in Enumerable do
         size = size + 1
     end
     return size
+end
+
+-- Returns the attribute of a enumerable.
+THERM.ReturnEnumerableAttribute = function (Enumerable,Attribute)
+        for attribute in Enumerable do
+                if attribute.Name.ToString() == Attribute then
+                        return attribute
+                end
+        end
+        return nil
 end
 
 -- Creates a header.
