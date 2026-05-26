@@ -1,29 +1,43 @@
 -- I store all the heated suits in here, just to reduce bloat.
 
-ExceptedSuits = {
+THERMSuits = {}
+
+HeatedSuits = {
     -- Vanilla
-    ["respawndivingsuit"] = {valid = true,index = 0},["exosuit"] = {valid = true, index =1},["clownexosuit"] = {valid = true, index = 1},
+    ["respawndivingsuit"] = 0,["exosuit"] = 1,["clownexosuit"] = 1,["pucs"] = 2,["medicdivingsuit"] = 2,
+
     -- Safs
-    ["SAFS"] = {valid = true, index = 1},["SAFS_V7"] = {valid = true, index = 1},["SAFS_nāga"] = {valid = true, index = 1},["SAFS_snow"] = {valid = true, index = 1},["SAFS_yellow"] = {valid = true, index = 1},
-    ["SAFS_manual"] = {valid = true, index = 1},["SAFS_seaweed"] = {valid = true, index = 1},["SAFS_clown"] = {valid = true, index = 1},["SAFS_camo"] = {valid = true, index = 1},["SAFS_moon"] = {valid = true, index = 1}, 
-    ["SAFS_onyx"] = {valid = true, index = 1},["SAFS_camo2"] = {valid = true, index = 1},  -- Safs compatibility
+    ["SAFS"] = 1,["SAFS_V7"] = 1,["SAFS_nāga"] = 1,["SAFS_snow"] = 1,["SAFS_yellow"] = 1,
+    ["SAFS_manual"] = 1,["SAFS_seaweed"] = 1,["SAFS_clown"] = 1 ,["SAFS_camo"] = 1,["SAFS_moon"] = 1, 
+    ["SAFS_onyx"] = 1,["SAFS_camo2"] = 1,
+
     -- EK
-    ["ek_armored_hardsuit"] = {valid = true, index = 1},["ek_armored_hardsuit_paintbandit"] = {valid = true, index = 1},["ek_armored_hardsuit_paintmercenary"] = {valid = true, index = 1},["ek_armored_hardsuit2"] = {valid = true, index = 1},
-    ["ek_armored_hardsuit2_paintbandit"] = {valid = true, index = 1},["ek_armored_hardsuit2_paintmercenary"] = {valid = true, index = 1},
-    ["ekutility_Utility_hardsuit_mk2"] = {valid = true, index = 1},
+    ["ek_armored_hardsuit"] = 1,["ek_armored_hardsuit_paintbandit"] = 1,["ek_armored_hardsuit_paintmercenary"] = 1,["ek_armored_hardsuit2"] = 1,
+    ["ek_armored_hardsuit2_paintbandit"] = 1,["ek_armored_hardsuit2_paintmercenary"] = 1,
+    ["ekutility_Utility_hardsuit_mk2"] = 1,
+
     -- Dynamic Europa
-    ['exosuitplayerPA'] = {valid = true, index = 1},['exosuitPA'] = {valid = true, index = 1},["piratedivingsuitmakeshift"] = {valid = true,index = 0}, -- Dynamic Europa
+    ['exosuitplayerPA'] = 1,['exosuitPA'] = 1,["piratedivingsuitmakeshift"] = 0, -- Dynamic Europa
+    
     -- Enhanced Armaments
-    ['scp_combathardsuit'] = {valid = true, index = 1},
+    ['scp_combathardsuit'] = 1,
+    
     -- Baroverhaul (Kill me)
-    ["rustedexosuit"] = {valid = true, index = 1}, ["assistantexosuit"] = {valid = true, index = 1}, ["captainexosuit"] = {valid = true, index = 1}, ["engineerexosuit"] = {valid = true, index = 1},
-    ["medicexosuit"] = {valid = true, index = 1}, ["mechanicexosuit"] = {valid = true, index = 1}, ["securityexosuit"] = {valid = true, index = 1}, ["charybdisexosuit"] = {valid = true, index = 1},
-    ["fractalexosuit"] = {valid = true, index = 1}, ["latcherexosuit"] = {valid = true, index = 1}, ["advancedexosuit"] = {valid = true, index = 1}, ["crystalexosuit"] = {valid = true, index = 1},
-    ["barsukexosuit"] = {valid = true, index = 1}, ["endwormexosuit"] = {valid = true, index = 1}, ["watcherexosuit"] = {valid = true, index = 1}, ["blueadvancedexosuit"] = {valid = true, index = 1},
-    ["greenadvancedexosuit"] = {valid = true, index = 1}, ["redadvancedexosuit"] = {valid = true, index = 1}, ["pinkadvancedexosuit"] = {valid = true, index = 1}
+    ["rustedexosuit"] = 1, ["assistantexosuit"] = 1, ["captainexosuit"] = 1, ["engineerexosuit"] = 1,
+    ["medicexosuit"] = 1, ["mechanicexosuit"] = 1, ["securityexosuit"] = 1, ["charybdisexosuit"] = 1,
+    ["fractalexosuit"] = 1, ["latcherexosuit"] = 1, ["advancedexosuit"] = 1, ["crystalexosuit"] = 1,
+    ["barsukexosuit"] = 1, ["endwormexosuit"] = 1, ["watcherexosuit"] = 1, ["blueadvancedexosuit"] = 1,
+    ["greenadvancedexosuit"] = 1, ["redadvancedexosuit"] = 1, ["pinkadvancedexosuit"] = 1
     }
 
-ExceptionsToNotUSE = {["stasisbag"] = false} -- Used for suits that we don't want to count.
+ExceptionsToNotUSE = {["stasisbag"] = true} -- Used for suits that we don't want to count.
 
-IndexedSuits = {["pucs"] = 2,["medicdivingsuit"] = 2} -- Used for suits that have extra storage. I.E pucs.
+ -- MOD COMPAT ----------------------------------------------------------------------------------------------------------------------------
 
+THERMSuits.AddHeatedSuit = function (SuitTable) -- Your suit table should look something like {["Insert name"] = battery_index}
+    table.insert(HeatedSuits,SuitTable)
+end
+
+THERMSuits.AddNonHeatedSuit = function (SuitTable) -- Your suit table should look something like {["Insert name"] = true}
+    table.insert(ExceptionsToNotUSE,SuitTable)
+end

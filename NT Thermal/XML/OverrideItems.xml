@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Override>
   <Items>
-
     <Item name="" identifier="organcrate" tags="crate,refrigerated" scale="0.5" linkable="true" pickdistance="150" showcontentsintooltip="true" impactsoundtag="impact_metal_heavy" waterproof="true" fireproof="true" description="">
       <Price baseprice="150">
         <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" minavailable="8" />
@@ -23,7 +22,6 @@
         <Containable items="smallitem,organ" excludeditems="toolbox,cargoscooter" />
       </ItemContainer>
     </Item>
-
     <Item name="" identifier="organtoolbox" category="Equipment" tags="mediumitem,mobilecontainer,tool,refrigerated,toolbox" cargocontaineridentifier="" showcontentsintooltip="true" Scale="0.5" fireproof="true" impactsoundtag="impact_metal_heavy" RequireAimToUse="True" description="">
       <PreferredContainer primary="medcab" minamount="1" maxamount="1" />
       <PreferredContainer secondary="locker" />
@@ -65,6 +63,5 @@
       </ItemContainer>
       <aitarget sightrange="1000" soundrange="1000" fadeouttime="2" />
     </Item>
-
-    </Items>
+  </Items>
 </Override>

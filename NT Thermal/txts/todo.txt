@@ -19,3 +19,5 @@ Mechanics to add:
 Bugs to fix:
 
     none currently.
+
+Ideas:

@@ -5,12 +5,12 @@ THERM = {}
 -- Convert limb to waterlimb value
 local WaterLimbValues = 
                 {
-                [LimbType.Head] = "HeadV",
-                [LimbType.LeftArm] = "LeftArmV",
-                [LimbType.LeftLeg] = "LeftLegV",
-                [LimbType.RightArm] = "RightArmV",
-                [LimbType.RightLeg] = "RightLegV",
-                [LimbType.Torso] = "TorsoV"
+                [11] = "HeadV",
+                [3] = "LeftArmV",
+                [7] = "LeftLegV",
+                [4] = "RightArmV",
+                [8] = "RightLegV",
+                [12] = "TorsoV"
                 }
 
 local WaterLimbValues2 = 
@@ -107,26 +107,25 @@ end
 
 -- Function to get general idea of if limb is in water.
 THERM.CalculateIsLimbInWater = function (target, LimbTypeToCheck, offset, index)
-        if target == nil then
-                return 0
-        end
-        -- Calculate if limb is in water. The IsInWater action type for XML doesn't properly detect limbs, I can be knee deep in water and it won't count. At least I couldn't find it, if you do let me know.
-        local limb = target.AnimController.GetLimb(LimbTypeToCheck, true, false, false)
-        local LimbPosY = target.AnimController.GetLimb(LimbTypeToCheck, true, false, false).WorldPosition.Y
-        local LimbHull = limb.Hull
-        local WaterExposure = 0
-        if LimbHull ~= nil then
-                local CurrentHullWaterVolume = LimbHull.WaterVolume
-                local CurrentHullWaterY = CurrentHullWaterVolume/LimbHull.Size.X
-                local WorldCurrentHullWaterY = (LimbHull.WorldPosition.Y - ((math.abs(LimbHull.Size.Y))/2)) + CurrentHullWaterY
-                if (LimbPosY - offset[index] < ((LimbHull.WorldPosition.Y - LimbHull.Size.Y) + CurrentHullWaterY)) and (CurrentHullWaterVolume > 0) then
-                        WaterExposure = THERM.CalculateLimbWaterExposure(target, target.AnimController, limb, LimbPosY, LimbHull, WorldCurrentHullWaterY)
-                        return WaterExposure
+        if target ~= nil then
+                -- Calculate if limb is in water. The IsInWater action type for XML doesn't properly detect limbs, I can be knee deep in water and it won't count. At least I couldn't find it, if you do let me know.
+                local limb = target.AnimController.GetLimb(LimbTypeToCheck, true, false, false)
+                local LimbPosY = target.AnimController.GetLimb(LimbTypeToCheck, true, false, false).WorldPosition.Y
+                local LimbHull = limb.Hull
+                local WaterExposure = 0
+                if LimbHull ~= nil then
+                        local CurrentHullWaterVolume = LimbHull.WaterVolume
+                        local CurrentHullWaterY = CurrentHullWaterVolume/LimbHull.Size.X
+                        local WorldCurrentHullWaterY = (LimbHull.WorldPosition.Y - ((math.abs(LimbHull.Size.Y))/2)) + CurrentHullWaterY
+                        if (LimbPosY - offset[index] < ((LimbHull.WorldPosition.Y - LimbHull.Size.Y) + CurrentHullWaterY)) and (CurrentHullWaterVolume > 0) then
+                                WaterExposure = THERM.CalculateLimbWaterExposure(target, target.AnimController, limb, LimbPosY, LimbHull, WorldCurrentHullWaterY)
+                                return WaterExposure
+                        else
+                                return 0 
+                        end
                 else
-                        return 0 
+                        return 0
                 end
-        else
-                return 0
         end
 end
 
@@ -161,36 +160,29 @@ THERM.CalculateLimbWaterExposure = function (target, animcontrol, limb, LimbPosY
         end
 end
 
--- Made by Antinous (Thank you) and modified by me.
+-- Made by Antinous (Thank you)
 THERM.BurnReductionFactor = function(item)
-        if not item or not item.Prefab then 
-                return nil 
-        end
-        if not item.Prefab.ConfigElement then 
-                return nil 
-        end
-        local PrefabXElement = item.Prefab.ConfigElement.Elements()
-        if not PrefabXElement then 
-                return 1  
-        end
-        local Wearable = THERM.ReturnEnumerableAttribute(PrefabXElement,"Wearable")
-        if not Wearable then
-                return 1    
-        end
-        local DamageModifier = Wearable.GetChildElement("damagemodifier")
-        if not DamageModifier then 
-                return 1    
-        end
-        local afflictions = string.lower(DamageModifier.GetAttributeString("afflictiontypes") or "")
-        print(DamageModifier)
-        if afflictions:find("burn") then
-                local multiplierString = DamageModifier.GetAttributeString("damagemultiplier")
-                local multiplier = math.abs(multiplierString - 1) + 1
-                if multiplier > 1 then
-                        multiplier = HF.Clamp(multiplier * 1.2,1,100)
+        if not item or not item.Prefab then return nil end
+        if not item.Prefab.ConfigElement then return nil end
+
+        for element in item.Prefab.ConfigElement.Elements() do
+                if element.Name.ToString() == "Wearable" then
+                for child in element.Elements() do
+                        if child.Name.ToString() == "damagemodifier" then
+                        local afflictions = string.lower(child.GetAttributeString("afflictiontypes") or "")
+                        if afflictions:find("burn") then
+                                local multiplierString = child.GetAttributeString("damagemultiplier")
+                                local multiplier = math.abs(multiplierString - 1) + 1
+                                if multiplier > 1 then
+                                        multiplier = HF.Clamp(multiplier * 1.2,1,100)
+                                end
+                                return multiplier
+                        end
+                        end
                 end
-                return multiplier
+                end
         end
+
         return 1
         end
 
@@ -233,7 +225,6 @@ THERM.CalculateTemperature = function (limbwet,target,limb)
         local Water = CharacterTable.LimbWaterValues[WaterLimbKey] * -1
         local RoomTemp = 0
         local OnFire = CharacterTable.OnFire[limb]
-        CharacterTable.OnFire[limb] = 1
         local BloodLoss = function ()
                 if HF.GetAfflictionStrengthLimb(target, limb, "ntt_temperature", 0) > HypothermiaLevel then
                         return HF.GetAfflictionStrength(target, "bloodloss", 0)/400
@@ -246,6 +237,7 @@ THERM.CalculateTemperature = function (limbwet,target,limb)
                 end
                 return 0 
         end
+        CharacterTable.OnFire[limb] = 1
         if target.CurrentHull ~= nil and THERMRoom.GetRoom(target.CurrentHull) ~= nil and THERMRoom.Rooms ~= nil and THERMRoom.Intiated then
                 RoomTemp = THERMRoom.GetRoom(target.CurrentHull).Temp/THERMRoom.DefaultRoomTemp * 2 -- Scaling
         end
@@ -263,7 +255,6 @@ THERM.CalculateTemperature = function (limbwet,target,limb)
                 * NTConfig.Get("ETempScaling", 1.5)
                 + Sepsis()
                 * NT.Deltatime
-                * NTConfig.Get("HeatScaling",1)
         local Cold = ((((Water - BloodLoss()) 
                 * WaterMultipliers)
                 /LimbClothResistance)
@@ -271,9 +262,7 @@ THERM.CalculateTemperature = function (limbwet,target,limb)
                 * NTConfig.Get("ETempScaling", 1.5) 
                 / 2 -- Scaling feature
                 * NT.Deltatime
-                * NTConfig.Get("ColdScaling",1)
-        local TempResult = (Heat/THERM.TotalBurnResistance(CharacterTable)/2) + Cold
-        return TempResult
+        return (Heat/THERM.TotalBurnResistance(CharacterTable)/2) + Cold
 end
 
 
@@ -402,15 +391,11 @@ end
 -- Used for compatibility with immersive diving gear.
 THERM.ImmersiveDivingGearEquipped = function (outerclothes,innerclothes)
         -- if staircase to glory.
-        if outerclothes == nil then
-                return false
-        end 
-        if innerclothes == nil then
-                return false
-        end
-        if outerclothes.HasTag("divinghelmet") or outerclothes.HasTag("bothelmet") then
-                if innerclothes.HasTag("diving") or innerclothes.HasTag("deepdivinglarge") then
-                        return true
+        if outerclothes ~= nil and innerclothes ~= nil then
+                if outerclothes.HasTag("divinghelmet") or outerclothes.HasTag("bothelmet") then
+                        if innerclothes.HasTag("diving") or innerclothes.HasTag("deepdivinglarge") then
+                                return true
+                        end
                 end
         end
         return false
@@ -495,48 +480,48 @@ end
 
 -- Sets out limb water values.
 THERM.SetLimbWaterValues = function (CharacterTable, NewValue)
-        CharacterTable.LimbWaterValues.HeadV = NewValue
-        CharacterTable.LimbWaterValues.TorsoV = NewValue
-        CharacterTable.LimbWaterValues.LeftArmV = NewValue
-        CharacterTable.LimbWaterValues.RightArmV = NewValue
-        CharacterTable.LimbWaterValues.LeftLegV = NewValue
-        CharacterTable.LimbWaterValues.RightLegV = NewValue
+        for key, water_value in pairs(CharacterTable.LimbWaterValues) do
+                water_value = NewValue
+        end
 end
 
 -- Returns the size of an enumerable.
-THERM.EnumerableSize = function (Enumerable)
+THERM.IEnumerableSize = function (enumerable)
     local size = 0
-    for value in Enumerable do
+    for value in enumerable do
         size = size + 1
     end
     return size
 end
 
--- Returns the attribute of a enumerable.
-THERM.ReturnEnumerableAttribute = function (Enumerable,Attribute)
-        for attribute in Enumerable do
-                if attribute.Name.ToString() == Attribute then
-                        return attribute
+-- Used to set the wet values of all limbs.
+THERM.GroupSetWet = function (CharacterTable, NewWet)
+        CharacterTable.LimbWaterValues.HeadV = NewWet
+        CharacterTable.LimbWaterValues.TorsoV = NewWet
+        CharacterTable.LimbWaterValues.LeftArmV = NewWet
+        CharacterTable.LimbWaterValues.RightArmV = NewWet
+        CharacterTable.LimbWaterValues.LeftLegV = NewWet
+        CharacterTable.LimbWaterValues.RightLegV = NewWet
+end
+
+-- Converts a patches Instance into a user.
+THERM.InstanceToUser = function (Instance)
+        if not Instance then 
+                return nil 
+        end
+        local ItemInv = Instance.Item.ParentInventory
+        if ItemInv then
+                local User = ItemInv.Owner
+                if User then
+                        return User
                 end
         end
         return nil
 end
 
--- Creates a header.
-THERM.CreateHeader = function(Text,Length)
-        local TextSize = string.len(Text)
-        local DashSize = Length - TextSize
-        if DashSize % 2 ~= 0 then
-                DashSize = DashSize + 1
+-- Raises the entire temp of body.
+THERM.RaiseTemperature = function (Character, Amount)
+        for limb in LimbsToCheck do
+                HF.AddAfflictionLimb(Character, "ntt_temperature", limb, Amount, Character) 
         end
-        return  THERM.CreateLine(HF.Round(DashSize/2,0)) .. Text .. THERM.CreateLine(HF.Round(DashSize/2,0))
-end
-
--- Creates a Line
-THERM.CreateLine = function (Length)
-        local Line = ""
-        for i = 1, Length do
-                Line = Line .. "-"
-        end
-        return Line
 end

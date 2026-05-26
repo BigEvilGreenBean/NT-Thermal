@@ -111,7 +111,7 @@ end
 
 THERMCompat.ReactorTempMax = function (item)
     if NTConfig.Get("ReactorTempAccountsForRodCount", true) then
-        local ItemCount = THERM.EnumerableSize(item.OwnInventory.GetAllItems(false))
+        local ItemCount = THERM.IEnumerableSize(item.OwnInventory.GetAllItems(false))
         local ItemScaling = ItemCount * 15
         return 25 + ItemScaling
     else

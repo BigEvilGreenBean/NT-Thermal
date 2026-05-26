@@ -1,0 +1,13 @@
+Upcoming update
+
+- Added some temperature interactions with certain items like welders and cutters. Using them give off heat.
+
+- Buffed fire a bit.
+
+- Ice Packs are no longer overriden!
+
+- Increased Mod Compatibility.
+
+- (certain) Grenades now increase temperature.
+
+- Greatly refactored heated suit code.

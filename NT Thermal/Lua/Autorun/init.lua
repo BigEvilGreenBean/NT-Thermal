@@ -2,7 +2,7 @@
 -- Set up dictonary
 NTTHERM = {}
 NTTHERM.Name = "Thermal"
-NTTHERM.Version = "1.6.9h72"
+NTTHERM.Version = "1.6.9h74"
 NTTHERM.VersionNum = 000000001
 NTTHERM.MinNTVersion = "A1.12.1"
 NTTHERM.MinNTVersionNum = 01120100
@@ -31,10 +31,10 @@ Timer.Wait(function ()
 			end
 		end)
 
-		local thermal_afflictions = { "sym_hot", "sym_cold", "sym_shivers", "sym_numb", "heat_cramp" }
+		local thermal_afflictions = { "sym_hot", "sym_cold", "sym_shivers", "sym_numb", "heat_cramp" } -- Add our NPC symptom announcements.
 		table.insert(NT.SymsForNPC, thermal_afflictions)
 		
-		NT.DrainageAfflictions["pulmonary_edema"] = { xpgain = 3, case = "retractedskin"}
+		NT.DrainageAfflictions["pulmonary_edema"] = { xpgain = 3, case = "retractedskin"} -- Make pulmonary_edema go away with drainage.
 		
 		NTTHERM.UsingEnhancedReactors = EnhancedReactors -- Used to determine if enhanced reactors is on.
 
@@ -50,20 +50,22 @@ Timer.Wait(function()
 
     --Server Side scripts
 	if SERVER or (CLIENT and not Game.IsMultiplayer) then
-    	dofile(NTTHERM.Path .. "/Lua/Scripts/Server/humanUpdate.lua") --HumanUpdates.
-		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/heatedSuitList.lua") -- The Heated Diving Suit
-		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/thermFunctions.lua") --Setup THERM functions.
-		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/playerHooks.lua") --Main Hooks used for a large portion of the mod.
-		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/roomTempCalc.lua") --Script used for a calculating temperature of rooms.
-		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/items.lua") -- Item methods.
-		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/modCompat.lua") -- Compat.
-		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/translationCompat.lua") -- Translation Compat.
-		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/patches.lua") -- Patches.
+    	dofile(NTTHERM.Path .. "/Lua/Scripts/Server/humanupdate.lua") 		-- HumanUpdates.
+		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/ondamaged.lua") 		-- ondamaged.
+		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/heatedsuitlist.lua") 	-- The Heated Diving Suit
+		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/thermfunctions.lua") 	-- Setup THERM functions.
+		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/playerhooks.lua") 		-- Main Hooks used for a large portion of the mod.
+		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/roomtempcalc.lua") 		-- Script used for a calculating temperature of rooms.
+		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/items.lua") 			-- Item methods.
+		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/modcompat.lua") 		-- Compat.
+		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/translationcompat.lua") -- Translation Compat.
+		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/patches.lua") 			-- Patches.
+		dofile(NTTHERM.Path .. "/Lua/Scripts/Server/debug.lua") 			-- Patches.
 	end
 
 end, 1)
 
 -- By Lukako!
 Timer.Wait(function()
-    dofile(NTTHERM.Path .. "/Lua/Scripts/Shared/configData.lua") --Config.
+    dofile(NTTHERM.Path .. "/Lua/Scripts/Shared/configdata.lua") 			--Config.
 end, 1)

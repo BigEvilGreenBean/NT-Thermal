@@ -355,15 +355,14 @@ NTTHERM.UpdateLimbAfflictions = {
 	},
 
 	--iced to lower temperature
-	iced = {
+	ntt_iced = {
 		update = function(c, limbaff, i, type)
 			local CoolingAbility = FetchConfigStats().WarmingAbility
 			local MaxCoolingTemp = FetchOtherStats().MaxCoolingTemp
 			local CoolScaling = -2.9
 			-- over time skin temperature goes up again
-			if limbaff[i].strength > 0 then
+			if limbaff.iced.strength > 0 then
 				THERM.ApplyTemperatureUpdate(c.character.ID)
-				limbaff[i].strength = limbaff[i].strength - 1.7 * NT.Deltatime
 				-- If the character is a bot with the temp ignore config on or is under pressure stabilizer effect with config on, don't change the temperature
 				if not (NTConfig.Get("BotTempIgnoreMode", true) and c.character.IsBot)
 				and not (NTConfig.Get("PressureStabilizerTemperature", true) and HF.GetAfflictionStrength(c.character, "pressurestabilized", 0) > 0) then
@@ -372,14 +371,6 @@ NTTHERM.UpdateLimbAfflictions = {
 					/(MaxCoolingTemp/limbaff.ntt_temperature.strength))
 					* CoolScaling  
 					* NT.Deltatime)
-				end
-			end
-			-- iced effects
-			if limbaff[i].strength > 0 then
-				c.stats.speedmultiplier = c.stats.speedmultiplier * 0.95 -- 5% slow per limb
-				if type == LimbType.Torso then
-					c.afflictions.internalbleeding.strength = c.afflictions.internalbleeding.strength
-						- 0.2 * NT.Deltatime
 				end
 			end
 		end,
@@ -906,10 +897,10 @@ NTTHERM.UpdateAfflictions = {
 				LastHeadTemp = HeadTemp
 			end
 			local ShockMargin = FetchConfigStats().ShockMargin * NT.Deltatime
-			local ShockDecrease = 5
+			local ShockDecrease = 2.5
 			if c.afflictions[i].strength > 0 then
-				NTC.SetSymptomTrue(c.character, "triggersym_seizure", 3)
-				NTC.SetSymptomTrue(c.character, "triggersym_stroke", 3)
+				NTC.SetSymptomTrue(c.character, "triggersym_seizure", 5)
+				NTC.SetSymptomTrue(c.character, "triggersym_stroke", 5)
 				c.afflictions.cerebralhypoxia.strength = c.afflictions.cerebralhypoxia.strength + (.05 * NT.Deltatime)
 				c.afflictions[i].strength = c.afflictions[i].strength -  (ShockDecrease * NT.Deltatime)
 			elseif LastHeadTemp ~= HeadTemp then
@@ -953,7 +944,7 @@ NTTHERM.UpdateAfflictions = {
 	panicking = {
 		max = 100,
 		update = function(c, i)
-			if c.afflictions[i].strength > 0 and NTConfig.Get("FireCausePanic", false) then
+			if c.afflictions[i].strength > 0 then
 				c.afflictions[i].strength = c.afflictions[i].strength - (10 * NT.Deltatime)
 				for n, limb in pairs({LimbType.Head,LimbType.Torso,LimbType.RightArm,LimbType.LeftArm,LimbType.LeftLeg,LimbType.RightLeg}) do
 					HF.AddAfflictionLimb(c.character, "onfire", limb, 1 * NT.Deltatime, c.character)
@@ -979,155 +970,123 @@ NTTHERM.UpdateAfflictions = {
 						local WaterKey = THERM.LimbToWaterLimbV(limb)
 						local WaterCounter = HF.Clamp(CharacterTable.LimbWaterValues[WaterKey]/1,.1,1)
 						local IsCyber = HF.BoolToNum(THERM.IsLimbCyber(c.character,limb),1) + 1
-						HF.AddAfflictionLimb(c.character, "ntt_temperature", limb, 
-											(HypothermiaLevel/LimbTemp
-											/25) 
-											* (c.afflictions[i].strength
-											/100) 
-											* 10
-											* IsCyber
-											* WaterCounter 
-											* NT.Deltatime)
+						local TempAmount = (HypothermiaLevel/LimbTemp/25) * (c.afflictions[i].strength/100) * 10 * IsCyber * WaterCounter * NT.Deltatime * NTConfig.Get("HeatedDivingSuitStrength",1)
+						HF.AddAfflictionLimb(c.character, "ntt_temperature", limb, TempAmount)
 					end
 				end
 			end
 
 			local DivingSuit = THERM.GetSuitSlot(c.character)
+			if DivingSuit == nil or (DivingSuit and not THERM.IsDivingSuit(DivingSuit)) then
+				c.afflictions[i].strength = 0
+				return
+			end
 			local DivingSuitIdentifier = "BlahBlah"
 			if DivingSuit ~= nil then DivingSuitIdentifier = tostring(DivingSuit.Prefab.Identifier) end
 			local Helmet = THERM.GetInnerSlot(c.character)
 			local Bag = THERM.GetBagSlot(c.character)
-			local BatteryConsumption = NTConfig.Get("HeaterBatteryConsumption") * NT.Deltatime
-			if DivingSuit ~= nil and THERM.IsDivingSuit(DivingSuit) then
-				
-				if ExceptionsToNotUSE[DivingSuitIdentifier] == nil then
-					-- Internal Heater Check
-					local Index = IndexedSuits[DivingSuitIdentifier] or IndexedSuits[tostring(DivingSuit.Prefab.VariantOf)] or 1
-					-- Suit Compatibility Mode is on
-					if NTConfig.Get("SuitCompatiblityMode", false) or (NTConfig.Get("BotSuitSafteyMode", true) and c.character.IsBot)then
-						c.afflictions[i].strength = c.afflictions[i].strength + (5 * NT.Deltatime)
-						return
+			local BatteryConsumption = NTConfig.Get("HeaterBatteryConsumption",.2) * NT.Deltatime
 
-					elseif (DivingSuit.HasTag("thermal") or (Index ~= 1 and DivingSuit.Prefab.VariantOf ~= "" and DivingSuit.Prefab.VariantOf.HasTag("thermal"))) 
-						and DivingSuit.OwnInventory.GetItemAt(Index) ~= nil and DivingSuit.OwnInventory.GetItemAt(Index).Condition > 1 then
-
-						local BatteryCell = DivingSuit.OwnInventory.GetItemAt(Index)
-						if BatteryCell.Condition > 1 then
-							BatteryCell.Condition = BatteryCell.Condition - BatteryConsumption
-							c.afflictions[i].strength = c.afflictions[i].strength + (5 * NT.Deltatime)
-							return
-						end
-						c.afflictions[i].strength = 0
-						return
-
-					-- External Heater Check
-					elseif Bag ~= nil and Bag.Prefab.Identifier == "esh" and Bag.OwnInventory.GetItemAt(0) ~= nil 
-						and Bag.OwnInventory.GetItemAt(0).Condition > 1 then
-							
-						local BatteryCell = Bag.OwnInventory.GetItemAt(0)
-						if BatteryCell ~= nil and BatteryCell.Condition > 1 then
-							BatteryCell.Condition = BatteryCell.Condition - BatteryConsumption
-							c.afflictions[i].strength = c.afflictions[i].strength + (5 * NT.Deltatime)
-							return
-						end
-						c.afflictions[i].strength = 0
-						return
-					
-					-- Compact Heater
-					elseif CharacterTable ~= nil and CharacterTable.CompactHeater.Equipped then
-
-						local CompactHeaterItem = CharacterTable.CompactHeater.Item
-						local CompactHeaterBattery = CompactHeaterItem.OwnInventory.GetItemAt(0)
-
-						if CompactHeaterItem.ParentInventory == c.character.Inventory then
-							if CompactHeaterBattery ~= nil and CompactHeaterBattery.Condition > 1 then
-								CompactHeaterBattery.Condition = CompactHeaterBattery.Condition - BatteryConsumption
-								c.afflictions[i].strength = c.afflictions[i].strength + (5 * NT.Deltatime)
-								return
-							else
-								c.afflictions[i].strength = 0
-								return
-							end
-
-						else
-							CharacterTable.CompactHeater.Equipped = false
-							c.afflictions[i].strength = 0
-							return
-						end
-
-					-- ExceptedSuits
-					elseif ExceptedSuits[DivingSuitIdentifier] ~= nil then
-						local HeaterIndex = ExceptedSuits[DivingSuitIdentifier].index
-
-						if HeaterIndex ~= 0 
-							and DivingSuit.OwnInventory.GetItemAt(HeaterIndex) 
-							and DivingSuit.OwnInventory.GetItemAt(HeaterIndex).Condition > 1 then
-							c.afflictions[i].strength = c.afflictions[i].strength + (5 * NT.Deltatime)
-							return
-						elseif HeaterIndex == 0 then
-							c.afflictions[i].strength = c.afflictions[i].strength + (5 * NT.Deltatime)
-							return
-						end
-						c.afflictions[i].strength = 0
-						return
-					end
-				end
-				c.afflictions[i].strength = 0
-				return
-
-			-- Immersive Diving Gear compat (Yes this is basically duplicated code, you're welcome.)
-			elseif DivingSuit ~= nil
-			 	and THERM.ImmersiveDivingGearEquipped(DivingSuit,Helmet) then
-				
-				-- Compat
-				if NTConfig.Get("SuitCompatiblityMode", false) or (NTConfig.Get("BotSuitSafteyMode", true) and c.character.IsBot) then
-					c.afflictions[i].strength = c.afflictions[i].strength + (5 * NT.Deltatime)
-					return
-				
-				-- Internal Heater
-				elseif DivingSuit.OwnInventory ~= nil and DivingSuit.OwnInventory.GetItemAt(0) ~= nil and DivingSuit.OwnInventory.GetItemAt(0).Condition > 1 then
-					local BatteryCell = DivingSuit.OwnInventory.GetItemAt(0)
+			local Increase = function (UseBattery, BatteryCell) -- Increase Suit Heat
+				if UseBattery then
 					BatteryCell.Condition = BatteryCell.Condition - BatteryConsumption
-					c.afflictions[i].strength = c.afflictions[i].strength + (5 * NT.Deltatime)
-					return
-				
-				-- ESH
-				elseif Bag ~= nil and Bag.Prefab.Identifier == "esh" and Bag.OwnInventory.GetItemAt(0) ~= nil and Bag.OwnInventory.GetItemAt(0).Condition > 1 then
-					local BatteryCell = Bag.OwnInventory.GetItemAt(0)
-					if BatteryCell ~= nil and BatteryCell.Condition > 1 then
-						BatteryCell.Condition = BatteryCell.Condition - BatteryConsumption
-						c.afflictions[i].strength = c.afflictions[i].strength + (5 * NT.Deltatime)
-						return
-					end
-					c.afflictions[i].strength = 0
-					return
+				end
+				c.afflictions[i].strength = c.afflictions[i].strength + (5 * NT.Deltatime)
+			end
 
-				-- Compact Heater
-				elseif CharacterTable ~= nil and CharacterTable.CompactHeater.Equipped then
+			local Decrease = function () -- Decrease Suit Heat
+				c.afflictions[i].strength = c.afflictions[i].strength - (5 * NT.Deltatime)
+			end
+
+			local Compat = function ()
+				if NTConfig.Get("SuitCompatiblityMode", false) or (NTConfig.Get("BotSuitSafteyMode", true) and c.character.IsBot) then
+						Increase(false)
+						return true
+				end
+			end
+
+			local ESH = function ()
+				if Bag ~= nil and Bag.Prefab.Identifier == "esh" and Bag.OwnInventory.GetItemAt(0) ~= nil and Bag.OwnInventory.GetItemAt(0).Condition > 1 then
+				local BatteryCell = Bag.OwnInventory.GetItemAt(0)
+				if BatteryCell ~= nil and BatteryCell.Condition > 1 then
+					Increase(true, BatteryCell)
+					return true
+				end
+					return false
+				end
+			end
+
+			local CSH = function ()
+				if CharacterTable ~= nil and CharacterTable.CompactHeater.Equipped then
 
 					local CompactHeaterItem = CharacterTable.CompactHeater.Item
 					local CompactHeaterBattery = CompactHeaterItem.OwnInventory.GetItemAt(0)
 
 					if CompactHeaterItem.ParentInventory == c.character.Inventory then
 						if CompactHeaterBattery ~= nil and CompactHeaterBattery.Condition > 1 then
-							CompactHeaterBattery.Condition = CompactHeaterBattery.Condition - BatteryConsumption
-							c.afflictions[i].strength = c.afflictions[i].strength + (5 * NT.Deltatime)
-							return
+							Increase(true, CompactHeaterBattery)
+							return true
 						else
-							c.afflictions[i].strength = 0
-							return
+							return false
 						end
 
 					else
 						CharacterTable.CompactHeater.Equipped = false
-						c.afflictions[i].strength = 0
-						return
+						return false
 					end
 				end
-				c.afflictions[i].strength = 0
+			end
+			
+			local OtherHeaters = function ()
+				-- Compat Mode
+				 if Compat() then return true end
 
-			else
-				c.afflictions[i].strength = 0
+				-- External Heater
+				if ESH() then return true end
+
+				-- Compact Heater
+				if CSH() then return true end
+			end
+			
+			if THERM.IsDivingSuit(DivingSuit) and ExceptionsToNotUSE[DivingSuitIdentifier] == nil then
+				
+				if OtherHeaters() then return end
+
+				-- Internal Heater
+				local Index = HeatedSuits[DivingSuitIdentifier] or 1
+				local DivingSuitInventory = DivingSuit.OwnInventory
+				if (DivingSuit.HasTag("thermal") or (Index ~= 1 and DivingSuit.Prefab.VariantOf ~= "" and DivingSuit.Prefab.VariantOf.HasTag("thermal"))) then
+					if DivingSuitInventory.GetItemAt(Index) ~= nil then
+						local BatteryCell = DivingSuitInventory.GetItemAt(Index)
+						if BatteryCell.Condition > 1 then
+							Increase(true, BatteryCell)
+							return
+						end
+					end
+					Decrease()
+				else
+					Decrease()
+				end
+
+			-- Immersive Diving Gear compat (Yes this is basically duplicated code, you're welcome.)
+			elseif THERM.ImmersiveDivingGearEquipped(DivingSuit,Helmet) and ExceptionsToNotUSE[DivingSuitIdentifier] == nil then
+
+				if OtherHeaters() then return end
+
+				-- Internal Heater
+				if DivingSuit.OwnInventory ~= nil then 
+					if DivingSuit.OwnInventory.GetItemAt(0) ~= nil then
+						local BatteryCell = DivingSuit.OwnInventory.GetItemAt(0)
+						if BatteryCell.Condition > 1 then
+							Increase(true, BatteryCell)
+							return
+						end
+					end
+					Decrease()
+				else
+					Decrease()
+				end
+
 			end
 		end,
 	},

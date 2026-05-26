@@ -28,7 +28,10 @@ Translation = {
                     ["Russian"] = RussianTranslation
 }
 
+ -- MOD COMPAT ----------------------------------------------------------------------------------------------------------------------------
+
 -- Use this to add translations to the thermometer.
+-- Make sure to follow the structure seen above.
 THERMTranslation.AddTranslation = function (language, translation_table)
     Translation[language] = translation_table
 end

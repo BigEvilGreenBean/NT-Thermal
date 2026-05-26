@@ -47,7 +47,7 @@ Hook.Add("NTTHERM.CustomInWater", "CustomInWater", function (effect, deltaTime, 
                                                 end    
                                         -- Set to false
                                         elseif CharacterTable.InCustomWater == false then
-                                                THERM.SetLimbWaterValues(CharacterTable,0)
+                                                THERM.GroupSetWet(CharacterTable,0)
                                                 THERM.RemoveWet(target)
                                         end
 
@@ -58,7 +58,7 @@ Hook.Add("NTTHERM.CustomInWater", "CustomInWater", function (effect, deltaTime, 
                                         end
                                 end
                         elseif NTConfig.Get("SimpleWaterCalculation", true) and CharacterTable ~= nil then
-                                THERM.SetLimbWaterValues(CharacterTable,0)
+                                THERM.GroupSetWet(CharacterTable,0)
                                 THERM.RemoveWet(target)
                         end
                 end
@@ -72,7 +72,7 @@ Hook.Add("NTTHERM.InWater", "InWater", function (effect, deltaTime, item, target
                 if target ~= nil and target.IsHuman and target.IsDead ~= true and target.InWater and not (NTConfig.Get("BotTempIgnoreMode", true) and target.IsBot) then
                         local CharacterTable = THERM.GetCharacter(target.ID,target)
                         if CharacterTable ~= nil then
-                                THERM.SetLimbWaterValues(CharacterTable,1)
+                                THERM.GroupSetWet(CharacterTable,1)
                                 local DivingSuit = THERM.GetSuitSlot(target)
                                 if not (DivingSuit and THERM.IsDivingSuit(DivingSuit)) then
                                         THERM.MakeWet(target,1)
@@ -89,12 +89,11 @@ Hook.Add("NTTHERM.OnFire", "OnFire", function (effect, deltaTime, item, targets,
         for h, target in pairs(targets) do
                 if target ~= nil and target.IsHuman and target.IsDead ~= true and not (NTConfig.Get("BotTempIgnoreMode", true) and target.IsBot) then
                         local CharacterTable = THERM.GetCharacter(target.ID,target)
-                        if CharacterTable == nil then
-                                return
-                        end
-                        THERM.ApplyTemperatureUpdate(target.ID)
-                        for index, value in pairs(CharacterTable.OnFire) do
-                                CharacterTable.OnFire[index] = 4
+                        if CharacterTable ~= nil then
+                                THERM.ApplyTemperatureUpdate(target.ID)
+                                for index, value in pairs(CharacterTable.OnFire) do
+                                        CharacterTable.OnFire[index] = 4
+                                end
                         end
                 end
         end
@@ -181,36 +180,4 @@ Hook.Add("NTTHERM.CSHHeat", "CSHHeat", function (effect, deltaTime, item, target
                 end
         end
         
-end)
-
--- Debug ----------------------------------------------------------------------------------------------------------------------
-
--- Prints out Thermal data.
-Hook.Add("chatMessage", "Debug", function (message, sender)
-
-        if message == "THERMALDebug(BLAHBLAHBLAHDEBUGDEBUG123456789)" then
-                print("Beginning Debug of NT THERMAL.\n")
-                for index, character in pairs(THERMCharacters) do
-                        print("\n")
-                        if character ~= nil then
-                                print("Entry " .. tostring(index) .. ": " .. character.Character.Name)
-                                for index2, field in character do
-                                        print("Field " .. tostring(index2) .. ": " .. tostring(field))
-                                end
-                        else
-                                print("Error, nil value at index: ", index)
-                        end
-                end
-                print("Debug Over.")
-        end
-
-        if message == "THERMALRoomTemp(BLAHBLAHBLAHDEBUGDEBUG123456789)" then
-                if THERMRoom.Rooms ~= nil then
-                        for index2, room in pairs(THERMRoom.Rooms) do
-                                print("Current Temp of " .. tostring(room.Hull) .. ": ".. tostring(room.Temp))
-                        end
-                else
-                        print("Nil table.")
-                end
-        end
 end)
