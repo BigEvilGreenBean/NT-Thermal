@@ -92,7 +92,7 @@ Hook.Add("NTTHERM.OnFire", "OnFire", function (effect, deltaTime, item, targets,
                         if CharacterTable ~= nil then
                                 THERM.ApplyTemperatureUpdate(target.ID)
                                 for index, value in pairs(CharacterTable.OnFire) do
-                                        CharacterTable.OnFire[index] = 4
+                                        CharacterTable.OnFire[index] = 100 -- Multiplier for being on fire.
                                 end
                         end
                 end
@@ -104,6 +104,7 @@ Hook.Add("NTTHERM.AddTemp", "AddTemp", function (effect, deltaTime, item, target
         for h, target in pairs(targets) do
                 local TempAmount = tonumber(element.GetAttributeString("temp", "default value"))
                 if target ~= nil and target.IsHuman and target.IsDead ~= true and not (NTConfig.Get("BotTempIgnoreMode", true) and target.IsBot) then
+                        if TempAmount < 0 then HF.AddAffliction(target, "ntt_temperature", TempAmount) return end
                         local CharacterTable = THERM.GetCharacter(target.ID,target)
                         if CharacterTable ~= nil then
                                 THERM.ApplyTemperatureUpdate(target.ID)
@@ -180,4 +181,35 @@ Hook.Add("NTTHERM.CSHHeat", "CSHHeat", function (effect, deltaTime, item, target
                 end
         end
         
+end)
+
+-- Used to decrease temp from Cryo Tank.
+Hook.Add("NTTHERM.CryoDecrease", "CryoDecrease", function (effect, deltaTime, item, targets, worldPosition, element)
+        local ItemParent1 = item.ParentInventory.Owner
+        if not ItemParent1 then return end
+        if ItemParent1.GetComponentString("Wearable") == nil then return end -- Is this item not wearable?
+        local ItemParent2Inventory = ItemParent1.ParentInventory
+        if not ItemParent2Inventory then return end
+        local Player = ItemParent2Inventory.Owner
+        if Player == nil then return end
+        if not ((NTConfig.Get("BotTempIgnoreMode", true) and Player.IsBot)
+				or (NTConfig.Get("PressureStabilizerTemperature", true) and HF.GetAfflictionStrength(Player, "pressurestabilized", 0) > 0)) then
+                THERM.GiveTemperatureClamp(Player,-1,LimbType.Head)
+        end
+end)
+
+-- Removes suit heating after taking off a suit.
+Hook.Add("item.drop", "Drop Item", function (Item, Character)
+    if not Item then return end -- Failsafe to make sure this isn't nil.
+    if THERM.IsDivingSuit(Item) then
+        if not Character then return end
+        HF.AddAffliction(Character, "heated_diving_suit", -100, Character)
+    end
+end)
+
+-- Round ----------------------------------------------------------------------------------------------------------------------
+
+-- Used to verify player data.
+Hook.Add("roundStart", "The round started", function ()
+        THERM.ValidateThermalCharacterData()
 end)

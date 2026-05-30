@@ -1,6 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <infotexts language="Russian" nowhitespace="false" translatedname="Русский">
   <Override>
+
+
+    <!-- Here -->
+    <afflictionname.panicking>Panicking</afflictionname.panicking>
+    <afflictiondescription.panicking>You're panicking, you can't shoot properly due to the pain.</afflictiondescription.panicking>
+    <afflictionname.removed_skin>Removed Skin</afflictionname.removed_skin>
+    <afflictiondescription.removed_skin>Skin has been removed.</afflictiondescription.removed_skin>
+    <afflictionname.grafted_skin>Grafted Skin</afflictionname.grafted_skin>
+    <afflictiondescription.grafted_skin>Skin has been grafted on.</afflictiondescription.grafted_skin>
+    <entityname.cryotank>Cryo Tank</entityname.cryotank>
+    <entitydescription.cryotank>A specalized oxygen tank, designed to deliver pressurized quantities of freezing air. Use carefully. WARNING: Erupts violently when on fire.</entitydescription.cryotank>
+    <entityname.stasis_starter>Stasis-Starter</entityname.stasis_starter>
+    <entitydescription.stasis_starter>When used injects a stasis starter, which causes the patient to enter stasis at 1°C or lower. Acts as a much cheaper alternative to stasis, however it doesn't prevent the consequences of temperature when thawing.</entitydescription.stasis_starter>
+    <entityname.csh>C.S.H</entityname.csh>
+    <entitydescription.csh>An external heater for diving suits, used when an internal option isn't avaliable. Goes in the inventory, requires a battery.</entitydescription.csh>
+
     <!--   /// Gear ///   -->
     <entityname.heatpads>Грелки</entityname.heatpads>
     <entitydescription.heatpads>Компактные грелки для согревания холодных тканей.</entitydescription.heatpads>
@@ -24,6 +40,7 @@
     <entitydescription.heatcrate>Ящик с подогревом для поддержания предметов в тёплом состоянии.</entitydescription.heatcrate>
     <entityname.esh>В.Н.С.</entityname.esh>
     <entitydescription.esh>Внешний Нагреватель Скафандра, используемый при отсутствии встроенного обогрева. Собран из переделанного пояса инструментов неудачливого механика, требует батарею.</entitydescription.esh>
+    
     <!--  /// Afflictions ///  -->
     <afflictionname.frostnip>Начальное обморожение</afflictionname.frostnip>
     <afflictiondescription.frostnip>Кожа слегка покраснела и стала холодной на ощупь.</afflictiondescription.frostnip>
@@ -87,6 +104,7 @@
     <afflictiondescription.warmth>Было применено согревание.</afflictiondescription.warmth>
     <afflictionname.aafn>A.A.F.N</afflictionname.aafn>
     <afflictiondescription.aafn>Введены наниты, специализирующиеся на удалении ледяных кристаллов.</afflictiondescription.aafn>
+
     <!--  /// Tips ///  -->
     <loadingscreentip>‖color:gui.blue‖NT Thermal:‖end‖ Температура становится смертельно опасной только при экстремальных значениях.</loadingscreentip>
     <loadingscreentip>‖color:gui.blue‖NT Thermal:‖end‖ Термический шок - редкое состояние, вызванное резким изменением температуры тела.</loadingscreentip>
@@ -95,6 +113,7 @@
     <loadingscreentip>‖color:gui.blue‖NT Thermal:‖end‖ Тепло от пожара распространяется между помещениями. Держите двери закрытыми.</loadingscreentip>
     <loadingscreentip>‖color:gui.blue‖NT Thermal:‖end‖ Киберконечности плохо переносят перепады температуры.</loadingscreentip>
     <loadingscreentip>‖color:gui.blue‖NT Thermal:‖end‖ Гипотермия может служить альтернативой анальгезии, однако это может негативно сказаться на состоянии пациента.</loadingscreentip>
+    
     <!--  Dialog  -->
     <npcdialogsym.sym_cold>Мне становится немного холодно.</npcdialogsym.sym_cold>
     <npcdialogsym.sym_shivers>Слегка знобит.</npcdialogsym.sym_shivers>

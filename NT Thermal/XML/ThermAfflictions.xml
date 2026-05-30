@@ -75,17 +75,17 @@
     </Affliction>
     <!--Elevated Core Temperature-->
     <Affliction name="Elevated Core Temperature" identifier="elevated_core_temperature" description="The body's temperature has been increased." limbspecific="true" showiconthreshold="1000" showinhealthscannerthreshold="1000" maxstrength="50" targets="human" type="gaze" isbuff="false" healableinmedicalclinic="false" iconcolors="255,144,80,255;255,144,80,255">
-      <Effect minstrength="0" maxstrength="50" strengthchange="0" />
+      <Effect minstrength="0" maxstrength="50" strengthchange="-.4" interval="20" disabledeltatime="true"/>
       <icon texture="%ModDir%/Images/NT_AZ_Afflictions.png" sheetelementsize="128,128" origin="0,0" sourcerect="779,538,125,127" />
     </Affliction>
     <!-- Thrombolytics-->
     <Affliction name="Thrombolytics" identifier="thrombolytics" description="Thrombolytics have been inserted, helps to treat blood clots." limbspecific="true" showiconthreshold="1000" showinhealthscannerthreshold="1000" maxstrength="50" targets="human" type="gaze" isbuff="false" healableinmedicalclinic="false" iconcolors="255,144,80,255;255,144,80,255">
-      <Effect minstrength="0" maxstrength="20" strengthchange="0" />
+      <Effect minstrength="0" maxstrength="20" strengthchange="-.5" interval="20" disabledeltatime="true"/>
       <icon texture="%ModDir%/Images/NT_AZ_Afflictions.png" sheetelementsize="128,128" origin="0,0" sourcerect="650,538,125,127" />
     </Affliction>
     <!-- Diuretics-->
     <Affliction name="Diuretics" identifier="diuretics" description="Diuretics have been inserted. Helps to treat Pulmonary Edema." limbspecific="true" showiconthreshold="1000" showinhealthscannerthreshold="1000" maxstrength="50" targets="human" type="gaze" isbuff="false" healableinmedicalclinic="false" iconcolors="255,144,80,255;255,144,80,255">
-      <Effect minstrength="0" maxstrength="20" strengthchange="0" />
+      <Effect minstrength="0" maxstrength="20" strengthchange="-.5" interval="20" disabledeltatime="true"/>
       <icon texture="%ModDir%/Images/NT_AZ_Afflictions.png" sheetelementsize="128,128" origin="0,0" sourcerect="650,538,125,127" />
     </Affliction>
     <!-- Heated Diving Suit-->
@@ -109,7 +109,7 @@
       </Effect>
     </Affliction>
     <!--Temperature-->
-    <Affliction name="Temperature" identifier="ntt_temperature" description="How are you reading this?" limbspecific="true" showiconthreshold="1000" showinhealthscannerthreshold="1000" maxstrength="101" targets="human" type="gaze" isbuff="false" healableinmedicalclinic="false" iconcolors="255,144,80,255;255,144,80,255">
+    <Affliction name="Temperature" identifier="ntt_temperature" description="How are you reading this?" limbspecific="true" showiconthreshold="1000" showinhealthscannerthreshold="1000" maxstrength="101" targets="human" type="gaze" isbuff="false" healableinmedicalclinic="false" iconcolors="0,60,150,255;255,30,0,255">
       <Effect minstrength="-100" maxstrength="101" strengthchange="0" />
       <icon texture="%ModDir%/Images/NT_AZ_Afflictions.png" sheetelementsize="128,128" origin="0,0" sourcerect="391,402,125,127" />
     </Affliction>
@@ -194,24 +194,29 @@
       <icon texture="%ModDir%/Images/NT_AZ_Afflictions.png" sheetelementsize="128,128" sourcerect="130,401,125,127" origin="0,0" />
     </Affliction>
     <!--A.A.F.N-->
-    <Affliction name="A.A.F.N" identifier="aafn" description="Nanites that specalize in removing ice crystals have been inserted." limbspecific="true" showiconthreshold="1000" showinhealthscannerthreshold="1" maxstrength="100" targets="human" type="gaze" isbuff="false" healableinmedicalclinic="false" iconcolors="80,82,87,255;107,80,82,255">
-      <Effect minstrength="0" maxstrength="100" strengthchange="0" />
+    <Affliction name="A.A.F.N" identifier="aafn" description="Nanites that specalize in removing ice crystals have been inserted." limbspecific="true" showiconthreshold="1000" showinhealthscannerthreshold="1000" maxstrength="100" targets="human" type="gaze" isbuff="false" healableinmedicalclinic="false" iconcolors="80,82,87,255;107,80,82,255">
+      <Effect minstrength="0" maxstrength="100" strengthchange="-.4" interval="20" disabledeltatime="true"/>
       <icon texture="%ModDir%/Images/NT_AZ_Afflictions.png" sheetelementsize="128,128" origin="0,0" sourcerect="2,401,125,127" />
     </Affliction>
     <!-- Stasis Starter -->
     <Affliction name="Cryo Stasis-Starter" identifier="cryo_stasis_starter" description="" limbspecific="true" showiconthreshold="1000000" showinhealthscannerthreshold="100000000" maxstrength="100" targets="human" type="gaze" isbuff="false" healableinmedicalclinic="false" iconcolors="80,82,87,255;107,80,82,255">
-      <Effect minstrength="0" maxstrength="100" strengthchange="0" />
+      <Effect minstrength="0" maxstrength="100" strengthchange="-.25" interval="20" disabledeltatime="true"/>
       <icon texture="%ModDir%/Images/NT_AZ_Afflictions.png" sheetelementsize="128,128" origin="0,0" sourcerect="2,401,125,127" />
     </Affliction>
     <!-- Surgery-->
     <!-- Removed Skin-->
-    <Affliction name="Removed Skin" identifier="removed_skin" description="The skin has been removed." limbspecific="true" showiconthreshold="1" showinhealthscannerthreshold="1000" maxstrength="100" targets="human" type="gaze" isbuff="false" healableinmedicalclinic="false" iconcolors="84,211,211,255;84,211,211,255">
-      <Effect minstrength="0" maxstrength="100" strengthchange="0" />
+    <Affliction name="Removed Skin" identifier="removed_skin" description="Skin has been removed." limbspecific="true" showiconthreshold="1" showinhealthscannerthreshold="100000" maxstrength="20" targets="human" type="removed_skin" isbuff="true" healableinmedicalclinic="false" iconcolors="84,211,211,255;84,211,211,255">
+      <Effect minstrength="0" maxstrength="20" strengthchange="0" />
+      <icon texture="%ModDir%/Images/NT_AZ_Afflictions.png" sheetelementsize="128,128" origin="0,0" sourcerect="138,669,109,125" />
+    </Affliction>
+    <!-- Stretched Skin-->
+    <Affliction name="Stretched Skin" identifier="stretched_skin" description="The skin is stretched." limbspecific="true" showiconthreshold="1000" showinhealthscannerthreshold="1" maxstrength="20" targets="human" type="gaze" isbuff="true" healableinmedicalclinic="false" iconcolors="84,211,211,255;84,211,211,255">
+      <Effect minstrength="0" maxstrength="20" strengthchange="0" />
       <icon texture="%ModDir%/Images/NT_AZ_Afflictions.png" sheetelementsize="128,128" origin="0,0" sourcerect="138,669,109,125" />
     </Affliction>
     <!-- Grafted Skin-->
-    <Affliction name="Grafted Skin" identifier="grafted_skin" description="The skin has been grafted on." limbspecific="true" showiconthreshold="1" showinhealthscannerthreshold="1000" maxstrength="100" targets="human" type="gaze" isbuff="false" healableinmedicalclinic="false" iconcolors="84,211,211,255;84,211,211,255">
-      <Effect minstrength="0" maxstrength="100" strengthchange="0" />
+    <Affliction name="Grafted Skin" identifier="grafted_skin" description="Skin has been grafted on." limbspecific="true" showiconthreshold="1" showinhealthscannerthreshold="100000" maxstrength="10" targets="human" type="grafted_skin" isbuff="true" healableinmedicalclinic="false" iconcolors="84,211,211,255;84,211,211,255">
+      <Effect minstrength="0" maxstrength="10" strengthchange="0" />
       <icon texture="%ModDir%/Images/NT_AZ_Afflictions.png" sheetelementsize="128,128" origin="1.3438107E-08,0" sourcerect="10,669,109,126" />
     </Affliction>
     <!-- Panic (Optional)-->

@@ -18,9 +18,8 @@ Hook.Add("chatMessage", "Debug", function (message, sender)
                         end
                 end
                 print("\n--------------- Ending Debug of NT THERMAL. ---------------\n")
-        end
 
-        if message == "[DEBUG]THERMALRoomTemp" then -- Contents of Thermal Room Data
+        elseif message == "[DEBUG]THERMALRoomTemp" then -- Contents of Thermal Room Data
                 print("\n------------- Beginning Debug of NT THERMAL. -------------\n")
                 if THERMRoom.Rooms ~= nil then
                         for index2, room in pairs(THERMRoom.Rooms) do
@@ -30,9 +29,8 @@ Hook.Add("chatMessage", "Debug", function (message, sender)
                         print("Nil table.")
                 end
                 print("\n--------------- Ending Debug of NT THERMAL. ---------------\n")
-        end
 
-        if message == "[DEBUG]THERMALCharacterCount" then -- Size of Thermal Character Data
+        elseif message == "[DEBUG]THERMALCharacterCount" then -- Size of Thermal Character Data
                 print("\n------------- Beginning Debug of NT THERMAL. -------------\n")
                 print("There are " .. tostring(THERM.IEnumerableSize(THERMCharacters)) .. " characters stored in the Thermal Character Table!")
                 local Humans = {}
@@ -41,7 +39,32 @@ Hook.Add("chatMessage", "Debug", function (message, sender)
                         table.insert(Humans,character)
                     end
                 end
-                print("There are currently only " .. tostring(THERM.IEnumerableSize(Humans)) .. " characters in the session!")
+                print("There are currently only " .. tostring(THERM.IEnumerableSize(Humans)) .. " characters in the game session!")
+                print("\n--------------- Ending Debug of NT THERMAL. ---------------\n")
+
+        elseif message == "[DEBUG]THERMALForceValidateCharacterData" then -- Force validate character data.
+                print("\n------------- Beginning Debug of NT THERMAL. -------------\n")
+                THERM.ValidateThermalCharacterData()
+                print("Validated Thermal Character Data!")
+                print("\n--------------- Ending Debug of NT THERMAL. ---------------\n")
+        
+        elseif message == "[DEBUG]THERMALPrintHeatedSuitsList" then
+                print("\n------------- Beginning Debug of NT THERMAL. -------------\n")
+                for Index, SuitTable in pairs(HeatedSuits) do
+                        print("Suit Table " .. tostring(Index) .. ": Table[" .. tostring(SuitTable) .. "]")
+                end
+                print("\n--------------- Ending Debug of NT THERMAL. ---------------\n")
+        
+        elseif message == "[DEBUG]THERMALRe-RegisterModdedSuits" then
+                print("\n------------- Beginning Debug of NT THERMAL. -------------\n")
+                THERMSuits.RegisterPackages()
+                print("Done")
+                print("\n--------------- Ending Debug of NT THERMAL. ---------------\n")
+        
+        elseif message == "[DEBUG]THERMALVisualizeTemperature" then
+                print("\n------------- Beginning Debug of NT THERMAL. -------------\n")
+                --ShowIconThreshold
+                print("Temperature can now be seen!")
                 print("\n--------------- Ending Debug of NT THERMAL. ---------------\n")
         end
 

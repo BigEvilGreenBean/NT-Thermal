@@ -17,7 +17,7 @@
       <Price baseprice="60">
         <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" minavailable="3" />
       </Price>
-      <InventoryIcon texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="223,7,110,114" origin="0.5166917,0.44719067" />
+      <InventoryIcon texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="223,7,110,114" origin="0.5166917,0.5171907" />
       <Sprite texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="223,7,110,114" depth="0.55" origin="0.5079795,0.4555972" />
       <Body width="65" height="45" density="50" />
       <MeleeWeapon canBeCombined="false" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="20,5" handle1="0,0" holdangle="10" reload="1.0" msg="ItemMsgPickUpSelect" HitOnlyCharacters="true">
@@ -57,7 +57,7 @@
         <Item identifier="organicfiber" amount="3" />
       </Deconstruct>
       <SuitableTreatment identifier="warmth" suitability="-5" />
-      <InventoryIcon texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="0,0,128,128" origin="0.54625577,0.4003891" />
+      <InventoryIcon texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="0,0,128,128" origin="0.54625577,0.5003891" />
       <Sprite texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="0,0,128,128" depth="0.6" origin="0.53276724,0.4108404" />
       <Body width="80" height="45" density="11" />
       <MeleeWeapon canBeCombined="false" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="20,5" handle1="0,0" holdangle="10" reload="1.0" msg="ItemMsgPickUpSelect" HitOnlyCharacters="true">
@@ -184,7 +184,7 @@
       </Price>
       <InventoryIcon texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="119,145,145,82" origin="0.51347846,0.5360419" />
       <Sprite texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="119,145,145,82" depth="0.55" origin="0.50882435,0.5415284" />
-      <Body width="145" height="85" density="50" />
+      <Body width="145" height="75" density="50" />
       <Holdable slots="RightHand+LeftHand" holdpos="0,-80" handle1="-20,14" handle2="20,14" aimable="false" msg="ItemMsgPickUpSelect" />
       <ItemContainer capacity="12" keepopenwhenequipped="true" movableframe="true">
         <Containable items="warm_rag,warm_iv_bag" excludeditems="toolbelt,toolbox" />
@@ -214,10 +214,10 @@
         <StatusEffect type="OnUse" target="This" Condition="-100.0" setvalue="true">
           <Sound file="Content/Items/Medical/Syringe.ogg" range="500" />
         </StatusEffect>
-        <StatusEffect target="Limb" statuseffecttags="medical" type="OnSuccess">
+        <StatusEffect target="Limb" targetLimbs="Torso" statuseffecttags="medical" type="OnSuccess">
           <affliction identifier="thrombolytics" amount="50" />
         </StatusEffect>
-        <StatusEffect statuseffecttags="medical" type="OnFailure" target="Limb">
+        <StatusEffect statuseffecttags="medical" type="OnFailure" target="Limb" targetLimbs="Torso">
           <affliction identifier="thrombolytics" amount="10" probability=".5" />
           <affliction identifier="bleeding" amount="5" />
         </StatusEffect>
@@ -251,10 +251,10 @@
         <StatusEffect type="OnUse" target="This" Condition="-100.0" setvalue="true">
           <Sound file="Content/Items/Medical/Syringe.ogg" range="500" />
         </StatusEffect>
-        <StatusEffect target="Limb" statuseffecttags="medical" type="OnSuccess">
+        <StatusEffect target="Limb" targetLimbs="Torso" statuseffecttags="medical" type="OnSuccess">
           <Affliction identifier="diuretics" amount="50" />
         </StatusEffect>
-        <StatusEffect statuseffecttags="medical" type="OnFailure" target="Limb">
+        <StatusEffect statuseffecttags="medical" type="OnFailure" target="Limb" targetLimbs="Torso">
           <Affliction identifier="diuretics" amount="15" />
         </StatusEffect>
         <!--  Remove the item when fully used  -->
@@ -264,20 +264,27 @@
       </MeleeWeapon>
     </Item>
     <!-- Stasis Starter -->
-    <Item name="Stasis-Starter" identifier="stasis_starter" category="Medical" cargocontaineridentifier="mediccrate" Tags="smallitem,chem,medical,syringe" description="When used injects a stasis starter, which causes the patient to enter stasis at 1°C or lower. Acts as a much cheaper alternative to stasis, however it doesn't prevent the consequences of temperature." useinhealthinterface="true" scale="0.275" impactsoundtag="impact_metal_light" maxstacksize="32" maxstacksizecharacterinventory="8">
-    <PreferredContainer primary="medcab" spawnprobability="0.1" />
-    <PreferredContainer primary="wreckmedcab,abandonedmedcab" minamount="0" maxamount="2" spawnprobability="0.01" />
-    <PreferredContainer primary="outposttrashcan" minamount="0" maxamount="2" spawnprobability="0.01" />
-    <Price baseprice="250" soldbydefault="false">
-      <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" minavailable="1" />
-    </Price>
-    <Deconstruct time="5">
-      <Item identifier="stabilozine" copycondition="true" mincondition="0.1" />
-    </Deconstruct>
-      <InventoryIcon texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="334,156,64,66" origin="0.4909287,0.5176857" />
-      <Sprite texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="334,156,64,66" depth="0.6" origin="0.5,0.5" />
-      <Body width="35" height="70" density="20" />
+    <Item name="Stasis-Starter" identifier="stasis_starter" category="Medical" cargocontaineridentifier="mediccrate" Tags="smallitem,chem,medical,syringe" description="When used injects a stasis starter, which causes the patient to enter stasis at 1°C or lower. Acts as a much cheaper alternative to stasis, however it doesn't prevent the consequences of temperature when thawing." useinhealthinterface="true" scale=".25" impactsoundtag="impact_metal_light" maxstacksize="32" maxstacksizecharacterinventory="8">
+      <PreferredContainer primary="medcab" spawnprobability="0.1" />
+      <PreferredContainer primary="wreckmedcab,abandonedmedcab" minamount="0" maxamount="2" spawnprobability="0.01" />
+      <PreferredContainer primary="outposttrashcan" minamount="0" maxamount="2" spawnprobability="0.01" />
+      <Price baseprice="250" soldbydefault="false">
+        <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" minavailable="1" />
+      </Price>
+      <Fabricate suitablefabricators="medicalfabricator" amount="4" requiredtime="10">
+        <RequiredSkill identifier="medical" level="40" />
+        <RequiredItem identifier="silicon" amount="2" />
+        <RequiredItem identifier="magnesium" amount="1" />
+        <RequiredItem identifier="sodium" amount="1" />
+      </Fabricate>
+      <Deconstruct time="5">
+        <Item identifier="stabilozine" copycondition="true" mincondition="0.1" />
+      </Deconstruct>
+      <InventoryIcon texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="916,35,53,58" origin="0.4909287,0.5176857" />
+      <Sprite texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="783,134,76,136" depth="0.6" origin="0.5,0.5" />
+      <Body width="35" height="120" density="20" />
       <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="40,5" handle1="0,0" holdangle="220" reload="1.0" msg="ItemMsgPickUpSelect" HitOnlyCharacters="true">
+        <SkillRequirementHint identifier="medical" level="50" />
         <StatusEffect type="OnUse" target="UseTarget">
           <LuaHook name="NTTHERM.StasisStarter" />
         </StatusEffect>
@@ -323,6 +330,30 @@
         </StatusEffect>
       </MeleeWeapon>
     </Item>
+    <!--Skin Grafter-->
+    <Item name="Skin Grafter" identifier="skin_grafter" category="Medical" maxstacksize="1" maxstacksizecharacterinventory="1" cargocontaineridentifier="mediccrate" Tags="smallitem,medical,surgery,surgerytool" description="A device used to take skin from a patient. Must be used after the retraction of the skin." useinhealthinterface="True" scale="0.2" impactsoundtag="impact_soft" RequireAimToUse="True">
+      <PreferredContainer primary="wreckmedcab,abandonedmedcab" minamount="0" maxamount="1" spawnprobability="0.005" />
+      <PreferredContainer primary="outpostmedcompartment" minamount="0" maxamount="2" spawnprobability="0.0005" />
+      <Fabricate suitablefabricators="medicalfabricator" amount="1" requiredtime="30">
+        <SkillRequirementHint identifier="medical" level="50" />
+        <SkillRequirementHint identifier="mechanical" level="20" />
+        <RequiredSkill identifier="medical" level="50" />
+        <RequiredSkill identifier="electrical" level="60" />
+        <RequiredSkill identifier="mechanical" level="20" />
+        <RequiredItem identifier="aluminium" amount="3" />
+      </Fabricate>
+      <Deconstruct />
+      <Price baseprice="250">
+        <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" minavailable="3" />
+      </Price>
+      <InventoryIcon texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="567,141,108,152" origin="0.4986112,0.502333" />
+      <Sprite texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="567,141,108,152" depth="0.55" origin="0.50012136,0.49684048" />
+      <Body width="65" height="45" density="50" />
+      <MeleeWeapon canBeCombined="false" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="20,5" handle1="0,0" holdangle="10" reload="1.0" msg="ItemMsgPickUpSelect" HitOnlyCharacters="true">
+        <SkillRequirementHint identifier="medical" level="50" />
+        <RequiredSkill identifier="medical" level="50" />
+      </MeleeWeapon>
+    </Item>
     <!--Towel-->
     <Item name="Towel" identifier="towel" category="Medical" maxstacksize="1" maxstacksizecharacterinventory="1" cargocontaineridentifier="mediccrate" Tags="smallitem,medical,surgery,surgerytool" description="A towel used to wipe a patient dry." useinhealthinterface="True" scale="0.2" impactsoundtag="impact_soft" RequireAimToUse="True">
       <PreferredContainer primary="wreckmedcab,abandonedmedcab" minamount="0" maxamount="1" spawnprobability="0.5" />
@@ -355,6 +386,94 @@
         </StatusEffect>
       </MeleeWeapon>
     </Item>
+    <!--                       Other Items                     -->
+    <Item name="Cryo Tank" identifier="cryotank" category="Equipment,Medical" health="200" maxstacksize="8" maxstacksizecharacterinventory="1" MaxStackSizeHoldableOrWearableInventory="1" Tags="smallitem,oxygensource,medical,cryo,Ignoredbyai" cargocontaineridentifier="medicalcrate" description="A specalized oxygen tank, designed to deliver pressurized quantities of freezing air. Use carefully. WARNING: Erupts violently when on fire." scale="0.25" impactsoundtag="impact_metal_light" allowdroppingonswap="true">
+      <Upgrade gameversion="0.10.0.0" scale="0.25" />
+      <Price baseprice="225">
+        <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" minavailable="1" />
+      </Price>
+      <PreferredContainer primary="wreckmedcab,abandonedmedcab" minamount="0" maxamount="1" spawnprobability="0.5" />
+      <PreferredContainer primary="outpostmedcompartment" minamount="0" maxamount="2" spawnprobability="0.1" />
+      <Deconstruct time="10">
+        <Item identifier="aluminium" />
+        <Item identifier="oxygentank" />
+      </Deconstruct>
+      <Fabricate suitablefabricators="fabricator" amount="1" requiredtime="15">
+        <RequiredSkill identifier="mechanical" level="40" />
+        <RequiredSkill identifier="medical" level="20" />
+        <Item identifier="aluminium" />
+        <Item identifier="oxygentank" />
+        <Item identifier="lazulite" />
+      </Fabricate>
+      <Fabricate suitablefabricators="vendingmachine" requiredtime="1" requiredmoney="120" fabricationlimitmin="0" fabricationlimitmax="4" quality="0" />
+      <InventoryIcon texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="911,110,56,62" origin="0.49007756,0.49807587" />
+      <Sprite texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="716,141,48,130" depth="0.55" origin="0.5,0.5" />
+      <Body width="22" height="84" density="9.7" />
+      <Holdable canbecombined="true" slots="Any,RightHand,LeftHand" holdpos="30,-15" handle1="0,5" handle2="0,-5" msg="ItemMsgPickUpSelect">
+        <StatusEffect type="OnContained" target="This" stackable="false" interval="2" comparison="and">
+          <Conditional IsActive="true" targetitemcomponent="Wearable" targetcontainer="true" />
+          <!-- Thanks ydrec -->
+          <Conditional condition="gt 0" />
+          <!-- Lower Temperature -->
+          <LuaHook name="NTTHERM.CryoDecrease" />
+        </StatusEffect>
+        <StatusEffect type="OnFire" target="This" Condition="-25.0" statuseffecttags="onfire" duration="1" stackable="false" />
+        <StatusEffect type="OnBroken" target="This" delay="1" stackable="false">
+          <Conditional HasStatusTag="onfire" />
+          <sound file="Content/Items/Weapons/ExplosionSmall1.ogg" range="2000" volume="2" />
+          <sound file="Content/Items/Weapons/ExplosionDebris1.ogg" range="2000" />
+          <Explosion range="300" force="50" debris="true">
+            <Affliction identifier="burn" strength="200" />
+            <Affliction identifier="stun" strength="100" />
+            <Affliction identifier="ntt_temperature" strength="10" />
+          </Explosion>
+        </StatusEffect>
+      </Holdable>
+      <Quality>
+        <QualityStat stattype="Condition" value="0.1" />
+      </Quality>
+    </Item>
+    <!--Skin-->
+    <Item name="Skin" identifier="ntt_skin" category="Medical" maxstacksize="4" maxstacksizecharacterinventory="4" cargocontaineridentifier="organcrate" Tags="smallitem,medical,surgery" description="Skin, taken from a patient, hopefully willingly. Can be used to graft skin on a burnt patient." useinhealthinterface="True" scale="0.2" impactsoundtag="impact_soft" RequireAimToUse="True">
+      <PreferredContainer primary="wreckmedcab,abandonedmedcab" minamount="0" maxamount="1" spawnprobability="0.005" />
+      <PreferredContainer primary="outpostmedcompartment" minamount="0" maxamount="2" spawnprobability="0.0005" />
+      <Price baseprice="50">
+        <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" minavailable="1" />
+      </Price>
+      <Deconstruct time="5"></Deconstruct>
+      <InventoryIcon texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="886,202,90,65" origin="0.5323027,0.47140437" />
+      <Sprite texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="886,202,90,65" depth="0.55" origin="0.5123179,0.45017233" />
+      <Body width="65" height="45" density="50" />
+      <Throwable characterusable="true" canbecombined="true" removeoncombined="true" slots="Any,RightHand,LeftHand" throwforce="4.0" aimpos="35,-10" msg="ItemMsgPickUpSelect">
+        <StatusEffect target="Character" type="OnSpawn">
+          <Sound file="%ModDir:3190189044%/Sound/severed.ogg" range="500" />
+        </StatusEffect>
+        <StatusEffect type="OnImpact" target="This" condition="-1.0">
+          <Explosion range="0.0" structuredamage="0" itemdamage="0" force="0.0" severlimbsprobability="0.0" decal="fruitsplatter_red" decalsize="0.7" />
+          <ParticleEmitter particle="bloodsplash" anglemin="0" anglemax="360" particleamount="2" velocitymin="0" velocitymax="0" scalemin="1.5" scalemax="2" />
+        </StatusEffect>
+        <!-- making the limb go kaputt if left outside of refrigeration -->
+        <StatusEffect type="Always" target="This" condition="-4.0" delay="5" interval="5" disabledeltatime="true" conditionalComparison="And">
+          <Conditional hastag="neq refrigerated" targetcontainer="true" />
+          <Conditional hastag="neq medicalfabricator" Locked="neq true" targetitemcomponent="ItemContainer" targetcontainer="true" />
+        </StatusEffect>
+        <StatusEffect type="OnContained" target="This" condition="0.5" delay="5" interval="5" disabledeltatime="true" comparison="and">
+          <Conditional condition="gte 95" />
+          <Conditional hastag="refrigerated" targetcontainer="true" />
+        </StatusEffect>
+        <StatusEffect type="OnFire" target="This" Condition="-25.0" />
+        <!-- yuck! severed limbs on the floor!
+      <StatusEffect type="OnNotContained" target="NearbyCharacters" range="300">
+        <Affliction identifier="nausea" amount="0.2"/>
+      </StatusEffect>-->
+        <StatusEffect type="OnBroken" target="This">
+          <LuaHook name="NT.RotOrgan" />
+        </StatusEffect>
+                <StatusEffect type="OnUse" target="This" setvalue="true">
+          <Sound file="Content/Items/Medical/Syringe.ogg" range="500" />
+        </StatusEffect>
+      </Throwable>
+    </Item>
     <!--                       Heaters                     -->
     <!-- E.S.H -->
     <Item name="E.S.H" identifier="esh" category="Equipment" maxstacksize="1" maxstacksizecharacterinventory="1" Tags="human,mediumitem,tool" showcontentsintooltip="true" description="An external heater for diving suits, used when an internal option isn't avaliable. Made with a repurposed tool belt from a poor mechanic, requires a battery." scale="0.25" impactsoundtag="impact_metal_heavy">
@@ -371,11 +490,11 @@
       <Price baseprice="350">
         <Price storeidentifier="merchantengineer" sold="true" multiplier="1.2" minavailable="1" />
       </Price>
-      <InventoryIcon texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="25,259,174,164" origin="0.5305514,0.56675494" />
-      <Sprite texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="25,259,173,163" depth="0.55" origin="0.5323623,0.56623346" />
-      <Body width="65" height="45" density="50" />
+      <InventoryIcon texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="6,247,170,151" origin="0.50634575,0.56780946" />
+      <Sprite texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="6,247,170,151" depth="0.55" origin="0.50848854,0.5689924" />
+      <Body width="65" height="65" density="50" />
       <Wearable slots="Bag" msg="ItemMsgEquipSelect" displaycontainedstatus="true" canbeselected="false" canbepicked="true" pickkey="Select">
-        <Sprite texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="25,259,173,163" depth="0.55" origin="0.5,0.2" limb="Torso" scale="0.25" />
+        <Sprite texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="6,247,170,151" depth="0.55" origin="0.5,0.2" limb="Torso" scale="0.25" />
       </Wearable>
       <Holdable slots="RightHand+LeftHand" holdpos="0,-70" handle1="-5,0" handle2="10,-20" holdangle="0" msg="ItemMsgPickUpUse" canbeselected="false" canbepicked="true" pickkey="Use" allowswappingwhenpicked="false" />
       <ItemContainer capacity="1" maxstacksize="1" hideitems="true" containedstateindicatorstyle="battery" ContainedStateIndicatorSlot="0">
@@ -407,15 +526,24 @@
       <Price baseprice="350">
         <Price storeidentifier="merchantengineer" sold="true" multiplier="1.2" minavailable="1" />
       </Price>
-      <InventoryIcon texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="295,250,150,171" origin="0.50163627,0.44125777" />
-      <Sprite texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="295,250,150,171" depth="0.55" origin="0.5203634,0.5014565" />
-      <Body width="65" height="90" density="50" />
-      <Holdable slots="Any,RightHand,LeftHand" holdpos="0,-70" handle1="-5,0" handle2="10,-20" holdangle="0" msg="ItemMsgPickUpUse" canbeselected="false" canbepicked="true" pickkey="Use" allowswappingwhenpicked="false">
+      <InventoryIcon texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="192,239,141,166" origin="0.5171989,0.51201713" />
+      <Sprite texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="192,239,141,166" depth="0.55" origin="0.5203634,0.5014565" />
+      <Body width="65" height="115" density="50" />
+      <MeleeWeapon slots="Any,RightHand,LeftHand" controlpose="true" aimpos="45,10" handle1="0,18" holdangle="90" reload="1" range="50" combatpriority="6" msg="ItemMsgPickUpSelect">
+        <Attack structuredamage="0" itemdamage="1" targetimpulse="2">
+          <Affliction identifier="blunttrauma" strength="2" />
+          <Affliction identifier="stun" strength="0.6" />
+          <StatusEffect type="OnUse" target="UseTarget">
+            <Conditional entitytype="eq Character" />
+            <Sound file="Content/Items/Weapons/Smack1.ogg" selectionmode="random" range="500" />
+            <Sound file="Content/Items/Weapons/Smack2.ogg" range="500" />
+          </StatusEffect>
+        </Attack>
         <StatusEffect type="OnContained" targettype="Character">
           <RequiredItem items="mobilebattery" type="Contained" />
           <LuaHook name="NTTHERM.CSHHeat" />
         </StatusEffect>
-      </Holdable>
+      </MeleeWeapon>
       <ItemContainer capacity="1" maxstacksize="1" hideitems="true" containedstateindicatorstyle="battery" ContainedStateIndicatorSlot="0">
         <SlotIcon slotindex="0" texture="Content/UI/StatusMonitorUI.png" sourcerect="128,448,64,64" origin="0.5,0.5" />
         <Containable items="mobilebattery">
@@ -425,7 +553,55 @@
             <Sound file="%ModDir%/Sound/LowHeater.ogg" range="250" loop="true" />
           </StatusEffect>
         </Containable>
+        <SubContainer capacity="5" maxstacksize="32">
+          <Containable items="smallitem" excludeditems="toolbelt,toolbox,bandolier,esh" />
+        </SubContainer>
       </ItemContainer>
+    </Item>
+    <Item name="H.S.H" identifier="hsh" scale="0.5" category="Equipment" tags="smallitem,mobileradio" description="An external heater (and headset) for diving suits, uses a battery to power it." cargocontaineridentifier="metalcrate" impactsoundtag="impact_metal_light">
+      <PreferredContainer primary="crewcab" secondary="divingcab" />
+      <Price baseprice="300">
+        <Price storeidentifier="merchantoutpost" minavailable="1" spawnprobability="50" />
+        <Price storeidentifier="merchantcity" multiplier="0.9" minavailable="2" />
+        <Price storeidentifier="merchantresearch" minavailable="0" />
+        <Price storeidentifier="merchantmilitary" minavailable="1" />
+        <Price storeidentifier="merchantmine" minavailable="3" />
+      </Price>
+      <InventoryIcon texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="425,146,56,61" origin="0.5,0.5" />
+      <Sprite texture="%ModDir%/Images/NT_AZ_Items.png" depth="0.6" sourcerect="311,149,59,63" origin="0.5,0.5" />
+      <Body radius="20" height="20" density="15" />
+      <Deconstruct time="5"></Deconstruct>
+      <Fabricate suitablefabricators="fabricator" requiredtime="10">
+        <SkillRequirementHint identifier="electrical" level="50" />
+        <RequiredSkill identifier="electrical" level="50" />
+        <RequiredItem identifier="copper" />
+        <RequiredItem identifier="steel" />
+        <RequiredItem identifier="headset" />
+      </Fabricate>
+      <WifiComponent range="35000.0" LinkToChat="true" MinChatMessageInterval="0.0">
+        <StatusEffect type="OnActive" targettype="This">
+          <Conditional JamTimer="gt 0" targetitemcomponent="WifiComponent" />
+          <sound file="Content/Sounds/RadioStatic.ogg" range="500.0" frequencymultiplier="0.7" loop="true" volume="0.5" />
+        </StatusEffect>
+      </WifiComponent>
+      <Upgrade gameversion="0.18.0.0">
+        <WifiComponent>
+          <RequiredItems items="" />
+        </WifiComponent>
+      </Upgrade>
+      <Wearable limbtype="Head" slots="Any,Headset" msg="ItemMsgPickUpSelect" displaycontainedstatus="true">
+        <sprite name="Headset Wearable" texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="425,146,56,61" origin="0.5,0.5" limb="Head" depth="0.1" hidelimb="false" inheritlimbdepth="true" inheritscale="true" ignorelimbscale="true" scale="0.7" hideotherwearables="false" />
+        <ItemContainer capacity="1" maxstacksize="1" hideitems="true" containedstateindicatorstyle="battery" ContainedStateIndicatorSlot="0">
+          <SlotIcon slotindex="0" texture="Content/UI/StatusMonitorUI.png" sourcerect="128,448,64,64" origin="0.5,0.5" />
+          <Containable items="mobilebattery">
+            <StatusEffect type="OnWearing" target="Contained" playsoundonrequireditemfailure="true">
+              <RequiredItem items="mobilebattery" type="Contained" matchonempty="true" />
+              <Conditional condition="lte 10.0" />
+              <Sound file="%ModDir%/Sound/LowHeater.ogg" range="250" loop="true" />
+            </StatusEffect>
+          </Containable>
+        </ItemContainer>
+      </Wearable>
     </Item>
   </Items>
 </Override>

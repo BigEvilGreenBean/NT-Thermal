@@ -123,9 +123,9 @@ NTTHERM.ConfigData = {
 	BotSuitSafteyMode = { name = "Bot Suit Compatibility Mode", default = true, type = "bool", description = "This makes all suits worn by a bot heated. Useful so you don't have to babysit them."},
 	BotTempIgnoreMode = { name = "Temperature Ignores Bot Mode", default = false, type = "bool", description = "This makes all bots immune to temperature and it's effects. This should theoretically give a performance boost."},
 	PressureStabilizerTemperature = { name = "Pressure Stabilizers Stabilize Temperature", default = false, type = "bool", description = "This setting makes pressure stabilizers also stabilize temperature, on top of pressure and oxygen." },
-	FireCausePanic = { name = "On Fire Causes Panicking (Experimental)", default = false, type = "bool", description = "This makes it so being on fire will cause people to panic. Making them vulnerable to attacks and prevents them from using guns." },
 	HuskGenesHypothermia = { name = "Husk Genes Are Immune To Hypothermia", default = true, type = "bool", description = "This makes it so husk genes make you immune to hypothermia." },
 	RepairToolsTemp = { name = "Repair Tools Have Temperature Interactions", default = true, type = "bool", description = "This makes it so certain repair tools give or take heat when used." },
+	WaterDirtiesBandages = { name = "Water Dirties Bandages", default = true, type = "bool", description = "This makes it so water will dirty bandages." },
 
 	NTTHERM_HeaderReactor = { name = "---------------------------------- Reactor Settings ----------------------------------", type = "category" },
 
@@ -165,6 +165,11 @@ NTTHERM.ConfigData = {
 	SimpleWaterCalculation = { name = "Simple Water Calculations", default = false, type = "bool", description = "This setting makes water calculations extremely simple, the game will make you wet, only when 'in' water. However due to barotrauma limitations this is highly inaccurate." },
 	HeatTransferToggle = { name = "Fire Transfers Heat", default = true, type = "bool", description = "This setting allows heat to transfer between hulls in a submarine. This should be left on for the intended experience." },
 	PerformanceMode = { name = "Performance Mode", default = true, type = "bool", description = "This mode increases performance, however it sometimes might make inaccurate calculation. There really shouldn't be a difference though." },
+
+	NTTHERM_HeaderExperimental = { name = "------------------------------- Experimental Features -------------------------------", type = "category" },
+
+	FireCausePanic = { name = "On Fire Causes Panicking (Experimental)", default = false, type = "bool", description = "This makes it so being on fire will cause people to panic. Making them vulnerable to attacks and prevents them from using guns." },
+	--SmartHeaterDetect = { name = "Smart Heater Detection (Experimental)", default = false, type = "bool", description = "This system will 'try' and auto detect a battery slot heater in your suit!." },
 
 	NTTHERM_HeaderDebug = { name = "----------------------------------------- Debug -----------------------------------------", type = "category" },
 

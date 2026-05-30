@@ -12,7 +12,7 @@ THERMRoom.QueuedOxygenUpdates = {}
 -- Resets thermal data.
 NTC.AddPreHumanUpdateHook(
         function(character)
-	if not THERMRoom.Intiated then
+	if not THERMRoom.Intiated and NTConfig.Get("HeatTransferToggle", true) then
                 THERM.ValidateThermalCharacterData()
 		THERMRoom.Intiated = true
         end
@@ -20,30 +20,33 @@ end)
 
 -- Used to clear Thermal Room Data.
 Hook.Add("roundEnd", "The round ended", function ()
-        THERMRoom.Intiated = false
-        THERMRoom.Rooms = {}
+        THERMRoom.ClearRooms()
 end)
 
 -- Hit a lick and lifted this from the Human update.
 Hook.Add("think", "THERMRoom.update", function()
-        if NTConfig.Get("HeatTransferToggle", true) then
-                if HF.GameIsPaused() then
-                        return
+        if not NTConfig.Get("HeatTransferToggle", true) then 
+                if THERMRoom.Rooms ~= {} then
+                        THERMRoom.ClearRooms()
                 end
+        end
+        if HF.GameIsPaused() then
+                return
+        end
 
-                THERMRoom.Tick = THERMRoom.Tick - 1
-                if THERMRoom.Tick <= 0 then
-                        if THERMRoom.Rooms ~= nil and THERMRoom.Intiated then
-                                THERMRoom.CalculateRoomTemp()
-                        end
-                        THERMRoom.UpdateInterval = NTConfig.Get("ThermalRoomCalcInterval", 50)
-                        THERMRoom.Tick = THERMRoom.UpdateInterval
+        THERMRoom.Tick = THERMRoom.Tick - 1
+        if THERMRoom.Tick <= 0 then
+                if THERMRoom.Rooms ~= nil and THERMRoom.Intiated then
+                        THERMRoom.CalculateRoomTemp()
                 end
+                THERMRoom.UpdateInterval = NTConfig.Get("ThermalRoomCalcInterval", 50)
+                THERMRoom.Tick = THERMRoom.UpdateInterval
         end
 end)
 
 -- Heat
 Hook.Patch("Barotrauma.Hull","AddFireSource", function (GameSession, ptable)
+        if not NTConfig.Get("HeatTransferToggle", true) then return end
         local hull = ptable["fireSource"].Hull
         if THERMRoom.GetRoom(hull) == nil and THERMRoom.Intiated then
                 THERMRoom.InsertRoom(hull)
@@ -52,7 +55,8 @@ end, Hook.HookMethodType.After)
 
 -- Used to increase the temp of a adjacent room if parameters match.
 Hook.Add("gapOxygenUpdate", "NTTHERM.OxygenHullUpdate", function (gap, hull1, hull2)
-        if NTConfig.Get("HeatTransferToggle", true) and THERMRoom.Intiated and THERMRoom.QueuedOxygenUpdates[gap] == nil and (hull1.FireCount > 0 or hull2.FireCount > 0) then
+        if not NTConfig.Get("HeatTransferToggle", true) then return end
+        if THERMRoom.Intiated and THERMRoom.QueuedOxygenUpdates[gap] == nil and (hull1.FireCount > 0 or hull2.FireCount > 0) then
                 THERMRoom.QueueOxygenUpdate(gap,hull1,hull2)
         end
 end)
@@ -77,21 +81,19 @@ THERMRoom.CalculateRoomTemp = function ()
                                 THERMRoom.QueuedOxygenUpdates[update] = nil -- Set update to nil
                                 break
                         end
-                        Timer.Wait(function() -- Delay it a little.
-                                if THERMRoom.GetRoom(ChildHull) == nil then
-                                        THERMRoom.InsertRoom(ChildHull)
-                                end
-                                --Limit the amount of heat chain linked.
-                                if THERMRoom.GetRoom(ChildHull).Temp < THERMRoom.GetRoom(ParentHull).Temp/1.5 then
-                                        local TempTransfer = THERMRoom.GetRoom(ParentHull).Temp
-                                                /(ChildHull.Size.X * ChildHull.Size.Y)
-                                                * 3000  --Scale it a lil.
-                                        THERMRoom.GetRoom(ChildHull).Temp = HF.Clamp(THERMRoom.GetRoom(ChildHull).Temp + (TempTransfer/2),THERMRoom.DefaultRoomTemp,THERMRoom.GetRoom(ParentHull).Temp)
-                                        THERMRoom.GetRoom(ParentHull).Temp = HF.Clamp(THERMRoom.GetRoom(ParentHull).Temp - (TempTransfer / 50),THERMRoom.DefaultRoomTemp,THERMRoom.GetRoom(ParentHull).Temp/2,100)
-                                end
-                                THERMRoom.QueuedOxygenUpdates[update] = nil -- I'm quite sure this one does nothing on a real note, but I'm afraid to delete it.
-                                THERMRoom.QueuedOxygenUpdates[index] = nil -- Set update to nil
-                        end,10)
+                        if THERMRoom.GetRoom(ChildHull) == nil then
+                                THERMRoom.InsertRoom(ChildHull)
+                        end
+                        --Limit the amount of heat chain linked.
+                        if THERMRoom.GetRoom(ChildHull).Temp < THERMRoom.GetRoom(ParentHull).Temp/1.5 then
+                                local TempTransfer = THERMRoom.GetRoom(ParentHull).Temp
+                                        /(ChildHull.Size.X * ChildHull.Size.Y)
+                                        * 3000  --Scale it a lil.
+                                THERMRoom.GetRoom(ChildHull).Temp = HF.Clamp(THERMRoom.GetRoom(ChildHull).Temp + (TempTransfer/2),THERMRoom.DefaultRoomTemp,THERMRoom.GetRoom(ParentHull).Temp)
+                                THERMRoom.GetRoom(ParentHull).Temp = HF.Clamp(THERMRoom.GetRoom(ParentHull).Temp - (TempTransfer / 50),THERMRoom.DefaultRoomTemp,THERMRoom.GetRoom(ParentHull).Temp/2,100)
+                        end
+                        THERMRoom.QueuedOxygenUpdates[update] = nil -- I'm quite sure this one does nothing on a real note, but I'm afraid to delete it.
+                        THERMRoom.QueuedOxygenUpdates[index] = nil -- Set update to nil
                 end
                 
                 for index, room in pairs(THERMRoom.Rooms) do -- Update current temps.
@@ -150,6 +152,20 @@ THERMRoom.GetRoom = function (hull)
                 return THERMRoom.Rooms[hull.ID]
         end
         return nil
+end
+
+-- Checks if a room is in the Storage.
+THERMRoom.HasRoom = function (hull)
+        if not hull then return false end -- Failsafe
+        local Check = THERMRoom.Rooms[hull.ID]
+        if Check then return true end
+        return false
+end
+
+-- Clear out our rooms.
+THERMRoom.ClearRooms = function ()
+        THERMRoom.Rooms = {}
+        THERMRoom.Intiated = false
 end
 
 -- Adds a oxygen update to the queue.

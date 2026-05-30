@@ -49,6 +49,52 @@ NT.ItemMethods.aafn = function (item, usingCharacter, targetCharacter, limb)
 	item.Condition = item.Condition - 25
 end
 
+-- Skin Grafter
+NT.ItemMethods.skin_grafter = function (item, usingCharacter, targetCharacter, limb)
+        local success = HF.GetSkillRequirementMet(usingCharacter, "medical", 50)
+        local limbtype = limb.type
+        if HF.GetAfflictionStrengthLimb(targetCharacter, limbtype, "retractedskin", 0) ~= 100 then
+                HF.AddAfflictionLimb(targetCharacter, "bleeding", limbtype, 3, usingCharacter)
+                HF.AddAfflictionLimb(targetCharacter, "lacerations", limbtype, 4, usingCharacter)
+                return
+        end
+        if success then
+                if (HF.GetAfflictionStrengthLimb(targetCharacter, limbtype, "stretched_skin", 0) + 10) <= 20 then
+                        HF.AddAfflictionLimb(targetCharacter, "removed_skin", limbtype, 10, usingCharacter)
+                        HF.AddAfflictionLimb(targetCharacter, "stretched_skin", limbtype, 10, usingCharacter)
+                        HF.GiveItem(usingCharacter, "ntt_skin")
+                        return
+                end
+        else
+            if (HF.GetAfflictionStrengthLimb(targetCharacter, limbtype, "stretched_skin", 0) + 10) <= 20 then
+                        HF.AddAfflictionLimb(targetCharacter, "removed_skin", limbtype, 10, usingCharacter)
+                        HF.AddAfflictionLimb(targetCharacter, "stretched_skin", limbtype, 10, usingCharacter)
+                        HF.AddAfflictionLimb(targetCharacter, "bleeding", limbtype, 1, usingCharacter)
+                        HF.AddAfflictionLimb(targetCharacter, "lacerations", limbtype, 2, usingCharacter)
+                        HF.GiveItem(usingCharacter, "ntt_skin")
+                        return
+                end
+        end
+end
+
+-- Skin Grafter
+NT.ItemMethods.ntt_skin = function (item, usingCharacter, targetCharacter, limb)
+        local success = HF.GetSkillRequirementMet(usingCharacter, "medical", 50)
+        local limbtype = limb.type
+        
+        if HF.GetAfflictionStrengthLimb(targetCharacter, limbtype, "retractedskin", 0) ~= 100 
+                and HF.GetAfflictionStrengthLimb(targetCharacter, limbtype, "grafted_skin", 0) == 0 then
+                return
+        end
+
+        if success then
+                HF.AddAfflictionLimb(targetCharacter, "grafted_skin", limbtype, 10, usingCharacter)
+        else
+                HF.AddAfflictionLimb(targetCharacter, "grafted_skin", limbtype, 10, usingCharacter)
+                HF.AddAfflictionLimb(targetCharacter, "bleeding", limbtype, 5, usingCharacter)
+        end
+        item.Condition = 0
+end
 
 local LimbsToCheck2 = {LimbType.Head,LimbType.Torso,LimbType.RightArm,LimbType.LeftArm,LimbType.RightThigh,LimbType.LeftThigh}
 
@@ -117,15 +163,6 @@ NT.ItemMethods.handheld_thermometer = function(item, usingCharacter, targetChara
                         end
                 end
 
-                -- Get average temperature.
-                local function AverageBodyTemp()
-                        AverageTemp = 0
-                        for index, limb in pairs(LimbsToCheck2) do
-                                AverageTemp = AverageTemp + HF.Round(HF.GetAfflictionStrengthLimb(character, limb, "ntt_temperature", NTConfig.Get("NormalBodyTemp", 38)) - 1, 1)
-                        end
-                        return HF.Round(AverageTemp/6,1)
-                end
-
                 -- Determine if a patient has hypothermia or hyperthermia.
                 local function ThermiaValue(Temp)
                         if Temp < HypothermiaLevel then
@@ -137,7 +174,7 @@ NT.ItemMethods.handheld_thermometer = function(item, usingCharacter, targetChara
                         end
                 end
 
-                local BodyTemp = AverageBodyTemp()
+                local BodyTemp = THERM.AverageBodyTemp(targetCharacter)
                 local BodyTempColor = TempColor(BodyTemp)
                 local BodyTempThermia = ThermiaValue(BodyTemp)
                 CurrentTempColor = TempColor(LimbTemp)

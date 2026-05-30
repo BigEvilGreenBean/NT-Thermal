@@ -3,41 +3,74 @@
 THERMSuits = {}
 
 HeatedSuits = {
+    -- index is the battery heater index. The 'needsTag' is a boolean check to see if the diving suit needs the "thermal" tag in the suit.
     -- Vanilla
-    ["respawndivingsuit"] = 0,["exosuit"] = 1,["clownexosuit"] = 1,["pucs"] = 2,["medicdivingsuit"] = 2,
+    ["respawndivingsuit"] = {index = 0, needsTag = false},["exosuit"] = {index = 1, needsTag = false},["clownexosuit"] = {index = 1, needsTag = false},["pucs"] = {index = 2, needsTag = true},["medicdivingsuit"] = {index = 2, needsTag = true}, -- These needs tag since they don't have a battery slot by default.
 
     -- Safs
-    ["SAFS"] = 1,["SAFS_V7"] = 1,["SAFS_nāga"] = 1,["SAFS_snow"] = 1,["SAFS_yellow"] = 1,
-    ["SAFS_manual"] = 1,["SAFS_seaweed"] = 1,["SAFS_clown"] = 1 ,["SAFS_camo"] = 1,["SAFS_moon"] = 1, 
-    ["SAFS_onyx"] = 1,["SAFS_camo2"] = 1,
-
-    -- EK
-    ["ek_armored_hardsuit"] = 1,["ek_armored_hardsuit_paintbandit"] = 1,["ek_armored_hardsuit_paintmercenary"] = 1,["ek_armored_hardsuit2"] = 1,
-    ["ek_armored_hardsuit2_paintbandit"] = 1,["ek_armored_hardsuit2_paintmercenary"] = 1,
-    ["ekutility_Utility_hardsuit_mk2"] = 1,
+    ["SAFS"] = {index = 1, needsTag = false}, ["SAFS_V7"] = {index = 1, needsTag = false}, ["SAFS_nāga"] = {index = 1, needsTag = false}, ["SAFS_snow"] = {index = 1, needsTag = false}, ["SAFS_yellow"] = {index = 1, needsTag = false}, 
+    ["SAFS_manual"] = {index = 1, needsTag = false}, ["SAFS_seaweed"] = {index = 1, needsTag = false}, ["SAFS_clown"] = {index = 1 , needsTag = false}, ["SAFS_camo"] = {index = 1, needsTag = false}, ["SAFS_moon"] = {index = 1, needsTag = false},  
+    ["SAFS_onyx"] = {index = 1, needsTag = false}, ["SAFS_camo2"] = {index = 1, needsTag = false}, 
 
     -- Dynamic Europa
-    ['exosuitplayerPA'] = 1,['exosuitPA'] = 1,["piratedivingsuitmakeshift"] = 0, -- Dynamic Europa
+    ['exosuitplayerPA'] = {index = 1, needsTag = false}, ['exosuitPA'] = {index = 1, needsTag = false}, ["piratedivingsuitmakeshift"] = {index = 0, needsTag = false},  -- Dynamic Europa
     
     -- Enhanced Armaments
-    ['scp_combathardsuit'] = 1,
+    ['scp_combathardsuit'] = {index = 1, needsTag = false}, 
     
     -- Baroverhaul (Kill me)
-    ["rustedexosuit"] = 1, ["assistantexosuit"] = 1, ["captainexosuit"] = 1, ["engineerexosuit"] = 1,
-    ["medicexosuit"] = 1, ["mechanicexosuit"] = 1, ["securityexosuit"] = 1, ["charybdisexosuit"] = 1,
-    ["fractalexosuit"] = 1, ["latcherexosuit"] = 1, ["advancedexosuit"] = 1, ["crystalexosuit"] = 1,
-    ["barsukexosuit"] = 1, ["endwormexosuit"] = 1, ["watcherexosuit"] = 1, ["blueadvancedexosuit"] = 1,
-    ["greenadvancedexosuit"] = 1, ["redadvancedexosuit"] = 1, ["pinkadvancedexosuit"] = 1
+    ["rustedexosuit"] = {index = 1, needsTag = false},  ["assistantexosuit"] = {index = 1, needsTag = false},  ["captainexosuit"] = {index = 1, needsTag = false},  ["engineerexosuit"] = {index = 1, needsTag = false}, 
+    ["medicexosuit"] = {index = 1, needsTag = false},  ["mechanicexosuit"] = {index = 1, needsTag = false},  ["securityexosuit"] = {index = 1, needsTag = false},  ["charybdisexosuit"] = {index = 1, needsTag = false}, 
+    ["fractalexosuit"] = {index = 1, needsTag = false},  ["latcherexosuit"] = {index = 1, needsTag = false},  ["advancedexosuit"] = {index = 1, needsTag = false},  ["crystalexosuit"] = {index = 1, needsTag = false}, 
+    ["barsukexosuit"] = {index = 1, needsTag = false},  ["endwormexosuit"] = {index = 1, needsTag = false},  ["watcherexosuit"] = {index = 1, needsTag = false},  ["blueadvancedexosuit"] = {index = 1, needsTag = false}, 
+    ["greenadvancedexosuit"] = {index = 1, needsTag = false},  ["redadvancedexosuit"] = {index = 1, needsTag = false},  ["pinkadvancedexosuit"] = {index = 1, needsTag = false} 
     }
 
 ExceptionsToNotUSE = {["stasisbag"] = true} -- Used for suits that we don't want to count.
 
+PackageSuits = { -- A list with specific versions of suits (I.E same mod different versions.)
+    ["3434408187"] = { -- EK Forked
+                ["ek_armored_hardsuit"] = {index = 1, needsTag = false}, ["ek_armored_hardsuit_paintbandit"] = {index = 1, needsTag = false}, ["ek_armored_hardsuit_paintmercenary"] = {index = 1, needsTag = false}, ["ek_armored_hardsuit2"] = {index = 1, needsTag = false}, 
+                ["ek_armored_hardsuit2_paintbandit"] = {index = 1, needsTag = false}, ["ek_armored_hardsuit2_paintmercenary"] = {index = 1, needsTag = false}, 
+                ["ekutility_Utility_hardsuit_mk2"] = {index = 1, needsTag = false}, 
+            },
+        }
+
+-- Smart system (Not finished)
+--THERMSuits.FindHeater = function (Suit)
+    --for element in Suit.Prefab.ConfigElement.Elements() do
+        --if tostring(element) == "ItemContainer" then
+            
+        --end
+    --end
+--end
+
+-- Hi Lukako, I stole this from your guide!
+-- Adds suits from certain mods.
+THERMSuits.RegisterPackages = function ()
+    for mod in ContentPackageManager.EnabledPackages.All do
+        if PackageSuits[tostring(mod.UgcId)] ~= nil then
+            for Index, SuitTable in pairs(PackageSuits[tostring(mod.UgcId)]) do
+                if HeatedSuits[Index] == nil then
+                    HeatedSuits[Index] = SuitTable
+                end
+            end
+        end
+    end
+end
+
  -- MOD COMPAT ----------------------------------------------------------------------------------------------------------------------------
 
-THERMSuits.AddHeatedSuit = function (SuitTable) -- Your suit table should look something like {["Insert name"] = battery_index}
+---A mod compat function to add your own suits without thermal tags. If you want.
+---@param SuitTable table
+THERMSuits.AddHeatedSuit = function (SuitTable) -- Your suit table should look something like {["Insert name"] = {index = 'battery_index', needsTag = false/true}
     table.insert(HeatedSuits,SuitTable)
 end
 
+---A mod compat function to add your own excepted suits. If you want.
+---@param SuitTable table
 THERMSuits.AddNonHeatedSuit = function (SuitTable) -- Your suit table should look something like {["Insert name"] = true}
     table.insert(ExceptionsToNotUSE,SuitTable)
 end
+
+THERMSuits.RegisterPackages()

@@ -24,6 +24,18 @@
     <entitydescription.heatcrate>A heating crate used to keep items nice and warm.</entitydescription.heatcrate>
     <entityname.esh>E.S.H</entityname.esh>
     <entitydescription.esh>An external heater for diving suits, used when an internal option isn't avaliable. Made with a repurposed tool belt from a poor mechanic, requires a battery.</entitydescription.esh>
+    <entityname.csh>C.S.H</entityname.csh>
+    <entitydescription.csh>An external heater for diving suits, used when an internal option isn't avaliable. Goes in the inventory, requires a battery.</entitydescription.csh>
+    <entityname.cryotank>Cryo Tank</entityname.cryotank>
+    <entitydescription.cryotank>A specalized oxygen tank, designed to deliver pressurized quantities of freezing air. Use carefully. WARNING: Erupts violently when on fire.</entitydescription.cryotank>
+    <entityname.stasis_starter>Stasis-Starter</entityname.stasis_starter>
+    <entitydescription.stasis_starter>When used injects a stasis starter, which causes the patient to enter stasis at 1°C or lower. Acts as a much cheaper alternative to stasis, however it doesn't prevent the consequences of temperature when thawing.</entitydescription.stasis_starter>
+    <entityname.skin_grafter>Skin Grafter</entityname.skin_grafter>
+    <entitydescription.skin_grafter>A device used to take skin from a patient. Must be used after the retraction of the skin.</entitydescription.skin_grafter>
+    <entityname.ntt_skin>Skin</entityname.ntt_skin>
+    <entitydescription.ntt_skin>Skin, taken from a patient, hopefully willingly. Can be used to graft skin on a burnt patient.</entitydescription.ntt_skin>
+    <entityname.hsh>H.S.H</entityname.hsh>
+    <entitydescription.hsh>An external heater (and headset) for diving suits, uses a battery to power it.</entitydescription.hsh>
     <!-- /// Afflictions /// -->
     <afflictionname.frostnip>Frostnip</afflictionname.frostnip>
     <afflictiondescription.frostnip>The skin is slightly red and cold.</afflictiondescription.frostnip>
@@ -87,6 +99,12 @@
     <afflictiondescription.warmth>Warmth has been applied.</afflictiondescription.warmth>
     <afflictionname.aafn>A.A.F.N</afflictionname.aafn>
     <afflictiondescription.aafn>Nanites that specalize in removing ice crystals have been inserted.</afflictiondescription.aafn>
+    <afflictionname.panicking>Panicking</afflictionname.panicking>
+    <afflictiondescription.panicking>You're panicking, you can't shoot properly due to the pain.</afflictiondescription.panicking>
+    <afflictionname.removed_skin>Removed Skin</afflictionname.removed_skin>
+    <afflictiondescription.removed_skin>Skin has been removed.</afflictiondescription.removed_skin>
+    <afflictionname.grafted_skin>Grafted Skin</afflictionname.grafted_skin>
+    <afflictiondescription.grafted_skin>Skin has been grafted on.</afflictiondescription.grafted_skin>
     <!-- /// Tips /// -->
     <loadingscreentip>‖color:gui.blue‖NT Thermal:‖end‖ Temperature is only fatal in extreme amounts.</loadingscreentip>
     <loadingscreentip>‖color:gui.blue‖NT Thermal:‖end‖ Thermal Shock is a rare condition caused by the patient's temperature rapidly changing.</loadingscreentip>

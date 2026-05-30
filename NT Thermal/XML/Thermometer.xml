@@ -20,7 +20,7 @@
         <RequiredItem identifier="fpgacircuit" />
       </Fabricate>
       <InventoryIcon texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="684,13,81,112" origin="0.5029245,0.49185285" />
-      <Sprite texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="794,17,89,107" depth="0.6" origin="0.4922231,0.43069968" />
+      <Sprite texture="%ModDir%/Images/NT_AZ_Items.png" sourcerect="797,17,85,106" depth="0.6" origin="0.49878234,0.49830046" />
       <Body width="25" height="25" density="40" />
       <ItemComponent>
         <RequiredItems items="mobilebattery" type="Contained" msg="ItemMsgBatteryCellRequired" />

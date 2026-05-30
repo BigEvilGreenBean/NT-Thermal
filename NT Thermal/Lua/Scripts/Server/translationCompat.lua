@@ -32,6 +32,8 @@ Translation = {
 
 -- Use this to add translations to the thermometer.
 -- Make sure to follow the structure seen above.
+---@param language string
+---@param translation_table table
 THERMTranslation.AddTranslation = function (language, translation_table)
     Translation[language] = translation_table
 end

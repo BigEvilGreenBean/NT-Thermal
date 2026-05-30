@@ -1,13 +1,49 @@
-Upcoming update
+Upcoming update (Skin and Items Update)
 
-- Added some temperature interactions with certain items like welders and cutters. Using them give off heat.
+THERES A WHOLE IN THE EARRTHHHHHHHHHHHHH :peak:
 
-- Buffed fire a bit.
-
-- Ice Packs are no longer overriden!
-
-- Increased Mod Compatibility.
+// Additions \\
 
 - (certain) Grenades now increase temperature.
+- Added some temperature interactions with certain items like welders and cutters. Using them give off heat (or take heat).
+- Added a debug mode so I can ask you for information easily. It's a config setting.
+- Finalized the Stasis-Starter item, a new item that lets you put someone in stasis (cheaply) by admitting it and freezing patient. (Side effects included)
+- Added a Cryo Tank, lowers temperature when used! (Also highly dangerous!)
+- Players with Husk Symbiosis now gain a speed increase when cold, or a speed decrease when hot.
+- Certain damage types have a chance to explode a 3rd Degree Frostbitten Limb. (Like a grenade or gunshot). Imagine Jason X style.
+- Skin Grafting: Out of plastiseal? Don't worry, just steal your crewmates skin!!!!! (Skin has to be refrigerated)
+- Added a config to bandages getting dirtied by water.
+- Added the brand new "H.S.H", a suit heater that goes in your headset slot! (Also acts as a headset).
 
-- Greatly refactored heated suit code.
+// Bug Fixes \\
+
+- Fixed blood related afflictions stacking in the hematology print out. (Holler at me if this stays.)
+- Fixed CSH not letting you pick it up properly.        
+- Turning off Heat Transfer now clears Room Temp Data.
+- Dropping a suit will now instantly remove the Heated Diving Suit affliction. (Doesn't work with immersive diving gear yet)
+
+//  Tweaks   \\
+
+- Suits no longer insta lose heating after battery runs out, now takes a bit. (However you still lose heating if you take the suit off!)
+- Buffed fire a bit.
+- Adjusted Warm Rag/heat pad inventory icons, no longer extending out the slot.
+- A.A.F.N affliction now only appears in the hematology print.
+- Heating Crate height was adjusted to make it stop levitating when on ground.
+- C.S.H can now store an additional 5 items, making it more then just a heater.
+
+//   Code   \\
+
+- More code polish.
+- Greatly refactored heated suit code. (It's now good.)
+- Increased Mod Compatibility.
+- Ice Packs are no longer overriden!
+- Changes to file naming conventions in order to stay in line with NT
+- Afflictions in human update are now slightly more performant. (You won't notice this)
+- Extra character validation at round start.
+- Additonal Failsafes.
+- Added a system to add certain modded suits to the Heated Suit List if 1. The mod is on, and 2. The suit is different in other variants of the mod.
+- Added better type documentation.
+
+//Translations\\
+
+- Updated Russian Translations to account for new items.

@@ -3,7 +3,7 @@
 THERMPatch = {}
 THERMPatch.RepairTools = {
                           ["extinguisher"] = -.0025,["plasmacutter"] = .0035,["weldingtool"] = .0025,["flamer"] = .0025,
-                          ["ekutility_laserdrill"] = .005,["ekutility_arcwelder"] = .0015,["ekutility_ioncutter"] = .0015, -- EK Compat
+                          ["ekutility_laserdrill"] = .005,["ekutility_arcwelder"] = .0015,["ekutility_ioncutter"] = .0015, ["ekutility_miningdrill"]= .003 -- EK Compat
                          }
 
 -- Panicked stops you from shooting patch!
@@ -46,12 +46,15 @@ Hook.Patch("Barotrauma.Items.Components.RepairTool", "UseProjSpecific", function
         local ItemIdentifier = instance.Item.Prefab.Identifier
 
         local Temp = function ()
-            for Identifier, Temp in pairs(THERMPatch.RepairTools) do
-                if Identifier == ItemIdentifier then
-                    return Temp
-                end
+            local Temp = THERMPatch.RepairTools[tostring(ItemIdentifier)]
+            if not User then
+                return 0
             end
-            return 0
+            if not Temp then return 0 end
+            if Temp < 0 then
+                return Temp
+            end
+            return Temp / THERM.TotalBurnResistance(THERM.GetCharacter(User.ID,User))
         end
 
         if User then
