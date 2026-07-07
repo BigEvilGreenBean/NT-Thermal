@@ -1,6 +1,6 @@
-Upcoming update (Skin and Items Update)
+FIIIINNNDDDD YOOUURRR DREAAMMMMSSS COMMEEEE TTRRUUUUEEEEEEE 
 
-THERES A WHOLE IN THE EARRTHHHHHHHHHHHHH :peak:
+:RAHHHHHHHH:
 
 // Additions \\
 
@@ -21,15 +21,19 @@ THERES A WHOLE IN THE EARRTHHHHHHHHHHHHH :peak:
 - Fixed CSH not letting you pick it up properly.        
 - Turning off Heat Transfer now clears Room Temp Data.
 - Dropping a suit will now instantly remove the Heated Diving Suit affliction. (Doesn't work with immersive diving gear yet)
+- Fixed the reactor becoming a premature microwave, apologies for that.
 
 //  Tweaks   \\
 
 - Suits no longer insta lose heating after battery runs out, now takes a bit. (However you still lose heating if you take the suit off!)
-- Buffed fire a bit.
+- Buffed fire a bit. And buffed the heat you gain from standing directly in it.
 - Adjusted Warm Rag/heat pad inventory icons, no longer extending out the slot.
 - A.A.F.N affliction now only appears in the hematology print.
 - Heating Crate height was adjusted to make it stop levitating when on ground.
 - C.S.H can now store an additional 5 items, making it more then just a heater.
+- Water temperature is now proportional to the hull volume, so in the words of Cookie (NT Nanite dev).
+    "i can bear thermal if we change the time it takes to fucking die from  2s to 10 because you stand in a 2cm puddle of water"
+    Essentially, small puddle = small cold, big puddle = big cold. (Incase you want the old system of constant temperature you can turn this off in the config.)
 
 //   Code   \\
 
@@ -46,4 +50,6 @@ THERES A WHOLE IN THE EARRTHHHHHHHHHHHHH :peak:
 
 //Translations\\
 
-- Updated Russian Translations to account for new items.
+- Updated Russian Translations to account for new items. (Thanks to Lofa)
+
+Last update for a bit.

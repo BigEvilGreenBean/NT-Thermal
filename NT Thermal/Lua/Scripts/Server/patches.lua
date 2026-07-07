@@ -39,7 +39,7 @@ end, Hook.HookMethodType.After)
 --end, Hook.HookMethodType.After)
 
 -- For irridating heat from a welder
-Hook.Patch("Barotrauma.Items.Components.RepairTool", "UseProjSpecific", function(instance, ptable)
+Hook.Patch("Barotrauma.Items.Components.RepairTool", "Use", function(instance, ptable)
     if NTConfig.Get("RepairToolsTemp",true) and not (NTConfig.Get("BotTempIgnoreMode", true) and c.character.IsBot)
 		and not (NTConfig.Get("PressureStabilizerTemperature", true) and HF.GetAfflictionStrength(c.character, "pressurestabilized", 0) > 0) then
         local User = THERM.InstanceToUser(instance)

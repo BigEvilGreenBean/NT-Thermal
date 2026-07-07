@@ -113,7 +113,7 @@
     <loadingscreentip>‖color:gui.blue‖NT Thermal:‖end‖ Heat from fires will transfer from room to room. So make sure to keep doors closed.</loadingscreentip>
     <loadingscreentip>‖color:gui.blue‖NT Thermal:‖end‖ Cyberlimbs are susceptible to temperature shifts.</loadingscreentip>
     <loadingscreentip>‖color:gui.blue‖NT Thermal:‖end‖ Hypothermia can be used as an Analgesia alternative, however the health of your patient might be of concern.</loadingscreentip>
-    <!-- Dialog -->
+    <!-- /// Dialog /// -->
     <npcdialogsym.sym_cold>I'm getting a little cold over here.</npcdialogsym.sym_cold>
     <npcdialogsym.sym_shivers>Shivering a bit.</npcdialogsym.sym_shivers>
     <npcdialogsym.sym_numb>I can't . . . feel much.</npcdialogsym.sym_numb>

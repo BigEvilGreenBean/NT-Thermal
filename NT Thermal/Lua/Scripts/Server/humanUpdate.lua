@@ -178,6 +178,7 @@ NTTHERM.UpdateLimbAfflictions = {
 	ntt_temperature = {
 		min = 1,
 		max = 101,
+		ignorestasis = true,
 		update = function(c, limbaff, i, type)
 			local CharacterTable = THERM.GetCharacter(c.character.ID)
 
@@ -325,6 +326,7 @@ NTTHERM.UpdateLimbAfflictions = {
 
 	--warmth
 	warmth = {
+		ignorestasis = true,
 		update = function(c, limbaff, i, type)
 			local WarmingAbility = FetchConfigStats().WarmingAbility
 			local WarmthScaling = 4
@@ -356,6 +358,7 @@ NTTHERM.UpdateLimbAfflictions = {
 
 	--iced to lower temperature
 	ntt_iced = {
+		ignorestasis = true,
 		update = function(c, limbaff, i, type)
 			local CoolingAbility = FetchConfigStats().WarmingAbility
 			local MaxCoolingTemp = FetchOtherStats().MaxCoolingTemp
@@ -378,6 +381,7 @@ NTTHERM.UpdateLimbAfflictions = {
 
 	--wet
 	wet = {
+		ignorestasis = true,
 		update = function(c, limbaff, i, type)
 			-- cool down skin.
 			if limbaff[i].strength > 1.1 then
@@ -1409,11 +1413,15 @@ NTTHERM.UpdateBloodAfflictions = {
 						end
 					end
 
-					if c.afflictions[i].strength <= 0 or temp > FetchConfigStats().HypothermiaLevel/NTTHERM.MediumHypothermiaScaling and not StasisBag() then
-						HF.SetAffliction(c.character, "stasis", 0)
+					if c.afflictions[i].strength <= 0 or temp > 1 and HF.GetAfflictionStrength(c.character, "stasis", 0) > 0 then
 						c.afflictions[i].strength = 0
+						if not StasisBag() then
+							HF.SetAffliction(c.character, "stasis", 0)
+						end
 					end
 
+				else
+					c.afflictions[i].strength = 0
 				end
 			end
 		end,

@@ -126,6 +126,7 @@ NTTHERM.ConfigData = {
 	HuskGenesHypothermia = { name = "Husk Genes Are Immune To Hypothermia", default = true, type = "bool", description = "This makes it so husk genes make you immune to hypothermia." },
 	RepairToolsTemp = { name = "Repair Tools Have Temperature Interactions", default = true, type = "bool", description = "This makes it so certain repair tools give or take heat when used." },
 	WaterDirtiesBandages = { name = "Water Dirties Bandages", default = true, type = "bool", description = "This makes it so water will dirty bandages." },
+	WaterColdHull = { name = "Water Temperature Accounts For Hull Volume", default = true, type = "bool", description = "This makes it so water will be less cold the smaller the water amount in a hull, and vice versa." },
 
 	NTTHERM_HeaderReactor = { name = "---------------------------------- Reactor Settings ----------------------------------", type = "category" },
 
@@ -152,7 +153,7 @@ NTTHERM.ConfigData = {
 	},
 	ThermalReactorMaxTemp = {
 		name = "Reactor Max Temperature",
-		default = 40,
+		default = 60,
 		range = {0, 100},
 		type = "float",
 		description = "The max temperature a reactor can reach before heating up nearby crewmates. ONLY APPLIES IF ROD COUNT COFIG IS OFF!",

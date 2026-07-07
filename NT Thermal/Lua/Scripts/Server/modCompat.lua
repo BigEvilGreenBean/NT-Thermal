@@ -112,10 +112,10 @@ end
 THERMCompat.ReactorTempMax = function (item)
     if NTConfig.Get("ReactorTempAccountsForRodCount", true) then
         local ItemCount = THERM.IEnumerableSize(item.OwnInventory.GetAllItems(false))
-        local ItemScaling = ItemCount * 15
+        local ItemScaling = ItemCount * 20
         return 25 + ItemScaling
     else
-        return NTConfig.Get("ThermalReactorMaxTemp", 40)
+        return NTConfig.Get("ThermalReactorMaxTemp", 60)
     end
 end
 
@@ -127,7 +127,7 @@ local reactor = item.GetComponentString("Reactor")
             for character in Character.CharacterList do
                 local CharacterTable = THERM.GetCharacter(character.ID)
                 local BurnResistance = THERM.TotalBurnResistance(CharacterTable)
-                THERMCompat.ApplyTemperatureRadius(item, character, 750, 1, 0, { temperature.Instantiate(.5 * ((reactor.Temperature/100 + 1))/BurnResistance  * THERMCompat.EH.DeltaTime * NTConfig.Get("ThermalReactorTempScaling", 1)) }) -- :crying emoji: why does this mod have like a 1/100000 of a second tick rate.
+                THERMCompat.ApplyTemperatureRadius(item, character, 750, 1, 0, { temperature.Instantiate(.15 * ((reactor.Temperature/100 + 1))/BurnResistance  * THERMCompat.EH.DeltaTime * NTConfig.Get("ThermalReactorTempScaling", 1)) }) -- :crying emoji: why does this mod have like a 1/100000 of a second tick rate.
             end
         end
     end

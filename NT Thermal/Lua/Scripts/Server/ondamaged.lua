@@ -58,6 +58,16 @@ local SeverFrostbittenLimb = function (Character, Strength, Limb) -- Blast that 
     end
 end
 
+--local RuptureStretchedSkin = function (character, strength, limbtype) -- If the skin is stretched and lots of damage, we rupture it.
+	--if HF.GetAfflictionStrengthLimb(character, limbtype, "stretched_skin", 0) > 10 then
+		--if strength > 2 then
+			--HF.AddAfflictionLimb(character, "bleeding", limbtype,75, character)
+			--HF.AddAffliction(character, "traumaticshock", 25, character)
+			--HF.AddAfflictionLimb(character, "stretched_skin", limbtype,-20, character)
+		--end
+	--end
+--end
+
 NTTHERM.OnDamagedMethods.explosiondamage = function(character, strength, limbtype) -- Heat from grenades and stuff
     HF.AddAfflictionLimb(character, "ntt_temperature", limbtype, strength/10, character) 
 
@@ -65,10 +75,16 @@ NTTHERM.OnDamagedMethods.explosiondamage = function(character, strength, limbtyp
         SeverFrostbittenLimb(character, strength, limbtype)
     end
 
+	--RuptureStretchedSkin(character, strength, limbtype)
 end
 
 NTTHERM.OnDamagedMethods.gunshotwound = function (character, strength, limbtype)
     if HF.LimbIsExtremity(limbtype) then
         SeverFrostbittenLimb(character, strength, limbtype)
     end
+	--RuptureStretchedSkin(character, strength, limbtype)
 end
+
+--NTTHERM.OnDamagedMethods.bitewounds = function (character, strength, limbtype)
+	--RuptureStretchedSkin(character, strength, limbtype)
+--end

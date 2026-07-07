@@ -179,6 +179,19 @@ THERM.CalculateLimbWaterExposure = function (animcontrol, limb, WaterY)
         end
 end
 
+-- Returns just how extreme our hulls water temperature is.
+---@param target Character
+---@param limb LimbType
+---@return number
+THERM.FreezingWaterAmount = function (target, limb)
+        local ActualLimb = target.AnimController.GetLimb(limb, true, false, false)
+        local LimbHull = ActualLimb.hull
+        local ScalingAmount = 1.25
+        if LimbHull == nil then return 1 end
+        local Result = HF.Clamp((LimbHull.WaterVolume / LimbHull.Volume) * ScalingAmount, 0, 1)
+        return Result
+end
+
 ---Made by Antinous (Thank you)
 ---@param item Item
 ---@return number
@@ -247,6 +260,10 @@ THERM.CalculateTemperature = function (limbwet,target,limb)
         local WaterMultipliers = CharacterTable.PressureStrength 
                 * HF.Clamp(limbwet/1.5, 1, 2) 
                         * (HF.BoolToNum(THERM.IsLimbCyber(target,limb),1) + 2)
+        local WaterResistance = 1
+        if NTConfig.Get("WaterColdHull",false) then
+                WaterResistance = THERM.FreezingWaterAmount(target, limb)
+        end
         local Water = CharacterTable.LimbWaterValues[WaterLimbKey] * -1
         local RoomTemp = 0
         local OnFire = CharacterTable.OnFire[limb]
@@ -280,7 +297,7 @@ THERM.CalculateTemperature = function (limbwet,target,limb)
                 * NTConfig.Get("ETempScaling", 1.5)
                 + Sepsis()
                 * NT.Deltatime
-        local Cold = ((((Water - BloodLoss()) 
+        local Cold = (((((Water * WaterResistance) - BloodLoss()) 
                 * WaterMultipliers)
                 /LimbClothResistance)
                 /LimbTempResistance) 
@@ -371,7 +388,7 @@ THERM.IsLimbCyber = function (character,limb)
 end
 
 ---Yes this does nothing new, I just like the look of it.
----@param sound Item
+---@param sound string
 ---@param targetCharacter Character
 THERM.PlaySound = function (sound,targetCharacter)
         if not targetCharacter then return end
@@ -677,8 +694,17 @@ end
 ---@param Item Item
 ---@return boolean
 THERM.IsBatteryCell = function (Item)
-        if Item.HasTag("battery") then
+        if Item.HasTag("mobilebattery") or Item.HasTag("batterycell") or Item.HasTag("battery")then
                 return true
+        end
+        return false
+end
+
+THERM.StringOnlyHas = function (String,Wanted)
+        if String:match(tostring(Wanted)) then
+                if not String:match(",") then
+                        return true
+                end           
         end
         return false
 end

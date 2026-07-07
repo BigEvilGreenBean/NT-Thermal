@@ -2,6 +2,8 @@
 
 THERMSuits = {}
 
+THERMSuits.EKForked = "3434408187" -- Enums
+
 HeatedSuits = {
     -- index is the battery heater index. The 'needsTag' is a boolean check to see if the diving suit needs the "thermal" tag in the suit.
     -- Vanilla
@@ -29,7 +31,7 @@ HeatedSuits = {
 ExceptionsToNotUSE = {["stasisbag"] = true} -- Used for suits that we don't want to count.
 
 PackageSuits = { -- A list with specific versions of suits (I.E same mod different versions.)
-    ["3434408187"] = { -- EK Forked
+    [THERMSuits.EKForked] = { -- EK Forked
                 ["ek_armored_hardsuit"] = {index = 1, needsTag = false}, ["ek_armored_hardsuit_paintbandit"] = {index = 1, needsTag = false}, ["ek_armored_hardsuit_paintmercenary"] = {index = 1, needsTag = false}, ["ek_armored_hardsuit2"] = {index = 1, needsTag = false}, 
                 ["ek_armored_hardsuit2_paintbandit"] = {index = 1, needsTag = false}, ["ek_armored_hardsuit2_paintmercenary"] = {index = 1, needsTag = false}, 
                 ["ekutility_Utility_hardsuit_mk2"] = {index = 1, needsTag = false}, 
@@ -38,9 +40,28 @@ PackageSuits = { -- A list with specific versions of suits (I.E same mod differe
 
 -- Smart system (Not finished)
 --THERMSuits.FindHeater = function (Suit)
+
+    --local FindContainableBattery = function (element)
+        --if tostring(element.Name) == "Containable" then
+            --local Items = element.GetAttributeString("items")
+            --if Items then
+                    --THERM.StringOnlyHas(Items,"batterycell")
+            --end
+        --end
+    --end
+
     --for element in Suit.Prefab.ConfigElement.Elements() do
-        --if tostring(element) == "ItemContainer" then
-            
+        --if tostring(element.Name) == "ItemContainer" then
+            --for element in element.Elements() do
+
+                --FindContainableBattery(element)
+                
+                --if tostring(element.Name) == "SubContainer" then
+                    --for element in element.Elements() do
+                        --FindContainableBattery(element)
+                    --end
+                --end
+            --end
         --end
     --end
 --end

@@ -2,7 +2,7 @@
 -- Set up dictonary
 NTTHERM = {}
 NTTHERM.Name = "Thermal"
-NTTHERM.Version = "1.6.9h74"
+NTTHERM.Version = "1.7.0h0"
 NTTHERM.VersionNum = 000000001
 NTTHERM.MinNTVersion = "A1.12.1"
 NTTHERM.MinNTVersionNum = 01120100
@@ -20,44 +20,6 @@ LuaUserData.MakeMethodAccessible(Descriptors["Barotrauma.Explosion"], "GetObstac
 Timer.Wait(function ()
     if NTC ~= nil then
         NTC.RegisterExpansion(NTTHERM)
-
-		NTC.AddPreHumanUpdateHook(function (character) -- Used to freeze patients in stasis. Since limbs dont update when stasis is on.
-			if HF.GetAfflictionStrength(character, "stasis", 0) > 0 and HF.GetAfflictionStrength(character, "givetemp", 0) > 0 then
-				if not (NTConfig.Get("BotTempIgnoreMode", true) and character.IsBot) then
-					THERM.ApplyTemperatureUpdate(character.ID)
-					local Limbs = {LimbType.Head,LimbType.Torso,LimbType.RightArm,LimbType.LeftArm,LimbType.LeftLeg,LimbType.RightLeg}
-
-					for index, limb in pairs(Limbs) do -- Cool patient.
-						local LimbTemp = HF.GetAfflictionStrengthLimb(character, limb, "ntt_temperature", 0)
-						HF.AddAfflictionLimb(character, "ntt_temperature", limb,((-.05 * ((LimbTemp/2)/(NTConfig.Get("NewHypothermiaLevel", 36)))) * NT.Deltatime), character)
-					end
-
-					if HF.GetAfflictionStrength(character, "cryo_stasis_starter", 0) > 0 then -- We have to force update chilled and warmth.
-						for index, limb in pairs(Limbs) do
-							if HF.GetAfflictionStrengthLimb(character, limb, "iced", 0) > 0 then
-								local CoolingAbility = THERM.FetchConfigStats().WarmingAbility
-								local MaxCoolingTemp = THERM.FetchOtherStats().MaxCoolingTemp
-								local CoolScaling = -2.9
-								local LimbTemp = HF.GetAfflictionStrengthLimb(character, limb, "ntt_temperature", 0)
-								local TempAmount = ((CoolingAbility/(MaxCoolingTemp/LimbTemp)) * CoolScaling * NT.Deltatime)
-								HF.AddAfflictionLimb(character, "iced", limb,-1.7 * NT.Deltatime, character)
-								HF.AddAfflictionLimb(character, "ntt_temperature", limb,TempAmount, character)
-							end
-							if HF.GetAfflictionStrengthLimb(character, limb, "warmth", 0) > 0 then
-								local WarmingAbility = THERM.FetchConfigStats().WarmingAbility
-								local WarmthScaling = 4
-								local MaxWarmingTemp = THERM.FetchOtherStats().MaxWarmingTemp
-								local LimbTemp = HF.GetAfflictionStrengthLimb(character, limb, "ntt_temperature", 0)
-								local TempAmount = (WarmingAbility/(LimbTemp/MaxWarmingTemp)/WarmthScaling * NT.Deltatime)
-								HF.AddAfflictionLimb(character, "warmth", limb,-1.7 * NT.Deltatime, character)
-								HF.AddAfflictionLimb(character, "ntt_temperature", limb,TempAmount, character)
-							end
-						end
-					end
-
-				end
-			end
-		end)
 
 		local thermal_afflictions = { "sym_hot", "sym_cold", "sym_shivers", "sym_numb", "heat_cramp" } -- Add our NPC symptom announcements.
 		table.insert(NT.SymsForNPC, thermal_afflictions)
